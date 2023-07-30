@@ -4,10 +4,18 @@ import io.github.calvary.domain.enumeration.TransactionEntryTypes;
 import io.github.calvary.erp.queue.Messenger;
 import io.github.calvary.erp.queue.TransactionEntryMessage;
 import io.github.calvary.service.dto.TransactionEntryDTO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service("transactionEntryProcessor")
 public class TransactionEntryProcessor implements PostingProcessorService<TransactionEntryDTO>{
+
+    private static final Logger log = LoggerFactory.getLogger(TransactionEntryProcessor.class);
+
+    @Value("${queue.transaction-entry.topic}")
+    private String topicName;
 
     private final Messenger<TransactionEntryMessage> transactionEntryMessageMessenger;
 
@@ -31,7 +39,11 @@ public class TransactionEntryProcessor implements PostingProcessorService<Transa
             .accountTransactionId(dto.getAccountTransaction().getId())
             .build();
 
+        log.debug("Enqueuing transaction-entry {} to topic {}", message, topicName);
+
         transactionEntryMessageMessenger.sendMessage(message);
+
+        log.debug("transaction-entry {} has been enqueued to topic {}", message, topicName);
 
         return dto;
     }

@@ -27,6 +27,7 @@ public class BsItemConsumer {
 
             log.debug("Received message for entry-id id {}", message.getId());
 
+            // TODO Check why update service is not working
             balanceSheetUpdateService.update(message);
 
             log.debug("BS Update for transaction-entry-id id {} complete, sequence status update begins...", message.getId());

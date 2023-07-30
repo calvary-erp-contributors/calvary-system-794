@@ -5,14 +5,12 @@ import io.github.calvary.repository.BalanceSheetItemTypeRepository;
 import io.github.calvary.repository.TransactionAccountRepository;
 import io.github.calvary.service.BalanceSheetItemValueService;
 import io.github.calvary.service.TransactionEntryService;
-import io.github.calvary.service.dto.BalanceSheetItemTypeDTO;
 import io.github.calvary.service.dto.BalanceSheetItemValueDTO;
 import io.github.calvary.service.mapper.BalanceSheetItemTypeMapper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.concurrent.atomic.AtomicReference;
 
 @Service
 public class BalanceSheetItemUpdateService implements BalanceSheetUpdateService {
@@ -36,30 +34,22 @@ public class BalanceSheetItemUpdateService implements BalanceSheetUpdateService 
     public void update(TransactionEntryMessage message) {
 
         transactionEntryService.findOne(message.getId()).ifPresent(transactionEntryDTO -> {
-            BalanceSheetItemTypeDTO itemTypeDTO = getBalanceSheetItem(message.getTransactionAccountId());
 
-            BalanceSheetItemValueDTO itemValueDTO = new BalanceSheetItemValueDTO();
+            transactionAccountRepository.findById(message.getTransactionAccountId()).flatMap(balanceSheetItemTypeRepository::findBalanceSheetItemTypeByTransactionAccountEquals).ifPresent(itemType -> {
 
-            itemValueDTO.setShortDescription(transactionEntryDTO.getDescription());
-            // TODO Add date to entries
-            itemValueDTO.setEffectiveDate(LocalDate.now());
-            // TODO update account posting
-            itemValueDTO.setItemAmount(transactionEntryDTO.getEntryAmount());
+                BalanceSheetItemValueDTO itemValueDTO = new BalanceSheetItemValueDTO();
 
-            itemValueDTO.setItemType(itemTypeDTO);
+                itemValueDTO.setShortDescription(transactionEntryDTO.getDescription());
+                // TODO Add date to entries
+                itemValueDTO.setEffectiveDate(LocalDate.now());
+                // TODO update account posting
+                itemValueDTO.setItemAmount(transactionEntryDTO.getEntryAmount());
 
-            balanceSheetItemValueService.save(itemValueDTO);
+                itemValueDTO.setItemType(balanceSheetItemTypeMapper.toDto(itemType));
+
+                balanceSheetItemValueService.save(itemValueDTO);
+            });
+
         });
-    }
-
-    private BalanceSheetItemTypeDTO getBalanceSheetItem(Long transactionAccountId) {
-
-        AtomicReference<BalanceSheetItemTypeDTO> typeDTO = new AtomicReference<>();
-
-        transactionAccountRepository.findById(transactionAccountId).flatMap(balanceSheetItemTypeRepository::findBalanceSheetItemTypeByTransactionAccountEquals).ifPresent(itemType -> {
-            typeDTO.set(balanceSheetItemTypeMapper.toDto(itemType));
-        });
-
-        return typeDTO.get();
     }
 }
