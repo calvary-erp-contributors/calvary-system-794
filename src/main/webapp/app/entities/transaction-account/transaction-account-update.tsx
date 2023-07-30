@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Button, Row, Col, FormText } from 'reactstrap';
-import { isNumber, Translate, translate, ValidatedField, ValidatedForm } from 'react-jhipster';
+import { isNumber, ValidatedField, ValidatedForm } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
@@ -89,7 +89,7 @@ export const TransactionAccountUpdate = () => {
       <Row className="justify-content-center">
         <Col md="8">
           <h2 id="calvaryErpApp.transactionAccount.home.createOrEditLabel" data-cy="TransactionAccountCreateUpdateHeading">
-            <Translate contentKey="calvaryErpApp.transactionAccount.home.createOrEditLabel">Create or edit a TransactionAccount</Translate>
+            Create or edit a Transaction Account
           </h2>
         </Col>
       </Row>
@@ -100,27 +100,20 @@ export const TransactionAccountUpdate = () => {
           ) : (
             <ValidatedForm defaultValues={defaultValues()} onSubmit={saveEntity}>
               {!isNew ? (
-                <ValidatedField
-                  name="id"
-                  required
-                  readOnly
-                  id="transaction-account-id"
-                  label={translate('global.field.id')}
-                  validate={{ required: true }}
-                />
+                <ValidatedField name="id" required readOnly id="transaction-account-id" label="ID" validate={{ required: true }} />
               ) : null}
               <ValidatedField
-                label={translate('calvaryErpApp.transactionAccount.accountName')}
+                label="Account Name"
                 id="transaction-account-accountName"
                 name="accountName"
                 data-cy="accountName"
                 type="text"
                 validate={{
-                  required: { value: true, message: translate('entity.validation.required') },
+                  required: { value: true, message: 'This field is required.' },
                 }}
               />
               <ValidatedField
-                label={translate('calvaryErpApp.transactionAccount.accountNumber')}
+                label="Account Number"
                 id="transaction-account-accountNumber"
                 name="accountNumber"
                 data-cy="accountNumber"
@@ -128,7 +121,7 @@ export const TransactionAccountUpdate = () => {
                 validate={{}}
               />
               <ValidatedField
-                label={translate('calvaryErpApp.transactionAccount.openingBalance')}
+                label="Opening Balance"
                 id="transaction-account-openingBalance"
                 name="openingBalance"
                 data-cy="openingBalance"
@@ -138,7 +131,7 @@ export const TransactionAccountUpdate = () => {
                 id="transaction-account-parentAccount"
                 name="parentAccount"
                 data-cy="parentAccount"
-                label={translate('calvaryErpApp.transactionAccount.parentAccount')}
+                label="Parent Account"
                 type="select"
               >
                 <option value="" key="0" />
@@ -154,7 +147,7 @@ export const TransactionAccountUpdate = () => {
                 id="transaction-account-transactionAccountType"
                 name="transactionAccountType"
                 data-cy="transactionAccountType"
-                label={translate('calvaryErpApp.transactionAccount.transactionAccountType')}
+                label="Transaction Account Type"
                 type="select"
                 required
               >
@@ -167,14 +160,12 @@ export const TransactionAccountUpdate = () => {
                     ))
                   : null}
               </ValidatedField>
-              <FormText>
-                <Translate contentKey="entity.validation.required">This field is required.</Translate>
-              </FormText>
+              <FormText>This field is required.</FormText>
               <ValidatedField
                 id="transaction-account-transactionCurrency"
                 name="transactionCurrency"
                 data-cy="transactionCurrency"
-                label={translate('calvaryErpApp.transactionAccount.transactionCurrency')}
+                label="Transaction Currency"
                 type="select"
                 required
               >
@@ -187,21 +178,16 @@ export const TransactionAccountUpdate = () => {
                     ))
                   : null}
               </ValidatedField>
-              <FormText>
-                <Translate contentKey="entity.validation.required">This field is required.</Translate>
-              </FormText>
+              <FormText>This field is required.</FormText>
               <Button tag={Link} id="cancel-save" data-cy="entityCreateCancelButton" to="/transaction-account" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />
                 &nbsp;
-                <span className="d-none d-md-inline">
-                  <Translate contentKey="entity.action.back">Back</Translate>
-                </span>
+                <span className="d-none d-md-inline">Back</span>
               </Button>
               &nbsp;
               <Button color="primary" id="save-entity" data-cy="entityCreateSaveButton" type="submit" disabled={updating}>
                 <FontAwesomeIcon icon="save" />
-                &nbsp;
-                <Translate contentKey="entity.action.save">Save</Translate>
+                &nbsp; Save
               </Button>
             </ValidatedForm>
           )}

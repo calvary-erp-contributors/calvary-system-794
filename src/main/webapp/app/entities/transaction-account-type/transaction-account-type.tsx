@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Button, Input, InputGroup, FormGroup, Form, Row, Col, Table } from 'reactstrap';
-import { Translate, translate, getPaginationState, JhiPagination, JhiItemCount } from 'react-jhipster';
+import { translate, getPaginationState, JhiPagination, JhiItemCount } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSort, faSortUp, faSortDown } from '@fortawesome/free-solid-svg-icons';
 import { ASC, DESC, ITEMS_PER_PAGE, SORT } from 'app/shared/util/pagination.constants';
@@ -133,11 +133,10 @@ export const TransactionAccountType = () => {
   return (
     <div>
       <h2 id="transaction-account-type-heading" data-cy="TransactionAccountTypeHeading">
-        <Translate contentKey="calvaryErpApp.transactionAccountType.home.title">Transaction Account Types</Translate>
+        Transaction Account Types
         <div className="d-flex justify-content-end">
           <Button className="me-2" color="info" onClick={handleSyncList} disabled={loading}>
-            <FontAwesomeIcon icon="sync" spin={loading} />{' '}
-            <Translate contentKey="calvaryErpApp.transactionAccountType.home.refreshListLabel">Refresh List</Translate>
+            <FontAwesomeIcon icon="sync" spin={loading} /> Refresh list
           </Button>
           <Link
             to="/transaction-account-type/new"
@@ -146,8 +145,7 @@ export const TransactionAccountType = () => {
             data-cy="entityCreateButton"
           >
             <FontAwesomeIcon icon="plus" />
-            &nbsp;
-            <Translate contentKey="calvaryErpApp.transactionAccountType.home.createLabel">Create new Transaction Account Type</Translate>
+            &nbsp; Create a new Transaction Account Type
           </Link>
         </div>
       </h2>
@@ -156,13 +154,7 @@ export const TransactionAccountType = () => {
           <Form onSubmit={startSearching}>
             <FormGroup>
               <InputGroup>
-                <Input
-                  type="text"
-                  name="search"
-                  defaultValue={search}
-                  onChange={handleSearch}
-                  placeholder={translate('calvaryErpApp.transactionAccountType.home.search')}
-                />
+                <Input type="text" name="search" defaultValue={search} onChange={handleSearch} placeholder="Search" />
                 <Button className="input-group-addon">
                   <FontAwesomeIcon icon="search" />
                 </Button>
@@ -180,12 +172,10 @@ export const TransactionAccountType = () => {
             <thead>
               <tr>
                 <th className="hand" onClick={sort('id')}>
-                  <Translate contentKey="calvaryErpApp.transactionAccountType.id">ID</Translate>{' '}
-                  <FontAwesomeIcon icon={getSortIconByFieldName('id')} />
+                  ID <FontAwesomeIcon icon={getSortIconByFieldName('id')} />
                 </th>
                 <th className="hand" onClick={sort('name')}>
-                  <Translate contentKey="calvaryErpApp.transactionAccountType.name">Name</Translate>{' '}
-                  <FontAwesomeIcon icon={getSortIconByFieldName('name')} />
+                  Name <FontAwesomeIcon icon={getSortIconByFieldName('name')} />
                 </th>
                 <th />
               </tr>
@@ -208,10 +198,7 @@ export const TransactionAccountType = () => {
                         size="sm"
                         data-cy="entityDetailsButton"
                       >
-                        <FontAwesomeIcon icon="eye" />{' '}
-                        <span className="d-none d-md-inline">
-                          <Translate contentKey="entity.action.view">View</Translate>
-                        </span>
+                        <FontAwesomeIcon icon="eye" /> <span className="d-none d-md-inline">View</span>
                       </Button>
                       <Button
                         tag={Link}
@@ -220,10 +207,7 @@ export const TransactionAccountType = () => {
                         size="sm"
                         data-cy="entityEditButton"
                       >
-                        <FontAwesomeIcon icon="pencil-alt" />{' '}
-                        <span className="d-none d-md-inline">
-                          <Translate contentKey="entity.action.edit">Edit</Translate>
-                        </span>
+                        <FontAwesomeIcon icon="pencil-alt" /> <span className="d-none d-md-inline">Edit</span>
                       </Button>
                       <Button
                         tag={Link}
@@ -232,10 +216,7 @@ export const TransactionAccountType = () => {
                         size="sm"
                         data-cy="entityDeleteButton"
                       >
-                        <FontAwesomeIcon icon="trash" />{' '}
-                        <span className="d-none d-md-inline">
-                          <Translate contentKey="entity.action.delete">Delete</Translate>
-                        </span>
+                        <FontAwesomeIcon icon="trash" /> <span className="d-none d-md-inline">Delete</span>
                       </Button>
                     </div>
                   </td>
@@ -244,17 +225,13 @@ export const TransactionAccountType = () => {
             </tbody>
           </Table>
         ) : (
-          !loading && (
-            <div className="alert alert-warning">
-              <Translate contentKey="calvaryErpApp.transactionAccountType.home.notFound">No Transaction Account Types found</Translate>
-            </div>
-          )
+          !loading && <div className="alert alert-warning">No Transaction Account Types found</div>
         )}
       </div>
       {totalItems ? (
         <div className={transactionAccountTypeList && transactionAccountTypeList.length > 0 ? '' : 'd-none'}>
           <div className="justify-content-center d-flex">
-            <JhiItemCount page={paginationState.activePage} total={totalItems} itemsPerPage={paginationState.itemsPerPage} i18nEnabled />
+            <JhiItemCount page={paginationState.activePage} total={totalItems} itemsPerPage={paginationState.itemsPerPage} />
           </div>
           <div className="justify-content-center d-flex">
             <JhiPagination

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Button, Input, InputGroup, FormGroup, Form, Row, Col, Table } from 'reactstrap';
-import { Translate, translate, TextFormat, getPaginationState, JhiPagination, JhiItemCount } from 'react-jhipster';
+import { translate, TextFormat, getPaginationState, JhiPagination, JhiItemCount } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSort, faSortUp, faSortDown } from '@fortawesome/free-solid-svg-icons';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
@@ -134,16 +134,14 @@ export const AccountingEvent = () => {
   return (
     <div>
       <h2 id="accounting-event-heading" data-cy="AccountingEventHeading">
-        <Translate contentKey="calvaryErpApp.accountingEvent.home.title">Accounting Events</Translate>
+        Accounting Events
         <div className="d-flex justify-content-end">
           <Button className="me-2" color="info" onClick={handleSyncList} disabled={loading}>
-            <FontAwesomeIcon icon="sync" spin={loading} />{' '}
-            <Translate contentKey="calvaryErpApp.accountingEvent.home.refreshListLabel">Refresh List</Translate>
+            <FontAwesomeIcon icon="sync" spin={loading} /> Refresh list
           </Button>
           <Link to="/accounting-event/new" className="btn btn-primary jh-create-entity" id="jh-create-entity" data-cy="entityCreateButton">
             <FontAwesomeIcon icon="plus" />
-            &nbsp;
-            <Translate contentKey="calvaryErpApp.accountingEvent.home.createLabel">Create new Accounting Event</Translate>
+            &nbsp; Create a new Accounting Event
           </Link>
         </div>
       </h2>
@@ -152,13 +150,7 @@ export const AccountingEvent = () => {
           <Form onSubmit={startSearching}>
             <FormGroup>
               <InputGroup>
-                <Input
-                  type="text"
-                  name="search"
-                  defaultValue={search}
-                  onChange={handleSearch}
-                  placeholder={translate('calvaryErpApp.accountingEvent.home.search')}
-                />
+                <Input type="text" name="search" defaultValue={search} onChange={handleSearch} placeholder="Search" />
                 <Button className="input-group-addon">
                   <FontAwesomeIcon icon="search" />
                 </Button>
@@ -176,18 +168,16 @@ export const AccountingEvent = () => {
             <thead>
               <tr>
                 <th className="hand" onClick={sort('id')}>
-                  <Translate contentKey="calvaryErpApp.accountingEvent.id">ID</Translate>{' '}
-                  <FontAwesomeIcon icon={getSortIconByFieldName('id')} />
+                  ID <FontAwesomeIcon icon={getSortIconByFieldName('id')} />
                 </th>
                 <th className="hand" onClick={sort('eventDate')}>
-                  <Translate contentKey="calvaryErpApp.accountingEvent.eventDate">Event Date</Translate>{' '}
-                  <FontAwesomeIcon icon={getSortIconByFieldName('eventDate')} />
+                  Event Date <FontAwesomeIcon icon={getSortIconByFieldName('eventDate')} />
                 </th>
                 <th>
-                  <Translate contentKey="calvaryErpApp.accountingEvent.eventType">Event Type</Translate> <FontAwesomeIcon icon="sort" />
+                  Event Type <FontAwesomeIcon icon="sort" />
                 </th>
                 <th>
-                  <Translate contentKey="calvaryErpApp.accountingEvent.dealer">Dealer</Translate> <FontAwesomeIcon icon="sort" />
+                  Dealer <FontAwesomeIcon icon="sort" />
                 </th>
                 <th />
               </tr>
@@ -224,10 +214,7 @@ export const AccountingEvent = () => {
                         size="sm"
                         data-cy="entityDetailsButton"
                       >
-                        <FontAwesomeIcon icon="eye" />{' '}
-                        <span className="d-none d-md-inline">
-                          <Translate contentKey="entity.action.view">View</Translate>
-                        </span>
+                        <FontAwesomeIcon icon="eye" /> <span className="d-none d-md-inline">View</span>
                       </Button>
                       <Button
                         tag={Link}
@@ -236,10 +223,7 @@ export const AccountingEvent = () => {
                         size="sm"
                         data-cy="entityEditButton"
                       >
-                        <FontAwesomeIcon icon="pencil-alt" />{' '}
-                        <span className="d-none d-md-inline">
-                          <Translate contentKey="entity.action.edit">Edit</Translate>
-                        </span>
+                        <FontAwesomeIcon icon="pencil-alt" /> <span className="d-none d-md-inline">Edit</span>
                       </Button>
                       <Button
                         tag={Link}
@@ -248,10 +232,7 @@ export const AccountingEvent = () => {
                         size="sm"
                         data-cy="entityDeleteButton"
                       >
-                        <FontAwesomeIcon icon="trash" />{' '}
-                        <span className="d-none d-md-inline">
-                          <Translate contentKey="entity.action.delete">Delete</Translate>
-                        </span>
+                        <FontAwesomeIcon icon="trash" /> <span className="d-none d-md-inline">Delete</span>
                       </Button>
                     </div>
                   </td>
@@ -260,17 +241,13 @@ export const AccountingEvent = () => {
             </tbody>
           </Table>
         ) : (
-          !loading && (
-            <div className="alert alert-warning">
-              <Translate contentKey="calvaryErpApp.accountingEvent.home.notFound">No Accounting Events found</Translate>
-            </div>
-          )
+          !loading && <div className="alert alert-warning">No Accounting Events found</div>
         )}
       </div>
       {totalItems ? (
         <div className={accountingEventList && accountingEventList.length > 0 ? '' : 'd-none'}>
           <div className="justify-content-center d-flex">
-            <JhiItemCount page={paginationState.activePage} total={totalItems} itemsPerPage={paginationState.itemsPerPage} i18nEnabled />
+            <JhiItemCount page={paginationState.activePage} total={totalItems} itemsPerPage={paginationState.itemsPerPage} />
           </div>
           <div className="justify-content-center d-flex">
             <JhiPagination

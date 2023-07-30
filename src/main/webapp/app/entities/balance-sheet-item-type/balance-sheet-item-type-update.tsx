@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Button, Row, Col, FormText } from 'reactstrap';
-import { isNumber, Translate, translate, ValidatedField, ValidatedForm } from 'react-jhipster';
+import { isNumber, ValidatedField, ValidatedForm } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
@@ -77,9 +77,7 @@ export const BalanceSheetItemTypeUpdate = () => {
       <Row className="justify-content-center">
         <Col md="8">
           <h2 id="calvaryErpApp.balanceSheetItemType.home.createOrEditLabel" data-cy="BalanceSheetItemTypeCreateUpdateHeading">
-            <Translate contentKey="calvaryErpApp.balanceSheetItemType.home.createOrEditLabel">
-              Create or edit a BalanceSheetItemType
-            </Translate>
+            Create or edit a Balance Sheet Item Type
           </h2>
         </Col>
       </Row>
@@ -90,38 +88,31 @@ export const BalanceSheetItemTypeUpdate = () => {
           ) : (
             <ValidatedForm defaultValues={defaultValues()} onSubmit={saveEntity}>
               {!isNew ? (
-                <ValidatedField
-                  name="id"
-                  required
-                  readOnly
-                  id="balance-sheet-item-type-id"
-                  label={translate('global.field.id')}
-                  validate={{ required: true }}
-                />
+                <ValidatedField name="id" required readOnly id="balance-sheet-item-type-id" label="ID" validate={{ required: true }} />
               ) : null}
               <ValidatedField
-                label={translate('calvaryErpApp.balanceSheetItemType.itemSequence')}
+                label="Item Sequence"
                 id="balance-sheet-item-type-itemSequence"
                 name="itemSequence"
                 data-cy="itemSequence"
                 type="text"
                 validate={{
-                  required: { value: true, message: translate('entity.validation.required') },
-                  validate: v => isNumber(v) || translate('entity.validation.number'),
+                  required: { value: true, message: 'This field is required.' },
+                  validate: v => isNumber(v) || 'This field should be a number.',
                 }}
               />
               <ValidatedField
-                label={translate('calvaryErpApp.balanceSheetItemType.itemNumber')}
+                label="Item Number"
                 id="balance-sheet-item-type-itemNumber"
                 name="itemNumber"
                 data-cy="itemNumber"
                 type="text"
                 validate={{
-                  required: { value: true, message: translate('entity.validation.required') },
+                  required: { value: true, message: 'This field is required.' },
                 }}
               />
               <ValidatedField
-                label={translate('calvaryErpApp.balanceSheetItemType.shortDescription')}
+                label="Short Description"
                 id="balance-sheet-item-type-shortDescription"
                 name="shortDescription"
                 data-cy="shortDescription"
@@ -131,7 +122,7 @@ export const BalanceSheetItemTypeUpdate = () => {
                 id="balance-sheet-item-type-transactionAccount"
                 name="transactionAccount"
                 data-cy="transactionAccount"
-                label={translate('calvaryErpApp.balanceSheetItemType.transactionAccount')}
+                label="Transaction Account"
                 type="select"
                 required
               >
@@ -144,14 +135,12 @@ export const BalanceSheetItemTypeUpdate = () => {
                     ))
                   : null}
               </ValidatedField>
-              <FormText>
-                <Translate contentKey="entity.validation.required">This field is required.</Translate>
-              </FormText>
+              <FormText>This field is required.</FormText>
               <ValidatedField
                 id="balance-sheet-item-type-parentItem"
                 name="parentItem"
                 data-cy="parentItem"
-                label={translate('calvaryErpApp.balanceSheetItemType.parentItem')}
+                label="Parent Item"
                 type="select"
               >
                 <option value="" key="0" />
@@ -166,15 +155,12 @@ export const BalanceSheetItemTypeUpdate = () => {
               <Button tag={Link} id="cancel-save" data-cy="entityCreateCancelButton" to="/balance-sheet-item-type" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />
                 &nbsp;
-                <span className="d-none d-md-inline">
-                  <Translate contentKey="entity.action.back">Back</Translate>
-                </span>
+                <span className="d-none d-md-inline">Back</span>
               </Button>
               &nbsp;
               <Button color="primary" id="save-entity" data-cy="entityCreateSaveButton" type="submit" disabled={updating}>
                 <FontAwesomeIcon icon="save" />
-                &nbsp;
-                <Translate contentKey="entity.action.save">Save</Translate>
+                &nbsp; Save
               </Button>
             </ValidatedForm>
           )}

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Button, Input, InputGroup, FormGroup, Form, Row, Col, Table } from 'reactstrap';
-import { Translate, translate, getPaginationState } from 'react-jhipster';
+import { translate, getPaginationState } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSort, faSortUp, faSortDown } from '@fortawesome/free-solid-svg-icons';
 import { ASC, DESC, ITEMS_PER_PAGE, SORT } from 'app/shared/util/pagination.constants';
@@ -146,11 +146,10 @@ export const BalanceSheetItemType = () => {
   return (
     <div>
       <h2 id="balance-sheet-item-type-heading" data-cy="BalanceSheetItemTypeHeading">
-        <Translate contentKey="calvaryErpApp.balanceSheetItemType.home.title">Balance Sheet Item Types</Translate>
+        Balance Sheet Item Types
         <div className="d-flex justify-content-end">
           <Button className="me-2" color="info" onClick={handleSyncList} disabled={loading}>
-            <FontAwesomeIcon icon="sync" spin={loading} />{' '}
-            <Translate contentKey="calvaryErpApp.balanceSheetItemType.home.refreshListLabel">Refresh List</Translate>
+            <FontAwesomeIcon icon="sync" spin={loading} /> Refresh list
           </Button>
           <Link
             to="/balance-sheet-item-type/new"
@@ -159,8 +158,7 @@ export const BalanceSheetItemType = () => {
             data-cy="entityCreateButton"
           >
             <FontAwesomeIcon icon="plus" />
-            &nbsp;
-            <Translate contentKey="calvaryErpApp.balanceSheetItemType.home.createLabel">Create new Balance Sheet Item Type</Translate>
+            &nbsp; Create a new Balance Sheet Item Type
           </Link>
         </div>
       </h2>
@@ -169,13 +167,7 @@ export const BalanceSheetItemType = () => {
           <Form onSubmit={startSearching}>
             <FormGroup>
               <InputGroup>
-                <Input
-                  type="text"
-                  name="search"
-                  defaultValue={search}
-                  onChange={handleSearch}
-                  placeholder={translate('calvaryErpApp.balanceSheetItemType.home.search')}
-                />
+                <Input type="text" name="search" defaultValue={search} onChange={handleSearch} placeholder="Search" />
                 <Button className="input-group-addon">
                   <FontAwesomeIcon icon="search" />
                 </Button>
@@ -199,28 +191,22 @@ export const BalanceSheetItemType = () => {
               <thead>
                 <tr>
                   <th className="hand" onClick={sort('id')}>
-                    <Translate contentKey="calvaryErpApp.balanceSheetItemType.id">ID</Translate>{' '}
-                    <FontAwesomeIcon icon={getSortIconByFieldName('id')} />
+                    ID <FontAwesomeIcon icon={getSortIconByFieldName('id')} />
                   </th>
                   <th className="hand" onClick={sort('itemSequence')}>
-                    <Translate contentKey="calvaryErpApp.balanceSheetItemType.itemSequence">Item Sequence</Translate>{' '}
-                    <FontAwesomeIcon icon={getSortIconByFieldName('itemSequence')} />
+                    Item Sequence <FontAwesomeIcon icon={getSortIconByFieldName('itemSequence')} />
                   </th>
                   <th className="hand" onClick={sort('itemNumber')}>
-                    <Translate contentKey="calvaryErpApp.balanceSheetItemType.itemNumber">Item Number</Translate>{' '}
-                    <FontAwesomeIcon icon={getSortIconByFieldName('itemNumber')} />
+                    Item Number <FontAwesomeIcon icon={getSortIconByFieldName('itemNumber')} />
                   </th>
                   <th className="hand" onClick={sort('shortDescription')}>
-                    <Translate contentKey="calvaryErpApp.balanceSheetItemType.shortDescription">Short Description</Translate>{' '}
-                    <FontAwesomeIcon icon={getSortIconByFieldName('shortDescription')} />
+                    Short Description <FontAwesomeIcon icon={getSortIconByFieldName('shortDescription')} />
                   </th>
                   <th>
-                    <Translate contentKey="calvaryErpApp.balanceSheetItemType.transactionAccount">Transaction Account</Translate>{' '}
-                    <FontAwesomeIcon icon="sort" />
+                    Transaction Account <FontAwesomeIcon icon="sort" />
                   </th>
                   <th>
-                    <Translate contentKey="calvaryErpApp.balanceSheetItemType.parentItem">Parent Item</Translate>{' '}
-                    <FontAwesomeIcon icon="sort" />
+                    Parent Item <FontAwesomeIcon icon="sort" />
                   </th>
                   <th />
                 </tr>
@@ -263,10 +249,7 @@ export const BalanceSheetItemType = () => {
                           size="sm"
                           data-cy="entityDetailsButton"
                         >
-                          <FontAwesomeIcon icon="eye" />{' '}
-                          <span className="d-none d-md-inline">
-                            <Translate contentKey="entity.action.view">View</Translate>
-                          </span>
+                          <FontAwesomeIcon icon="eye" /> <span className="d-none d-md-inline">View</span>
                         </Button>
                         <Button
                           tag={Link}
@@ -275,10 +258,7 @@ export const BalanceSheetItemType = () => {
                           size="sm"
                           data-cy="entityEditButton"
                         >
-                          <FontAwesomeIcon icon="pencil-alt" />{' '}
-                          <span className="d-none d-md-inline">
-                            <Translate contentKey="entity.action.edit">Edit</Translate>
-                          </span>
+                          <FontAwesomeIcon icon="pencil-alt" /> <span className="d-none d-md-inline">Edit</span>
                         </Button>
                         <Button
                           tag={Link}
@@ -287,10 +267,7 @@ export const BalanceSheetItemType = () => {
                           size="sm"
                           data-cy="entityDeleteButton"
                         >
-                          <FontAwesomeIcon icon="trash" />{' '}
-                          <span className="d-none d-md-inline">
-                            <Translate contentKey="entity.action.delete">Delete</Translate>
-                          </span>
+                          <FontAwesomeIcon icon="trash" /> <span className="d-none d-md-inline">Delete</span>
                         </Button>
                       </div>
                     </td>
@@ -299,11 +276,7 @@ export const BalanceSheetItemType = () => {
               </tbody>
             </Table>
           ) : (
-            !loading && (
-              <div className="alert alert-warning">
-                <Translate contentKey="calvaryErpApp.balanceSheetItemType.home.notFound">No Balance Sheet Item Types found</Translate>
-              </div>
-            )
+            !loading && <div className="alert alert-warning">No Balance Sheet Item Types found</div>
           )}
         </InfiniteScroll>
       </div>

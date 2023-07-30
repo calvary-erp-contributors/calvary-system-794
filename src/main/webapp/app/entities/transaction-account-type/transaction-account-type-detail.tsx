@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { Button, Row, Col } from 'reactstrap';
-import { Translate } from 'react-jhipster';
+import {} from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { useAppDispatch, useAppSelector } from 'app/config/store';
@@ -21,35 +21,23 @@ export const TransactionAccountTypeDetail = () => {
   return (
     <Row>
       <Col md="8">
-        <h2 data-cy="transactionAccountTypeDetailsHeading">
-          <Translate contentKey="calvaryErpApp.transactionAccountType.detail.title">TransactionAccountType</Translate>
-        </h2>
+        <h2 data-cy="transactionAccountTypeDetailsHeading">Transaction Account Type</h2>
         <dl className="jh-entity-details">
           <dt>
-            <span id="id">
-              <Translate contentKey="global.field.id">ID</Translate>
-            </span>
+            <span id="id">ID</span>
           </dt>
           <dd>{transactionAccountTypeEntity.id}</dd>
           <dt>
-            <span id="name">
-              <Translate contentKey="calvaryErpApp.transactionAccountType.name">Name</Translate>
-            </span>
+            <span id="name">Name</span>
           </dt>
           <dd>{transactionAccountTypeEntity.name}</dd>
         </dl>
         <Button tag={Link} to="/transaction-account-type" replace color="info" data-cy="entityDetailsBackButton">
-          <FontAwesomeIcon icon="arrow-left" />{' '}
-          <span className="d-none d-md-inline">
-            <Translate contentKey="entity.action.back">Back</Translate>
-          </span>
+          <FontAwesomeIcon icon="arrow-left" /> <span className="d-none d-md-inline">Back</span>
         </Button>
         &nbsp;
         <Button tag={Link} to={`/transaction-account-type/${transactionAccountTypeEntity.id}/edit`} replace color="primary">
-          <FontAwesomeIcon icon="pencil-alt" />{' '}
-          <span className="d-none d-md-inline">
-            <Translate contentKey="entity.action.edit">Edit</Translate>
-          </span>
+          <FontAwesomeIcon icon="pencil-alt" /> <span className="d-none d-md-inline">Edit</span>
         </Button>
       </Col>
     </Row>

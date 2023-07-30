@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Button, Row, Col, FormText } from 'reactstrap';
-import { isNumber, Translate, translate, ValidatedField, ValidatedForm } from 'react-jhipster';
+import { isNumber, ValidatedField, ValidatedForm } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
@@ -67,9 +67,7 @@ export const TransactionAccountTypeUpdate = () => {
       <Row className="justify-content-center">
         <Col md="8">
           <h2 id="calvaryErpApp.transactionAccountType.home.createOrEditLabel" data-cy="TransactionAccountTypeCreateUpdateHeading">
-            <Translate contentKey="calvaryErpApp.transactionAccountType.home.createOrEditLabel">
-              Create or edit a TransactionAccountType
-            </Translate>
+            Create or edit a Transaction Account Type
           </h2>
         </Col>
       </Row>
@@ -80,37 +78,27 @@ export const TransactionAccountTypeUpdate = () => {
           ) : (
             <ValidatedForm defaultValues={defaultValues()} onSubmit={saveEntity}>
               {!isNew ? (
-                <ValidatedField
-                  name="id"
-                  required
-                  readOnly
-                  id="transaction-account-type-id"
-                  label={translate('global.field.id')}
-                  validate={{ required: true }}
-                />
+                <ValidatedField name="id" required readOnly id="transaction-account-type-id" label="ID" validate={{ required: true }} />
               ) : null}
               <ValidatedField
-                label={translate('calvaryErpApp.transactionAccountType.name')}
+                label="Name"
                 id="transaction-account-type-name"
                 name="name"
                 data-cy="name"
                 type="text"
                 validate={{
-                  required: { value: true, message: translate('entity.validation.required') },
+                  required: { value: true, message: 'This field is required.' },
                 }}
               />
               <Button tag={Link} id="cancel-save" data-cy="entityCreateCancelButton" to="/transaction-account-type" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />
                 &nbsp;
-                <span className="d-none d-md-inline">
-                  <Translate contentKey="entity.action.back">Back</Translate>
-                </span>
+                <span className="d-none d-md-inline">Back</span>
               </Button>
               &nbsp;
               <Button color="primary" id="save-entity" data-cy="entityCreateSaveButton" type="submit" disabled={updating}>
                 <FontAwesomeIcon icon="save" />
-                &nbsp;
-                <Translate contentKey="entity.action.save">Save</Translate>
+                &nbsp; Save
               </Button>
             </ValidatedForm>
           )}

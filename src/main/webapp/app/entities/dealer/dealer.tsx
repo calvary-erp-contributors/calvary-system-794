@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Button, Input, InputGroup, FormGroup, Form, Row, Col, Table } from 'reactstrap';
-import { Translate, translate, getPaginationState, JhiPagination, JhiItemCount } from 'react-jhipster';
+import { translate, getPaginationState, JhiPagination, JhiItemCount } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSort, faSortUp, faSortDown } from '@fortawesome/free-solid-svg-icons';
 import { ASC, DESC, ITEMS_PER_PAGE, SORT } from 'app/shared/util/pagination.constants';
@@ -133,16 +133,14 @@ export const Dealer = () => {
   return (
     <div>
       <h2 id="dealer-heading" data-cy="DealerHeading">
-        <Translate contentKey="calvaryErpApp.dealer.home.title">Dealers</Translate>
+        Dealers
         <div className="d-flex justify-content-end">
           <Button className="me-2" color="info" onClick={handleSyncList} disabled={loading}>
-            <FontAwesomeIcon icon="sync" spin={loading} />{' '}
-            <Translate contentKey="calvaryErpApp.dealer.home.refreshListLabel">Refresh List</Translate>
+            <FontAwesomeIcon icon="sync" spin={loading} /> Refresh list
           </Button>
           <Link to="/dealer/new" className="btn btn-primary jh-create-entity" id="jh-create-entity" data-cy="entityCreateButton">
             <FontAwesomeIcon icon="plus" />
-            &nbsp;
-            <Translate contentKey="calvaryErpApp.dealer.home.createLabel">Create new Dealer</Translate>
+            &nbsp; Create a new Dealer
           </Link>
         </div>
       </h2>
@@ -151,13 +149,7 @@ export const Dealer = () => {
           <Form onSubmit={startSearching}>
             <FormGroup>
               <InputGroup>
-                <Input
-                  type="text"
-                  name="search"
-                  defaultValue={search}
-                  onChange={handleSearch}
-                  placeholder={translate('calvaryErpApp.dealer.home.search')}
-                />
+                <Input type="text" name="search" defaultValue={search} onChange={handleSearch} placeholder="Search" />
                 <Button className="input-group-addon">
                   <FontAwesomeIcon icon="search" />
                 </Button>
@@ -175,14 +167,13 @@ export const Dealer = () => {
             <thead>
               <tr>
                 <th className="hand" onClick={sort('id')}>
-                  <Translate contentKey="calvaryErpApp.dealer.id">ID</Translate> <FontAwesomeIcon icon={getSortIconByFieldName('id')} />
+                  ID <FontAwesomeIcon icon={getSortIconByFieldName('id')} />
                 </th>
                 <th className="hand" onClick={sort('name')}>
-                  <Translate contentKey="calvaryErpApp.dealer.name">Name</Translate>{' '}
-                  <FontAwesomeIcon icon={getSortIconByFieldName('name')} />
+                  Name <FontAwesomeIcon icon={getSortIconByFieldName('name')} />
                 </th>
                 <th>
-                  <Translate contentKey="calvaryErpApp.dealer.dealerType">Dealer Type</Translate> <FontAwesomeIcon icon="sort" />
+                  Dealer Type <FontAwesomeIcon icon="sort" />
                 </th>
                 <th />
               </tr>
@@ -200,10 +191,7 @@ export const Dealer = () => {
                   <td className="text-end">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`/dealer/${dealer.id}`} color="info" size="sm" data-cy="entityDetailsButton">
-                        <FontAwesomeIcon icon="eye" />{' '}
-                        <span className="d-none d-md-inline">
-                          <Translate contentKey="entity.action.view">View</Translate>
-                        </span>
+                        <FontAwesomeIcon icon="eye" /> <span className="d-none d-md-inline">View</span>
                       </Button>
                       <Button
                         tag={Link}
@@ -212,10 +200,7 @@ export const Dealer = () => {
                         size="sm"
                         data-cy="entityEditButton"
                       >
-                        <FontAwesomeIcon icon="pencil-alt" />{' '}
-                        <span className="d-none d-md-inline">
-                          <Translate contentKey="entity.action.edit">Edit</Translate>
-                        </span>
+                        <FontAwesomeIcon icon="pencil-alt" /> <span className="d-none d-md-inline">Edit</span>
                       </Button>
                       <Button
                         tag={Link}
@@ -224,10 +209,7 @@ export const Dealer = () => {
                         size="sm"
                         data-cy="entityDeleteButton"
                       >
-                        <FontAwesomeIcon icon="trash" />{' '}
-                        <span className="d-none d-md-inline">
-                          <Translate contentKey="entity.action.delete">Delete</Translate>
-                        </span>
+                        <FontAwesomeIcon icon="trash" /> <span className="d-none d-md-inline">Delete</span>
                       </Button>
                     </div>
                   </td>
@@ -236,17 +218,13 @@ export const Dealer = () => {
             </tbody>
           </Table>
         ) : (
-          !loading && (
-            <div className="alert alert-warning">
-              <Translate contentKey="calvaryErpApp.dealer.home.notFound">No Dealers found</Translate>
-            </div>
-          )
+          !loading && <div className="alert alert-warning">No Dealers found</div>
         )}
       </div>
       {totalItems ? (
         <div className={dealerList && dealerList.length > 0 ? '' : 'd-none'}>
           <div className="justify-content-center d-flex">
-            <JhiItemCount page={paginationState.activePage} total={totalItems} itemsPerPage={paginationState.itemsPerPage} i18nEnabled />
+            <JhiItemCount page={paginationState.activePage} total={totalItems} itemsPerPage={paginationState.itemsPerPage} />
           </div>
           <div className="justify-content-center d-flex">
             <JhiPagination

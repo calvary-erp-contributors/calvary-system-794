@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Button, Input, InputGroup, FormGroup, Form, Row, Col, Table } from 'reactstrap';
-import { Translate, translate, TextFormat, getPaginationState, JhiPagination, JhiItemCount } from 'react-jhipster';
+import { TextFormat, getPaginationState, JhiPagination, JhiItemCount } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSort, faSortUp, faSortDown } from '@fortawesome/free-solid-svg-icons';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
@@ -134,11 +134,10 @@ export const AccountTransaction = () => {
   return (
     <div>
       <h2 id="account-transaction-heading" data-cy="AccountTransactionHeading">
-        <Translate contentKey="calvaryErpApp.accountTransaction.home.title">Account Transactions</Translate>
+        Account Transactions
         <div className="d-flex justify-content-end">
           <Button className="me-2" color="info" onClick={handleSyncList} disabled={loading}>
-            <FontAwesomeIcon icon="sync" spin={loading} />{' '}
-            <Translate contentKey="calvaryErpApp.accountTransaction.home.refreshListLabel">Refresh List</Translate>
+            <FontAwesomeIcon icon="sync" spin={loading} /> Refresh list
           </Button>
           <Link
             to="/account-transaction/new"
@@ -147,8 +146,7 @@ export const AccountTransaction = () => {
             data-cy="entityCreateButton"
           >
             <FontAwesomeIcon icon="plus" />
-            &nbsp;
-            <Translate contentKey="calvaryErpApp.accountTransaction.home.createLabel">Create new Account Transaction</Translate>
+            &nbsp; Create a new Account Transaction
           </Link>
         </div>
       </h2>
@@ -157,13 +155,7 @@ export const AccountTransaction = () => {
           <Form onSubmit={startSearching}>
             <FormGroup>
               <InputGroup>
-                <Input
-                  type="text"
-                  name="search"
-                  defaultValue={search}
-                  onChange={handleSearch}
-                  placeholder={translate('calvaryErpApp.accountTransaction.home.search')}
-                />
+                <Input type="text" name="search" defaultValue={search} onChange={handleSearch} placeholder="Search" />
                 <Button className="input-group-addon">
                   <FontAwesomeIcon icon="search" />
                 </Button>
@@ -179,129 +171,108 @@ export const AccountTransaction = () => {
         {accountTransactionList && accountTransactionList.length > 0 ? (
           <Table responsive>
             <thead>
-            <tr>
-              <th className="hand" onClick={sort('id')}>
-                <Translate contentKey="calvaryErpApp.accountTransaction.id">ID</Translate>{' '}
-                <FontAwesomeIcon icon={getSortIconByFieldName('id')} />
-              </th>
-              <th className="hand" onClick={sort('transactionDate')}>
-                <Translate contentKey="calvaryErpApp.accountTransaction.transactionDate">Transaction Date</Translate>{' '}
-                <FontAwesomeIcon icon={getSortIconByFieldName('transactionDate')} />
-              </th>
-              <th className="hand" onClick={sort('description')}>
-                <Translate contentKey="calvaryErpApp.accountTransaction.description">Description</Translate>{' '}
-                <FontAwesomeIcon icon={getSortIconByFieldName('description')} />
-              </th>
-              <th className="hand" onClick={sort('referenceNumber')}>
-                <Translate contentKey="calvaryErpApp.accountTransaction.referenceNumber">Reference Number</Translate>{' '}
-                <FontAwesomeIcon icon={getSortIconByFieldName('referenceNumber')} />
-              </th>
-              <th className="hand" onClick={sort('wasProposed')}>
-                <Translate contentKey="calvaryErpApp.accountTransaction.wasProposed">Was Proposed</Translate>{' '}
-                <FontAwesomeIcon icon={getSortIconByFieldName('wasProposed')} />
-              </th>
-              <th className="hand" onClick={sort('wasPosted')}>
-                <Translate contentKey="calvaryErpApp.accountTransaction.wasPosted">Was Posted</Translate>{' '}
-                <FontAwesomeIcon icon={getSortIconByFieldName('wasPosted')} />
-              </th>
-              <th className="hand" onClick={sort('wasDeleted')}>
-                <Translate contentKey="calvaryErpApp.accountTransaction.wasDeleted">Was Deleted</Translate>{' '}
-                <FontAwesomeIcon icon={getSortIconByFieldName('wasDeleted')} />
-              </th>
-              <th className="hand" onClick={sort('wasApproved')}>
-                <Translate contentKey="calvaryErpApp.accountTransaction.wasApproved">Was Approved</Translate>{' '}
-                <FontAwesomeIcon icon={getSortIconByFieldName('wasApproved')} />
-              </th>
-              <th />
-            </tr>
+              <tr>
+                <th className="hand" onClick={sort('id')}>
+                  ID <FontAwesomeIcon icon={getSortIconByFieldName('id')} />
+                </th>
+                <th className="hand" onClick={sort('transactionDate')}>
+                  Transaction Date <FontAwesomeIcon icon={getSortIconByFieldName('transactionDate')} />
+                </th>
+                <th className="hand" onClick={sort('description')}>
+                  Description <FontAwesomeIcon icon={getSortIconByFieldName('description')} />
+                </th>
+                <th className="hand" onClick={sort('referenceNumber')}>
+                  Reference Number <FontAwesomeIcon icon={getSortIconByFieldName('referenceNumber')} />
+                </th>
+                <th className="hand" onClick={sort('wasProposed')}>
+                  Was Proposed <FontAwesomeIcon icon={getSortIconByFieldName('wasProposed')} />
+                </th>
+                <th className="hand" onClick={sort('wasPosted')}>
+                  Was Posted <FontAwesomeIcon icon={getSortIconByFieldName('wasPosted')} />
+                </th>
+                <th className="hand" onClick={sort('wasDeleted')}>
+                  Was Deleted <FontAwesomeIcon icon={getSortIconByFieldName('wasDeleted')} />
+                </th>
+                <th className="hand" onClick={sort('wasApproved')}>
+                  Was Approved <FontAwesomeIcon icon={getSortIconByFieldName('wasApproved')} />
+                </th>
+                <th />
+              </tr>
             </thead>
             <tbody>
-            {accountTransactionList.map((accountTransaction, i) => (
-              <tr key={`entity-${i}`} data-cy="entityTable">
-                <td>
-                  <Button tag={Link} to={`/account-transaction/${accountTransaction.id}`} color="link" size="sm">
-                    {accountTransaction.id}
-                  </Button>
-                </td>
-                <td>
-                  {accountTransaction.transactionDate ? (
-                    <TextFormat type="date" value={accountTransaction.transactionDate} format={APP_LOCAL_DATE_FORMAT} />
-                  ) : null}
-                </td>
-                <td>{accountTransaction.description}</td>
-                <td>{accountTransaction.referenceNumber}</td>
-                <td>{accountTransaction.wasProposed ? 'true' : 'false'}</td>
-                <td>{accountTransaction.wasPosted ? 'true' : 'false'}</td>
-                <td>{accountTransaction.wasDeleted ? 'true' : 'false'}</td>
-                <td>{accountTransaction.wasApproved ? 'true' : 'false'}</td>
-                <td className="text-end">
-                  <div className="btn-group flex-btn-group-container">
-                    <Button
-                      tag={Link}
-                      to={`/account-transaction/${accountTransaction.id}`}
-                      color="info"
-                      size="sm"
-                      data-cy="entityDetailsButton"
-                    >
-                      <FontAwesomeIcon icon="eye" />{' '}
-                      <span className="d-none d-md-inline">
-                          <Translate contentKey="entity.action.view">View</Translate>
-                        </span>
+              {accountTransactionList.map((accountTransaction, i) => (
+                <tr key={`entity-${i}`} data-cy="entityTable">
+                  <td>
+                    <Button tag={Link} to={`/account-transaction/${accountTransaction.id}`} color="link" size="sm">
+                      {accountTransaction.id}
                     </Button>
-                    <Button
-                      tag={Link}
-                      to={`/account-transaction/${accountTransaction.id}/edit?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
-                      color="primary"
-                      size="sm"
-                      data-cy="entityEditButton"
-                    >
-                      <FontAwesomeIcon icon="pencil-alt" />{' '}
-                      <span className="d-none d-md-inline">
-                          <Translate contentKey="entity.action.edit">Edit</Translate>
+                  </td>
+                  <td>
+                    {accountTransaction.transactionDate ? (
+                      <TextFormat type="date" value={accountTransaction.transactionDate} format={APP_LOCAL_DATE_FORMAT} />
+                    ) : null}
+                  </td>
+                  <td>{accountTransaction.description}</td>
+                  <td>{accountTransaction.referenceNumber}</td>
+                  <td>{accountTransaction.wasProposed ? 'true' : 'false'}</td>
+                  <td>{accountTransaction.wasPosted ? 'true' : 'false'}</td>
+                  <td>{accountTransaction.wasDeleted ? 'true' : 'false'}</td>
+                  <td>{accountTransaction.wasApproved ? 'true' : 'false'}</td>
+                  <td className="text-end">
+                    <div className="btn-group flex-btn-group-container">
+                      <Button
+                        tag={Link}
+                        to={`/account-transaction/${accountTransaction.id}`}
+                        color="info"
+                        size="sm"
+                        data-cy="entityDetailsButton"
+                      >
+                        <FontAwesomeIcon icon="eye" /> <span className="d-none d-md-inline">View</span>
+                      </Button>
+                      <Button
+                        tag={Link}
+                        to={`/account-transaction/${accountTransaction.id}/edit?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
+                        color="primary"
+                        size="sm"
+                        data-cy="entityEditButton"
+                      >
+                        <FontAwesomeIcon icon="pencil-alt" /> <span className="d-none d-md-inline">Edit</span>
+                      </Button>
+                      <Button
+                        tag={Link}
+                        to={`/account-transaction/${accountTransaction.id}/delete?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
+                        color="danger"
+                        size="sm"
+                        data-cy="entityDeleteButton"
+                      >
+                        <FontAwesomeIcon icon="trash" /> <span className="d-none d-md-inline">Delete</span>
+                      </Button>
+                      <Button
+                        tag={Link}
+                        to={`/account-transaction/${accountTransaction.id}/post?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
+                        color="danger"
+                        size="sm"
+                        data-cy="entityDeleteButton"
+                      >
+                        <FontAwesomeIcon icon="receipt" />{' '}
+                        <span className="d-none d-md-inline">
+                          Post
                         </span>
-                    </Button>
-                    <Button
-                      tag={Link}
-                      to={`/account-transaction/${accountTransaction.id}/delete?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
-                      color="danger"
-                      size="sm"
-                      data-cy="entityDeleteButton"
-                    >
-                      <FontAwesomeIcon icon="trash" />{' '}
-                      <span className="d-none d-md-inline">
-                          <Translate contentKey="entity.action.delete">Delete</Translate>
-                        </span>
-                    </Button>
-                    <Button
-                      tag={Link}
-                      to={`/account-transaction/${accountTransaction.id}/post?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
-                      color="danger"
-                      size="sm"
-                      data-cy="entityDeleteButton"
-                    >
-                      <FontAwesomeIcon icon="receipt" />{' '}
-                      <span className="d-none d-md-inline">
-                          <Translate contentKey="entity.action.post">Posting</Translate>
-                        </span>
-                    </Button>
-                  </div>
-                </td>
-              </tr>
-            ))}
+                      </Button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </Table>
         ) : (
-          !loading && (
-            <div className="alert alert-warning">
-              <Translate contentKey="calvaryErpApp.accountTransaction.home.notFound">No Account Transactions found</Translate>
-            </div>
-          )
+          !loading && <div className="alert alert-warning">No Account Transactions found</div>
         )}
       </div>
       {totalItems ? (
         <div className={accountTransactionList && accountTransactionList.length > 0 ? '' : 'd-none'}>
           <div className="justify-content-center d-flex">
-            <JhiItemCount page={paginationState.activePage} total={totalItems} itemsPerPage={paginationState.itemsPerPage} i18nEnabled />
+            <JhiItemCount page={paginationState.activePage} total={totalItems} itemsPerPage={paginationState.itemsPerPage} />
           </div>
           <div className="justify-content-center d-flex">
             <JhiPagination

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Button, Input, InputGroup, FormGroup, Form, Row, Col, Table } from 'reactstrap';
-import { Translate, translate, TextFormat, getPaginationState, JhiPagination, JhiItemCount } from 'react-jhipster';
+import { translate, TextFormat, getPaginationState, JhiPagination, JhiItemCount } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSort, faSortUp, faSortDown } from '@fortawesome/free-solid-svg-icons';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
@@ -134,11 +134,10 @@ export const BalanceSheetItemValue = () => {
   return (
     <div>
       <h2 id="balance-sheet-item-value-heading" data-cy="BalanceSheetItemValueHeading">
-        <Translate contentKey="calvaryErpApp.balanceSheetItemValue.home.title">Balance Sheet Item Values</Translate>
+        Balance Sheet Item Values
         <div className="d-flex justify-content-end">
           <Button className="me-2" color="info" onClick={handleSyncList} disabled={loading}>
-            <FontAwesomeIcon icon="sync" spin={loading} />{' '}
-            <Translate contentKey="calvaryErpApp.balanceSheetItemValue.home.refreshListLabel">Refresh List</Translate>
+            <FontAwesomeIcon icon="sync" spin={loading} /> Refresh list
           </Button>
           <Link
             to="/balance-sheet-item-value/new"
@@ -147,8 +146,7 @@ export const BalanceSheetItemValue = () => {
             data-cy="entityCreateButton"
           >
             <FontAwesomeIcon icon="plus" />
-            &nbsp;
-            <Translate contentKey="calvaryErpApp.balanceSheetItemValue.home.createLabel">Create new Balance Sheet Item Value</Translate>
+            &nbsp; Create a new Balance Sheet Item Value
           </Link>
         </div>
       </h2>
@@ -157,13 +155,7 @@ export const BalanceSheetItemValue = () => {
           <Form onSubmit={startSearching}>
             <FormGroup>
               <InputGroup>
-                <Input
-                  type="text"
-                  name="search"
-                  defaultValue={search}
-                  onChange={handleSearch}
-                  placeholder={translate('calvaryErpApp.balanceSheetItemValue.home.search')}
-                />
+                <Input type="text" name="search" defaultValue={search} onChange={handleSearch} placeholder="Search" />
                 <Button className="input-group-addon">
                   <FontAwesomeIcon icon="search" />
                 </Button>
@@ -181,23 +173,19 @@ export const BalanceSheetItemValue = () => {
             <thead>
               <tr>
                 <th className="hand" onClick={sort('id')}>
-                  <Translate contentKey="calvaryErpApp.balanceSheetItemValue.id">ID</Translate>{' '}
-                  <FontAwesomeIcon icon={getSortIconByFieldName('id')} />
+                  ID <FontAwesomeIcon icon={getSortIconByFieldName('id')} />
                 </th>
                 <th className="hand" onClick={sort('shortDescription')}>
-                  <Translate contentKey="calvaryErpApp.balanceSheetItemValue.shortDescription">Short Description</Translate>{' '}
-                  <FontAwesomeIcon icon={getSortIconByFieldName('shortDescription')} />
+                  Short Description <FontAwesomeIcon icon={getSortIconByFieldName('shortDescription')} />
                 </th>
                 <th className="hand" onClick={sort('effectiveDate')}>
-                  <Translate contentKey="calvaryErpApp.balanceSheetItemValue.effectiveDate">Effective Date</Translate>{' '}
-                  <FontAwesomeIcon icon={getSortIconByFieldName('effectiveDate')} />
+                  Effective Date <FontAwesomeIcon icon={getSortIconByFieldName('effectiveDate')} />
                 </th>
                 <th className="hand" onClick={sort('itemAmount')}>
-                  <Translate contentKey="calvaryErpApp.balanceSheetItemValue.itemAmount">Item Amount</Translate>{' '}
-                  <FontAwesomeIcon icon={getSortIconByFieldName('itemAmount')} />
+                  Item Amount <FontAwesomeIcon icon={getSortIconByFieldName('itemAmount')} />
                 </th>
                 <th>
-                  <Translate contentKey="calvaryErpApp.balanceSheetItemValue.itemType">Item Type</Translate> <FontAwesomeIcon icon="sort" />
+                  Item Type <FontAwesomeIcon icon="sort" />
                 </th>
                 <th />
               </tr>
@@ -235,10 +223,7 @@ export const BalanceSheetItemValue = () => {
                         size="sm"
                         data-cy="entityDetailsButton"
                       >
-                        <FontAwesomeIcon icon="eye" />{' '}
-                        <span className="d-none d-md-inline">
-                          <Translate contentKey="entity.action.view">View</Translate>
-                        </span>
+                        <FontAwesomeIcon icon="eye" /> <span className="d-none d-md-inline">View</span>
                       </Button>
                       <Button
                         tag={Link}
@@ -247,10 +232,7 @@ export const BalanceSheetItemValue = () => {
                         size="sm"
                         data-cy="entityEditButton"
                       >
-                        <FontAwesomeIcon icon="pencil-alt" />{' '}
-                        <span className="d-none d-md-inline">
-                          <Translate contentKey="entity.action.edit">Edit</Translate>
-                        </span>
+                        <FontAwesomeIcon icon="pencil-alt" /> <span className="d-none d-md-inline">Edit</span>
                       </Button>
                       <Button
                         tag={Link}
@@ -259,10 +241,7 @@ export const BalanceSheetItemValue = () => {
                         size="sm"
                         data-cy="entityDeleteButton"
                       >
-                        <FontAwesomeIcon icon="trash" />{' '}
-                        <span className="d-none d-md-inline">
-                          <Translate contentKey="entity.action.delete">Delete</Translate>
-                        </span>
+                        <FontAwesomeIcon icon="trash" /> <span className="d-none d-md-inline">Delete</span>
                       </Button>
                     </div>
                   </td>
@@ -271,17 +250,13 @@ export const BalanceSheetItemValue = () => {
             </tbody>
           </Table>
         ) : (
-          !loading && (
-            <div className="alert alert-warning">
-              <Translate contentKey="calvaryErpApp.balanceSheetItemValue.home.notFound">No Balance Sheet Item Values found</Translate>
-            </div>
-          )
+          !loading && <div className="alert alert-warning">No Balance Sheet Item Values found</div>
         )}
       </div>
       {totalItems ? (
         <div className={balanceSheetItemValueList && balanceSheetItemValueList.length > 0 ? '' : 'd-none'}>
           <div className="justify-content-center d-flex">
-            <JhiItemCount page={paginationState.activePage} total={totalItems} itemsPerPage={paginationState.itemsPerPage} i18nEnabled />
+            <JhiItemCount page={paginationState.activePage} total={totalItems} itemsPerPage={paginationState.itemsPerPage} />
           </div>
           <div className="justify-content-center d-flex">
             <JhiPagination

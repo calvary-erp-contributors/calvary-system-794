@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { Button, Row, Col } from 'reactstrap';
-import { Translate } from 'react-jhipster';
+import {} from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { useAppDispatch, useAppSelector } from 'app/config/store';
@@ -21,35 +21,23 @@ export const DealerTypeDetail = () => {
   return (
     <Row>
       <Col md="8">
-        <h2 data-cy="dealerTypeDetailsHeading">
-          <Translate contentKey="calvaryErpApp.dealerType.detail.title">DealerType</Translate>
-        </h2>
+        <h2 data-cy="dealerTypeDetailsHeading">Dealer Type</h2>
         <dl className="jh-entity-details">
           <dt>
-            <span id="id">
-              <Translate contentKey="global.field.id">ID</Translate>
-            </span>
+            <span id="id">ID</span>
           </dt>
           <dd>{dealerTypeEntity.id}</dd>
           <dt>
-            <span id="name">
-              <Translate contentKey="calvaryErpApp.dealerType.name">Name</Translate>
-            </span>
+            <span id="name">Name</span>
           </dt>
           <dd>{dealerTypeEntity.name}</dd>
         </dl>
         <Button tag={Link} to="/dealer-type" replace color="info" data-cy="entityDetailsBackButton">
-          <FontAwesomeIcon icon="arrow-left" />{' '}
-          <span className="d-none d-md-inline">
-            <Translate contentKey="entity.action.back">Back</Translate>
-          </span>
+          <FontAwesomeIcon icon="arrow-left" /> <span className="d-none d-md-inline">Back</span>
         </Button>
         &nbsp;
         <Button tag={Link} to={`/dealer-type/${dealerTypeEntity.id}/edit`} replace color="primary">
-          <FontAwesomeIcon icon="pencil-alt" />{' '}
-          <span className="d-none d-md-inline">
-            <Translate contentKey="entity.action.edit">Edit</Translate>
-          </span>
+          <FontAwesomeIcon icon="pencil-alt" /> <span className="d-none d-md-inline">Edit</span>
         </Button>
       </Col>
     </Row>

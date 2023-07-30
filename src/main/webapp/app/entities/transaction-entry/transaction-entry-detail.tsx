@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { Button, Row, Col } from 'reactstrap';
-import { Translate } from 'react-jhipster';
+import {} from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { useAppDispatch, useAppSelector } from 'app/config/store';
@@ -21,79 +21,51 @@ export const TransactionEntryDetail = () => {
   return (
     <Row>
       <Col md="8">
-        <h2 data-cy="transactionEntryDetailsHeading">
-          <Translate contentKey="calvaryErpApp.transactionEntry.detail.title">TransactionEntry</Translate>
-        </h2>
+        <h2 data-cy="transactionEntryDetailsHeading">Transaction Entry</h2>
         <dl className="jh-entity-details">
           <dt>
-            <span id="id">
-              <Translate contentKey="global.field.id">ID</Translate>
-            </span>
+            <span id="id">ID</span>
           </dt>
           <dd>{transactionEntryEntity.id}</dd>
           <dt>
-            <span id="entryAmount">
-              <Translate contentKey="calvaryErpApp.transactionEntry.entryAmount">Entry Amount</Translate>
-            </span>
+            <span id="entryAmount">Entry Amount</span>
           </dt>
           <dd>{transactionEntryEntity.entryAmount}</dd>
           <dt>
-            <span id="transactionEntryType">
-              <Translate contentKey="calvaryErpApp.transactionEntry.transactionEntryType">Transaction Entry Type</Translate>
-            </span>
+            <span id="transactionEntryType">Transaction Entry Type</span>
           </dt>
           <dd>{transactionEntryEntity.transactionEntryType}</dd>
           <dt>
-            <span id="description">
-              <Translate contentKey="calvaryErpApp.transactionEntry.description">Description</Translate>
-            </span>
+            <span id="description">Description</span>
           </dt>
           <dd>{transactionEntryEntity.description}</dd>
           <dt>
-            <span id="wasProposed">
-              <Translate contentKey="calvaryErpApp.transactionEntry.wasProposed">Was Proposed</Translate>
-            </span>
+            <span id="wasProposed">Was Proposed</span>
           </dt>
           <dd>{transactionEntryEntity.wasProposed ? 'true' : 'false'}</dd>
           <dt>
-            <span id="wasPosted">
-              <Translate contentKey="calvaryErpApp.transactionEntry.wasPosted">Was Posted</Translate>
-            </span>
+            <span id="wasPosted">Was Posted</span>
           </dt>
           <dd>{transactionEntryEntity.wasPosted ? 'true' : 'false'}</dd>
           <dt>
-            <span id="wasDeleted">
-              <Translate contentKey="calvaryErpApp.transactionEntry.wasDeleted">Was Deleted</Translate>
-            </span>
+            <span id="wasDeleted">Was Deleted</span>
           </dt>
           <dd>{transactionEntryEntity.wasDeleted ? 'true' : 'false'}</dd>
           <dt>
-            <span id="wasApproved">
-              <Translate contentKey="calvaryErpApp.transactionEntry.wasApproved">Was Approved</Translate>
-            </span>
+            <span id="wasApproved">Was Approved</span>
           </dt>
           <dd>{transactionEntryEntity.wasApproved ? 'true' : 'false'}</dd>
-          <dt>
-            <Translate contentKey="calvaryErpApp.transactionEntry.transactionAccount">Transaction Account</Translate>
-          </dt>
+          <dt>Transaction Account</dt>
           <dd>{transactionEntryEntity.transactionAccount ? transactionEntryEntity.transactionAccount.accountName : ''}</dd>
-          <dt>
-            <Translate contentKey="calvaryErpApp.transactionEntry.accountTransaction">Account Transaction</Translate>
-          </dt>
+          <dt>Account Transaction</dt>
           <dd>{transactionEntryEntity.accountTransaction ? transactionEntryEntity.accountTransaction.referenceNumber : ''}</dd>
         </dl>
         <Button tag={Link} to="/transaction-entry" replace color="info" data-cy="entityDetailsBackButton">
-          <FontAwesomeIcon icon="arrow-left" />{' '}
-          <span className="d-none d-md-inline">
-            <Translate contentKey="entity.action.back">Back</Translate>
-          </span>
+          <FontAwesomeIcon icon="arrow-left" /> <span className="d-none d-md-inline">Back</span>
         </Button>
         &nbsp;
         <Button tag={Link} to={`/transaction-entry/${transactionEntryEntity.id}/edit`} replace color="primary">
-          <FontAwesomeIcon icon="pencil-alt" />{' '}
-          <span className="d-none d-md-inline">
-            <Translate contentKey="entity.action.edit">Edit</Translate>
-          </span>
+          <FontAwesomeIcon icon="pencil-alt" /> <span className="d-none d-md-inline">Edit</span>
         </Button>
       </Col>
     </Row>

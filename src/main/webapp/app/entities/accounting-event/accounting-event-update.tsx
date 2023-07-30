@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Button, Row, Col, FormText } from 'reactstrap';
-import { isNumber, Translate, translate, ValidatedField, ValidatedForm } from 'react-jhipster';
+import { isNumber, ValidatedField, ValidatedForm } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
@@ -80,7 +80,7 @@ export const AccountingEventUpdate = () => {
       <Row className="justify-content-center">
         <Col md="8">
           <h2 id="calvaryErpApp.accountingEvent.home.createOrEditLabel" data-cy="AccountingEventCreateUpdateHeading">
-            <Translate contentKey="calvaryErpApp.accountingEvent.home.createOrEditLabel">Create or edit a AccountingEvent</Translate>
+            Create or edit a Accounting Event
           </h2>
         </Col>
       </Row>
@@ -91,32 +91,19 @@ export const AccountingEventUpdate = () => {
           ) : (
             <ValidatedForm defaultValues={defaultValues()} onSubmit={saveEntity}>
               {!isNew ? (
-                <ValidatedField
-                  name="id"
-                  required
-                  readOnly
-                  id="accounting-event-id"
-                  label={translate('global.field.id')}
-                  validate={{ required: true }}
-                />
+                <ValidatedField name="id" required readOnly id="accounting-event-id" label="ID" validate={{ required: true }} />
               ) : null}
               <ValidatedField
-                label={translate('calvaryErpApp.accountingEvent.eventDate')}
+                label="Event Date"
                 id="accounting-event-eventDate"
                 name="eventDate"
                 data-cy="eventDate"
                 type="date"
                 validate={{
-                  required: { value: true, message: translate('entity.validation.required') },
+                  required: { value: true, message: 'This field is required.' },
                 }}
               />
-              <ValidatedField
-                id="accounting-event-eventType"
-                name="eventType"
-                data-cy="eventType"
-                label={translate('calvaryErpApp.accountingEvent.eventType')}
-                type="select"
-              >
+              <ValidatedField id="accounting-event-eventType" name="eventType" data-cy="eventType" label="Event Type" type="select">
                 <option value="" key="0" />
                 {eventTypes
                   ? eventTypes.map(otherEntity => (
@@ -126,14 +113,7 @@ export const AccountingEventUpdate = () => {
                     ))
                   : null}
               </ValidatedField>
-              <ValidatedField
-                id="accounting-event-dealer"
-                name="dealer"
-                data-cy="dealer"
-                label={translate('calvaryErpApp.accountingEvent.dealer')}
-                type="select"
-                required
-              >
+              <ValidatedField id="accounting-event-dealer" name="dealer" data-cy="dealer" label="Dealer" type="select" required>
                 <option value="" key="0" />
                 {dealers
                   ? dealers.map(otherEntity => (
@@ -143,21 +123,16 @@ export const AccountingEventUpdate = () => {
                     ))
                   : null}
               </ValidatedField>
-              <FormText>
-                <Translate contentKey="entity.validation.required">This field is required.</Translate>
-              </FormText>
+              <FormText>This field is required.</FormText>
               <Button tag={Link} id="cancel-save" data-cy="entityCreateCancelButton" to="/accounting-event" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />
                 &nbsp;
-                <span className="d-none d-md-inline">
-                  <Translate contentKey="entity.action.back">Back</Translate>
-                </span>
+                <span className="d-none d-md-inline">Back</span>
               </Button>
               &nbsp;
               <Button color="primary" id="save-entity" data-cy="entityCreateSaveButton" type="submit" disabled={updating}>
                 <FontAwesomeIcon icon="save" />
-                &nbsp;
-                <Translate contentKey="entity.action.save">Save</Translate>
+                &nbsp; Save
               </Button>
             </ValidatedForm>
           )}

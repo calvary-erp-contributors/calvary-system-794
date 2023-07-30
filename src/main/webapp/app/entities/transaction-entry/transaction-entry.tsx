@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Button, Input, InputGroup, FormGroup, Form, Row, Col, Table } from 'reactstrap';
-import { Translate, translate, getPaginationState, JhiPagination, JhiItemCount } from 'react-jhipster';
+import { translate, getPaginationState, JhiPagination, JhiItemCount } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSort, faSortUp, faSortDown } from '@fortawesome/free-solid-svg-icons';
 import { ASC, DESC, ITEMS_PER_PAGE, SORT } from 'app/shared/util/pagination.constants';
@@ -133,16 +133,14 @@ export const TransactionEntry = () => {
   return (
     <div>
       <h2 id="transaction-entry-heading" data-cy="TransactionEntryHeading">
-        <Translate contentKey="calvaryErpApp.transactionEntry.home.title">Transaction Entries</Translate>
+        Transaction Entries
         <div className="d-flex justify-content-end">
           <Button className="me-2" color="info" onClick={handleSyncList} disabled={loading}>
-            <FontAwesomeIcon icon="sync" spin={loading} />{' '}
-            <Translate contentKey="calvaryErpApp.transactionEntry.home.refreshListLabel">Refresh List</Translate>
+            <FontAwesomeIcon icon="sync" spin={loading} /> Refresh list
           </Button>
           <Link to="/transaction-entry/new" className="btn btn-primary jh-create-entity" id="jh-create-entity" data-cy="entityCreateButton">
             <FontAwesomeIcon icon="plus" />
-            &nbsp;
-            <Translate contentKey="calvaryErpApp.transactionEntry.home.createLabel">Create new Transaction Entry</Translate>
+            &nbsp; Create a new Transaction Entry
           </Link>
         </div>
       </h2>
@@ -151,13 +149,7 @@ export const TransactionEntry = () => {
           <Form onSubmit={startSearching}>
             <FormGroup>
               <InputGroup>
-                <Input
-                  type="text"
-                  name="search"
-                  defaultValue={search}
-                  onChange={handleSearch}
-                  placeholder={translate('calvaryErpApp.transactionEntry.home.search')}
-                />
+                <Input type="text" name="search" defaultValue={search} onChange={handleSearch} placeholder="Search" />
                 <Button className="input-group-addon">
                   <FontAwesomeIcon icon="search" />
                 </Button>
@@ -175,44 +167,34 @@ export const TransactionEntry = () => {
             <thead>
               <tr>
                 <th className="hand" onClick={sort('id')}>
-                  <Translate contentKey="calvaryErpApp.transactionEntry.id">ID</Translate>{' '}
-                  <FontAwesomeIcon icon={getSortIconByFieldName('id')} />
+                  ID <FontAwesomeIcon icon={getSortIconByFieldName('id')} />
                 </th>
                 <th className="hand" onClick={sort('entryAmount')}>
-                  <Translate contentKey="calvaryErpApp.transactionEntry.entryAmount">Entry Amount</Translate>{' '}
-                  <FontAwesomeIcon icon={getSortIconByFieldName('entryAmount')} />
+                  Entry Amount <FontAwesomeIcon icon={getSortIconByFieldName('entryAmount')} />
                 </th>
                 <th className="hand" onClick={sort('transactionEntryType')}>
-                  <Translate contentKey="calvaryErpApp.transactionEntry.transactionEntryType">Transaction Entry Type</Translate>{' '}
-                  <FontAwesomeIcon icon={getSortIconByFieldName('transactionEntryType')} />
+                  Transaction Entry Type <FontAwesomeIcon icon={getSortIconByFieldName('transactionEntryType')} />
                 </th>
                 <th className="hand" onClick={sort('description')}>
-                  <Translate contentKey="calvaryErpApp.transactionEntry.description">Description</Translate>{' '}
-                  <FontAwesomeIcon icon={getSortIconByFieldName('description')} />
+                  Description <FontAwesomeIcon icon={getSortIconByFieldName('description')} />
                 </th>
                 <th className="hand" onClick={sort('wasProposed')}>
-                  <Translate contentKey="calvaryErpApp.transactionEntry.wasProposed">Was Proposed</Translate>{' '}
-                  <FontAwesomeIcon icon={getSortIconByFieldName('wasProposed')} />
+                  Was Proposed <FontAwesomeIcon icon={getSortIconByFieldName('wasProposed')} />
                 </th>
                 <th className="hand" onClick={sort('wasPosted')}>
-                  <Translate contentKey="calvaryErpApp.transactionEntry.wasPosted">Was Posted</Translate>{' '}
-                  <FontAwesomeIcon icon={getSortIconByFieldName('wasPosted')} />
+                  Was Posted <FontAwesomeIcon icon={getSortIconByFieldName('wasPosted')} />
                 </th>
                 <th className="hand" onClick={sort('wasDeleted')}>
-                  <Translate contentKey="calvaryErpApp.transactionEntry.wasDeleted">Was Deleted</Translate>{' '}
-                  <FontAwesomeIcon icon={getSortIconByFieldName('wasDeleted')} />
+                  Was Deleted <FontAwesomeIcon icon={getSortIconByFieldName('wasDeleted')} />
                 </th>
                 <th className="hand" onClick={sort('wasApproved')}>
-                  <Translate contentKey="calvaryErpApp.transactionEntry.wasApproved">Was Approved</Translate>{' '}
-                  <FontAwesomeIcon icon={getSortIconByFieldName('wasApproved')} />
+                  Was Approved <FontAwesomeIcon icon={getSortIconByFieldName('wasApproved')} />
                 </th>
                 <th>
-                  <Translate contentKey="calvaryErpApp.transactionEntry.transactionAccount">Transaction Account</Translate>{' '}
-                  <FontAwesomeIcon icon="sort" />
+                  Transaction Account <FontAwesomeIcon icon="sort" />
                 </th>
                 <th>
-                  <Translate contentKey="calvaryErpApp.transactionEntry.accountTransaction">Account Transaction</Translate>{' '}
-                  <FontAwesomeIcon icon="sort" />
+                  Account Transaction <FontAwesomeIcon icon="sort" />
                 </th>
                 <th />
               </tr>
@@ -226,9 +208,7 @@ export const TransactionEntry = () => {
                     </Button>
                   </td>
                   <td>{transactionEntry.entryAmount}</td>
-                  <td>
-                    <Translate contentKey={`calvaryErpApp.TransactionEntryTypes.${transactionEntry.transactionEntryType}`} />
-                  </td>
+                  <td>{transactionEntry.transactionEntryType}</td>
                   <td>{transactionEntry.description}</td>
                   <td>{transactionEntry.wasProposed ? 'true' : 'false'}</td>
                   <td>{transactionEntry.wasPosted ? 'true' : 'false'}</td>
@@ -261,10 +241,7 @@ export const TransactionEntry = () => {
                         size="sm"
                         data-cy="entityDetailsButton"
                       >
-                        <FontAwesomeIcon icon="eye" />{' '}
-                        <span className="d-none d-md-inline">
-                          <Translate contentKey="entity.action.view">View</Translate>
-                        </span>
+                        <FontAwesomeIcon icon="eye" /> <span className="d-none d-md-inline">View</span>
                       </Button>
                       <Button
                         tag={Link}
@@ -273,10 +250,7 @@ export const TransactionEntry = () => {
                         size="sm"
                         data-cy="entityEditButton"
                       >
-                        <FontAwesomeIcon icon="pencil-alt" />{' '}
-                        <span className="d-none d-md-inline">
-                          <Translate contentKey="entity.action.edit">Edit</Translate>
-                        </span>
+                        <FontAwesomeIcon icon="pencil-alt" /> <span className="d-none d-md-inline">Edit</span>
                       </Button>
                       <Button
                         tag={Link}
@@ -285,10 +259,7 @@ export const TransactionEntry = () => {
                         size="sm"
                         data-cy="entityDeleteButton"
                       >
-                        <FontAwesomeIcon icon="trash" />{' '}
-                        <span className="d-none d-md-inline">
-                          <Translate contentKey="entity.action.delete">Delete</Translate>
-                        </span>
+                        <FontAwesomeIcon icon="trash" /> <span className="d-none d-md-inline">Delete</span>
                       </Button>
                     </div>
                   </td>
@@ -297,17 +268,13 @@ export const TransactionEntry = () => {
             </tbody>
           </Table>
         ) : (
-          !loading && (
-            <div className="alert alert-warning">
-              <Translate contentKey="calvaryErpApp.transactionEntry.home.notFound">No Transaction Entries found</Translate>
-            </div>
-          )
+          !loading && <div className="alert alert-warning">No Transaction Entries found</div>
         )}
       </div>
       {totalItems ? (
         <div className={transactionEntryList && transactionEntryList.length > 0 ? '' : 'd-none'}>
           <div className="justify-content-center d-flex">
-            <JhiItemCount page={paginationState.activePage} total={totalItems} itemsPerPage={paginationState.itemsPerPage} i18nEnabled />
+            <JhiItemCount page={paginationState.activePage} total={totalItems} itemsPerPage={paginationState.itemsPerPage} />
           </div>
           <div className="justify-content-center d-flex">
             <JhiPagination

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { Button, Row, Col } from 'reactstrap';
-import { Translate } from 'react-jhipster';
+import {} from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { useAppDispatch, useAppSelector } from 'app/config/store';
@@ -21,55 +21,35 @@ export const BalanceSheetItemTypeDetail = () => {
   return (
     <Row>
       <Col md="8">
-        <h2 data-cy="balanceSheetItemTypeDetailsHeading">
-          <Translate contentKey="calvaryErpApp.balanceSheetItemType.detail.title">BalanceSheetItemType</Translate>
-        </h2>
+        <h2 data-cy="balanceSheetItemTypeDetailsHeading">Balance Sheet Item Type</h2>
         <dl className="jh-entity-details">
           <dt>
-            <span id="id">
-              <Translate contentKey="global.field.id">ID</Translate>
-            </span>
+            <span id="id">ID</span>
           </dt>
           <dd>{balanceSheetItemTypeEntity.id}</dd>
           <dt>
-            <span id="itemSequence">
-              <Translate contentKey="calvaryErpApp.balanceSheetItemType.itemSequence">Item Sequence</Translate>
-            </span>
+            <span id="itemSequence">Item Sequence</span>
           </dt>
           <dd>{balanceSheetItemTypeEntity.itemSequence}</dd>
           <dt>
-            <span id="itemNumber">
-              <Translate contentKey="calvaryErpApp.balanceSheetItemType.itemNumber">Item Number</Translate>
-            </span>
+            <span id="itemNumber">Item Number</span>
           </dt>
           <dd>{balanceSheetItemTypeEntity.itemNumber}</dd>
           <dt>
-            <span id="shortDescription">
-              <Translate contentKey="calvaryErpApp.balanceSheetItemType.shortDescription">Short Description</Translate>
-            </span>
+            <span id="shortDescription">Short Description</span>
           </dt>
           <dd>{balanceSheetItemTypeEntity.shortDescription}</dd>
-          <dt>
-            <Translate contentKey="calvaryErpApp.balanceSheetItemType.transactionAccount">Transaction Account</Translate>
-          </dt>
+          <dt>Transaction Account</dt>
           <dd>{balanceSheetItemTypeEntity.transactionAccount ? balanceSheetItemTypeEntity.transactionAccount.accountName : ''}</dd>
-          <dt>
-            <Translate contentKey="calvaryErpApp.balanceSheetItemType.parentItem">Parent Item</Translate>
-          </dt>
+          <dt>Parent Item</dt>
           <dd>{balanceSheetItemTypeEntity.parentItem ? balanceSheetItemTypeEntity.parentItem.itemNumber : ''}</dd>
         </dl>
         <Button tag={Link} to="/balance-sheet-item-type" replace color="info" data-cy="entityDetailsBackButton">
-          <FontAwesomeIcon icon="arrow-left" />{' '}
-          <span className="d-none d-md-inline">
-            <Translate contentKey="entity.action.back">Back</Translate>
-          </span>
+          <FontAwesomeIcon icon="arrow-left" /> <span className="d-none d-md-inline">Back</span>
         </Button>
         &nbsp;
         <Button tag={Link} to={`/balance-sheet-item-type/${balanceSheetItemTypeEntity.id}/edit`} replace color="primary">
-          <FontAwesomeIcon icon="pencil-alt" />{' '}
-          <span className="d-none d-md-inline">
-            <Translate contentKey="entity.action.edit">Edit</Translate>
-          </span>
+          <FontAwesomeIcon icon="pencil-alt" /> <span className="d-none d-md-inline">Edit</span>
         </Button>
       </Col>
     </Row>
