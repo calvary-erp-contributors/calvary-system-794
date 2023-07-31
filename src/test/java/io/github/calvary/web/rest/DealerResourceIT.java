@@ -524,8 +524,6 @@ class DealerResourceIT {
         Dealer partialUpdatedDealer = new Dealer();
         partialUpdatedDealer.setId(dealer.getId());
 
-        partialUpdatedDealer.name(UPDATED_NAME);
-
         restDealerMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedDealer.getId())
@@ -538,7 +536,7 @@ class DealerResourceIT {
         List<Dealer> dealerList = dealerRepository.findAll();
         assertThat(dealerList).hasSize(databaseSizeBeforeUpdate);
         Dealer testDealer = dealerList.get(dealerList.size() - 1);
-        assertThat(testDealer.getName()).isEqualTo(UPDATED_NAME);
+        assertThat(testDealer.getName()).isEqualTo(DEFAULT_NAME);
     }
 
     @Test

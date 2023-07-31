@@ -76,7 +76,7 @@ public class AccountingEventResource {
         AccountingEventDTO result = accountingEventService.save(accountingEventDTO);
         return ResponseEntity
             .created(new URI("/api/accounting-events/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
 
@@ -110,7 +110,7 @@ public class AccountingEventResource {
         AccountingEventDTO result = accountingEventService.update(accountingEventDTO);
         return ResponseEntity
             .ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, accountingEventDTO.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, accountingEventDTO.getId().toString()))
             .body(result);
     }
 
@@ -146,7 +146,7 @@ public class AccountingEventResource {
 
         return ResponseUtil.wrapOrNotFound(
             result,
-            HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, accountingEventDTO.getId().toString())
+            HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, accountingEventDTO.getId().toString())
         );
     }
 
@@ -206,7 +206,7 @@ public class AccountingEventResource {
         accountingEventService.delete(id);
         return ResponseEntity
             .noContent()
-            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
             .build();
     }
 

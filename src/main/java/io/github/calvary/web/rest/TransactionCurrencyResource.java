@@ -77,7 +77,7 @@ public class TransactionCurrencyResource {
         TransactionCurrencyDTO result = transactionCurrencyService.save(transactionCurrencyDTO);
         return ResponseEntity
             .created(new URI("/api/transaction-currencies/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
 
@@ -111,7 +111,7 @@ public class TransactionCurrencyResource {
         TransactionCurrencyDTO result = transactionCurrencyService.update(transactionCurrencyDTO);
         return ResponseEntity
             .ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, transactionCurrencyDTO.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, transactionCurrencyDTO.getId().toString()))
             .body(result);
     }
 
@@ -147,7 +147,7 @@ public class TransactionCurrencyResource {
 
         return ResponseUtil.wrapOrNotFound(
             result,
-            HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, transactionCurrencyDTO.getId().toString())
+            HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, transactionCurrencyDTO.getId().toString())
         );
     }
 
@@ -207,7 +207,7 @@ public class TransactionCurrencyResource {
         transactionCurrencyService.delete(id);
         return ResponseEntity
             .noContent()
-            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
             .build();
     }
 

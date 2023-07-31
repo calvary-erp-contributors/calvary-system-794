@@ -567,6 +567,8 @@ class TransactionCurrencyResourceIT {
         TransactionCurrency partialUpdatedTransactionCurrency = new TransactionCurrency();
         partialUpdatedTransactionCurrency.setId(transactionCurrency.getId());
 
+        partialUpdatedTransactionCurrency.code(UPDATED_CODE);
+
         restTransactionCurrencyMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedTransactionCurrency.getId())
@@ -580,7 +582,7 @@ class TransactionCurrencyResourceIT {
         assertThat(transactionCurrencyList).hasSize(databaseSizeBeforeUpdate);
         TransactionCurrency testTransactionCurrency = transactionCurrencyList.get(transactionCurrencyList.size() - 1);
         assertThat(testTransactionCurrency.getName()).isEqualTo(DEFAULT_NAME);
-        assertThat(testTransactionCurrency.getCode()).isEqualTo(DEFAULT_CODE);
+        assertThat(testTransactionCurrency.getCode()).isEqualTo(UPDATED_CODE);
     }
 
     @Test

@@ -768,7 +768,7 @@ class BalanceSheetItemTypeResourceIT {
         BalanceSheetItemType partialUpdatedBalanceSheetItemType = new BalanceSheetItemType();
         partialUpdatedBalanceSheetItemType.setId(balanceSheetItemType.getId());
 
-        partialUpdatedBalanceSheetItemType.shortDescription(UPDATED_SHORT_DESCRIPTION);
+        partialUpdatedBalanceSheetItemType.itemSequence(UPDATED_ITEM_SEQUENCE).itemNumber(UPDATED_ITEM_NUMBER);
 
         restBalanceSheetItemTypeMockMvc
             .perform(
@@ -782,9 +782,9 @@ class BalanceSheetItemTypeResourceIT {
         List<BalanceSheetItemType> balanceSheetItemTypeList = balanceSheetItemTypeRepository.findAll();
         assertThat(balanceSheetItemTypeList).hasSize(databaseSizeBeforeUpdate);
         BalanceSheetItemType testBalanceSheetItemType = balanceSheetItemTypeList.get(balanceSheetItemTypeList.size() - 1);
-        assertThat(testBalanceSheetItemType.getItemSequence()).isEqualTo(DEFAULT_ITEM_SEQUENCE);
-        assertThat(testBalanceSheetItemType.getItemNumber()).isEqualTo(DEFAULT_ITEM_NUMBER);
-        assertThat(testBalanceSheetItemType.getShortDescription()).isEqualTo(UPDATED_SHORT_DESCRIPTION);
+        assertThat(testBalanceSheetItemType.getItemSequence()).isEqualTo(UPDATED_ITEM_SEQUENCE);
+        assertThat(testBalanceSheetItemType.getItemNumber()).isEqualTo(UPDATED_ITEM_NUMBER);
+        assertThat(testBalanceSheetItemType.getShortDescription()).isEqualTo(DEFAULT_SHORT_DESCRIPTION);
     }
 
     @Test

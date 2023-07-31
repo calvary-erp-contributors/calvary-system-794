@@ -880,8 +880,9 @@ class AccountTransactionResourceIT {
         partialUpdatedAccountTransaction.setId(accountTransaction.getId());
 
         partialUpdatedAccountTransaction
+            .description(UPDATED_DESCRIPTION)
             .referenceNumber(UPDATED_REFERENCE_NUMBER)
-            .wasPosted(UPDATED_WAS_POSTED)
+            .wasDeleted(UPDATED_WAS_DELETED)
             .wasApproved(UPDATED_WAS_APPROVED);
 
         restAccountTransactionMockMvc
@@ -897,11 +898,11 @@ class AccountTransactionResourceIT {
         assertThat(accountTransactionList).hasSize(databaseSizeBeforeUpdate);
         AccountTransaction testAccountTransaction = accountTransactionList.get(accountTransactionList.size() - 1);
         assertThat(testAccountTransaction.getTransactionDate()).isEqualTo(DEFAULT_TRANSACTION_DATE);
-        assertThat(testAccountTransaction.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
+        assertThat(testAccountTransaction.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
         assertThat(testAccountTransaction.getReferenceNumber()).isEqualTo(UPDATED_REFERENCE_NUMBER);
         assertThat(testAccountTransaction.getWasProposed()).isEqualTo(DEFAULT_WAS_PROPOSED);
-        assertThat(testAccountTransaction.getWasPosted()).isEqualTo(UPDATED_WAS_POSTED);
-        assertThat(testAccountTransaction.getWasDeleted()).isEqualTo(DEFAULT_WAS_DELETED);
+        assertThat(testAccountTransaction.getWasPosted()).isEqualTo(DEFAULT_WAS_POSTED);
+        assertThat(testAccountTransaction.getWasDeleted()).isEqualTo(UPDATED_WAS_DELETED);
         assertThat(testAccountTransaction.getWasApproved()).isEqualTo(UPDATED_WAS_APPROVED);
     }
 

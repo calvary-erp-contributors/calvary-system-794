@@ -784,6 +784,8 @@ class BalanceSheetItemValueResourceIT {
         BalanceSheetItemValue partialUpdatedBalanceSheetItemValue = new BalanceSheetItemValue();
         partialUpdatedBalanceSheetItemValue.setId(balanceSheetItemValue.getId());
 
+        partialUpdatedBalanceSheetItemValue.shortDescription(UPDATED_SHORT_DESCRIPTION).itemAmount(UPDATED_ITEM_AMOUNT);
+
         restBalanceSheetItemValueMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedBalanceSheetItemValue.getId())
@@ -796,9 +798,9 @@ class BalanceSheetItemValueResourceIT {
         List<BalanceSheetItemValue> balanceSheetItemValueList = balanceSheetItemValueRepository.findAll();
         assertThat(balanceSheetItemValueList).hasSize(databaseSizeBeforeUpdate);
         BalanceSheetItemValue testBalanceSheetItemValue = balanceSheetItemValueList.get(balanceSheetItemValueList.size() - 1);
-        assertThat(testBalanceSheetItemValue.getShortDescription()).isEqualTo(DEFAULT_SHORT_DESCRIPTION);
+        assertThat(testBalanceSheetItemValue.getShortDescription()).isEqualTo(UPDATED_SHORT_DESCRIPTION);
         assertThat(testBalanceSheetItemValue.getEffectiveDate()).isEqualTo(DEFAULT_EFFECTIVE_DATE);
-        assertThat(testBalanceSheetItemValue.getItemAmount()).isEqualByComparingTo(DEFAULT_ITEM_AMOUNT);
+        assertThat(testBalanceSheetItemValue.getItemAmount()).isEqualByComparingTo(UPDATED_ITEM_AMOUNT);
     }
 
     @Test

@@ -1,5 +1,5 @@
 # This configuration is intended for development purpose, it's **your** responsibility to harden it for production
-version: '3.3'
+name: calvary-erp
 services:
   app:
     image: calvary-erp
@@ -12,13 +12,13 @@ services:
       - SPRING_ELASTICSEARCH_URIS=http://elasticsearch:9200
       - SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS=kafka:9092
     ports:
-      - 127.0.0.1:8080:8080
+      - 127.0.0.1:8181:8181
     healthcheck:
       test:
         - CMD
         - curl
         - -f
-        - http://localhost:8080/management/health
+        - http://localhost:8181/management/health
       interval: 5s
       timeout: 5s
       retries: 40
