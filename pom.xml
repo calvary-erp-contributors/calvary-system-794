@@ -8,7 +8,7 @@
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>Calvary Erp</name>
-    <description>Description for Calvary Erp</description>
+    <description>Calvary Erp Service</description>
 
     <properties>
         <docker.image.prefix>ghacupha</docker.image.prefix>

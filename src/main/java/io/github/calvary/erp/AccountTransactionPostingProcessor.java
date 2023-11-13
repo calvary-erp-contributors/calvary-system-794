@@ -15,7 +15,6 @@ import io.github.calvary.service.dto.TransactionCurrencyDTO;
 import io.github.calvary.service.dto.TransactionEntryDTO;
 
 import org.springframework.beans.factory.annotation.Value;
-// import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import tech.jhipster.service.filter.LongFilter;
 
@@ -26,26 +25,18 @@ import java.util.concurrent.atomic.AtomicBoolean;
 @Service
 public class AccountTransactionPostingProcessor implements PostingProcessorService<AccountTransactionDTO> {
 
-    // private static final Logger log = LoggerFactory.getLogger(AccountTransactionPostingProcessor.class);
-
-
     private final TransactionAccountService transactionAccountService;
     private final TransactionCurrencyService transactionCurrencyService;
     private final TransactionEntryService transactionEntryService;
     private final TransactionEntryQueryService transactionEntryQueryService;
     private final AccountTransactionService accountTransactionService;
     private final PostingProcessorService<TransactionEntryDTO> transactionEntryPostingService;
-
-    // private final NotificationMailService notificationMailService;
-    // private final UserService userService;
-    // private final UserRepository userRepository;
+    private final UserNotificationService userNotificationService;
 
     private static final String ENTITY_NAME = "accountTransaction";
 
     @Value("${jhipster.clientApp.name}")
-    private String applicationName;
-
-    private final UserNotificationService userNotificationService;
+    private String applicationName;    
 
     public AccountTransactionPostingProcessor(
         TransactionAccountService transactionAccountService, 
@@ -54,9 +45,6 @@ public class AccountTransactionPostingProcessor implements PostingProcessorServi
         TransactionEntryQueryService transactionEntryQueryService, 
         AccountTransactionService accountTransactionService, 
         PostingProcessorService<TransactionEntryDTO> transactionEntryPostingService, 
-        // NotificationMailService notificationMailService, 
-        // UserService userService, 
-        // UserRepository userRepository,
         UserNotificationService userNotificationService) {
         this.transactionAccountService = transactionAccountService;
         this.transactionCurrencyService = transactionCurrencyService;
@@ -64,9 +52,6 @@ public class AccountTransactionPostingProcessor implements PostingProcessorServi
         this.transactionEntryQueryService = transactionEntryQueryService;
         this.accountTransactionService = accountTransactionService;
         this.transactionEntryPostingService = transactionEntryPostingService;
-        // this.notificationMailService = notificationMailService;
-        // this.userService = userService;
-        // this.userRepository = userRepository;
         this.userNotificationService = userNotificationService;
     }
 
@@ -103,45 +88,6 @@ public class AccountTransactionPostingProcessor implements PostingProcessorServi
 
         return accountTransactionService.save(accountTransaction);
     }
-
-    // private void notifyUser() {
-
-    //     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-    //     String username = "";
-    //     Collection<? extends GrantedAuthority> authorities;
-
-    //     if (authentication != null && authentication.isAuthenticated()) {
-
-    //         Object principal = authentication.getPrincipal();
-
-    //         if (principal instanceof UserDetails) {
-    //             // Case 1: The principal is a UserDetails object
-    //             UserDetails userDetails = (UserDetails) principal;
-    //             username = userDetails.getUsername();
-    //             // Other UserDetails-related operations...
-    //         } else if (principal instanceof Jwt) {
-    //             // Case 2: The principal is a Jwt object
-    //             Jwt jwt = (Jwt) principal;
-    //             System.out.println("JWT Claims: " + jwt.getClaims());
-    //             jwt.getClaims().forEach((k,v) -> {
-
-    //                 log.debug("JWT Claim: {} -> {}", k.strip(), v.toString());
-    //             });
-                
-    //             username = jwt.getClaimAsString("sub");
-    //         }
-    //     } else {
-    //         throw new UsernameNotFoundException("User with username: " + username);
-    //     }
-
-    //     String finalUsername = username;
-
-    //     userRepository.findOneByLogin(username).ifPresentOrElse(
-    //         (notificationMailService::sendMailNotification),
-    //         () -> {throw new UsernameNotFoundException("username: " + finalUsername + " not found in the repo");}
-    //     );
-    // }
 
     private boolean currenciesDoMatch(AccountTransactionDTO accountTransaction) {
 

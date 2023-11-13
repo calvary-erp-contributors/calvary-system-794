@@ -7,14 +7,11 @@
 </head>
 <body>
 <p th:text="#{email.transaction.posting.notice.greeting(${user.login})}">Dear</p>
-<p th:text="#{email.transaction.posting.notice.text1(${transactionNumber})}">
-  Thank you for your support
-</p>
-<p th:text="#{email.transaction.posting.notice.text2(${transactionDated})}">
+<p th:text="#{email.transaction.posting.notice.text1(${transactionNumber}, ${transactionDated})}">
   Thank you for your support
 </p>
 <p>
-  <span th:text="#{email.transaction.posting.notice.text3}">Regards, </span>
+  <span th:text="#{email.transaction.posting.notice.text2}">Regards, </span>
   <br />
   <em th:text="#{email.signature}">JHipster.</em>
 </p>
