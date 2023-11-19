@@ -7,8 +7,8 @@ import io.github.calvary.repository.search.TransactionAccountSearchRepository;
 import io.github.calvary.service.criteria.TransactionAccountCriteria;
 import io.github.calvary.service.dto.TransactionAccountDTO;
 import io.github.calvary.service.mapper.TransactionAccountMapper;
-import jakarta.persistence.criteria.JoinType;
 import java.util.List;
+import javax.persistence.criteria.JoinType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -132,15 +132,6 @@ public class TransactionAccountQueryService extends QueryService<TransactionAcco
                         buildSpecification(
                             criteria.getTransactionCurrencyId(),
                             root -> root.join(TransactionAccount_.transactionCurrency, JoinType.LEFT).get(TransactionCurrency_.id)
-                        )
-                    );
-            }
-            if (criteria.getBalanceSheetItemTypeId() != null) {
-                specification =
-                    specification.and(
-                        buildSpecification(
-                            criteria.getBalanceSheetItemTypeId(),
-                            root -> root.join(TransactionAccount_.balanceSheetItemType, JoinType.LEFT).get(BalanceSheetItemType_.id)
                         )
                     );
             }

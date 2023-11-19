@@ -11,13 +11,15 @@ import io.github.calvary.IntegrationTest;
 import io.github.calvary.domain.DealerType;
 import io.github.calvary.repository.DealerTypeRepository;
 import io.github.calvary.repository.search.DealerTypeSearchRepository;
+import io.github.calvary.service.criteria.DealerTypeCriteria;
 import io.github.calvary.service.dto.DealerTypeDTO;
 import io.github.calvary.service.mapper.DealerTypeMapper;
-import jakarta.persistence.EntityManager;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
+import javax.persistence.EntityManager;
 import org.apache.commons.collections4.IterableUtils;
 import org.assertj.core.util.IterableUtil;
 import org.junit.jupiter.api.AfterEach;
@@ -25,6 +27,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -334,7 +339,7 @@ class DealerTypeResourceIT {
         int searchDatabaseSizeBefore = IterableUtil.sizeOf(dealerTypeSearchRepository.findAll());
 
         // Update the dealerType
-        DealerType updatedDealerType = dealerTypeRepository.findById(dealerType.getId()).orElseThrow();
+        DealerType updatedDealerType = dealerTypeRepository.findById(dealerType.getId()).get();
         // Disconnect from session so that the updates on updatedDealerType are not directly saved in db
         em.detach(updatedDealerType);
         updatedDealerType.name(UPDATED_NAME);
@@ -450,8 +455,6 @@ class DealerTypeResourceIT {
         DealerType partialUpdatedDealerType = new DealerType();
         partialUpdatedDealerType.setId(dealerType.getId());
 
-        partialUpdatedDealerType.name(UPDATED_NAME);
-
         restDealerTypeMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedDealerType.getId())
@@ -464,7 +467,7 @@ class DealerTypeResourceIT {
         List<DealerType> dealerTypeList = dealerTypeRepository.findAll();
         assertThat(dealerTypeList).hasSize(databaseSizeBeforeUpdate);
         DealerType testDealerType = dealerTypeList.get(dealerTypeList.size() - 1);
-        assertThat(testDealerType.getName()).isEqualTo(UPDATED_NAME);
+        assertThat(testDealerType.getName()).isEqualTo(DEFAULT_NAME);
     }
 
     @Test

@@ -12,15 +12,17 @@ import io.github.calvary.domain.AccountTransaction;
 import io.github.calvary.domain.TransactionEntry;
 import io.github.calvary.repository.AccountTransactionRepository;
 import io.github.calvary.repository.search.AccountTransactionSearchRepository;
+import io.github.calvary.service.criteria.AccountTransactionCriteria;
 import io.github.calvary.service.dto.AccountTransactionDTO;
 import io.github.calvary.service.mapper.AccountTransactionMapper;
-import jakarta.persistence.EntityManager;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
+import javax.persistence.EntityManager;
 import org.apache.commons.collections4.IterableUtils;
 import org.assertj.core.util.IterableUtil;
 import org.junit.jupiter.api.AfterEach;
@@ -28,6 +30,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -671,6 +676,7 @@ class AccountTransactionResourceIT {
         accountTransaction.addTransactionEntry(transactionEntry);
         accountTransactionRepository.saveAndFlush(accountTransaction);
         Long transactionEntryId = transactionEntry.getId();
+
         // Get all the accountTransactionList where transactionEntry equals to transactionEntryId
         defaultAccountTransactionShouldBeFound("transactionEntryId.equals=" + transactionEntryId);
 
@@ -740,7 +746,7 @@ class AccountTransactionResourceIT {
         int searchDatabaseSizeBefore = IterableUtil.sizeOf(accountTransactionSearchRepository.findAll());
 
         // Update the accountTransaction
-        AccountTransaction updatedAccountTransaction = accountTransactionRepository.findById(accountTransaction.getId()).orElseThrow();
+        AccountTransaction updatedAccountTransaction = accountTransactionRepository.findById(accountTransaction.getId()).get();
         // Disconnect from session so that the updates on updatedAccountTransaction are not directly saved in db
         em.detach(updatedAccountTransaction);
         updatedAccountTransaction
@@ -880,9 +886,9 @@ class AccountTransactionResourceIT {
         partialUpdatedAccountTransaction.setId(accountTransaction.getId());
 
         partialUpdatedAccountTransaction
-            .description(UPDATED_DESCRIPTION)
+            .transactionDate(UPDATED_TRANSACTION_DATE)
             .referenceNumber(UPDATED_REFERENCE_NUMBER)
-            .wasDeleted(UPDATED_WAS_DELETED)
+            .wasPosted(UPDATED_WAS_POSTED)
             .wasApproved(UPDATED_WAS_APPROVED);
 
         restAccountTransactionMockMvc
@@ -897,12 +903,12 @@ class AccountTransactionResourceIT {
         List<AccountTransaction> accountTransactionList = accountTransactionRepository.findAll();
         assertThat(accountTransactionList).hasSize(databaseSizeBeforeUpdate);
         AccountTransaction testAccountTransaction = accountTransactionList.get(accountTransactionList.size() - 1);
-        assertThat(testAccountTransaction.getTransactionDate()).isEqualTo(DEFAULT_TRANSACTION_DATE);
-        assertThat(testAccountTransaction.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
+        assertThat(testAccountTransaction.getTransactionDate()).isEqualTo(UPDATED_TRANSACTION_DATE);
+        assertThat(testAccountTransaction.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
         assertThat(testAccountTransaction.getReferenceNumber()).isEqualTo(UPDATED_REFERENCE_NUMBER);
         assertThat(testAccountTransaction.getWasProposed()).isEqualTo(DEFAULT_WAS_PROPOSED);
-        assertThat(testAccountTransaction.getWasPosted()).isEqualTo(DEFAULT_WAS_POSTED);
-        assertThat(testAccountTransaction.getWasDeleted()).isEqualTo(UPDATED_WAS_DELETED);
+        assertThat(testAccountTransaction.getWasPosted()).isEqualTo(UPDATED_WAS_POSTED);
+        assertThat(testAccountTransaction.getWasDeleted()).isEqualTo(DEFAULT_WAS_DELETED);
         assertThat(testAccountTransaction.getWasApproved()).isEqualTo(UPDATED_WAS_APPROVED);
     }
 

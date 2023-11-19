@@ -27,13 +27,13 @@ public interface AccountingEventRepository extends JpaRepository<AccountingEvent
     }
 
     @Query(
-        value = "select accountingEvent from AccountingEvent accountingEvent left join fetch accountingEvent.eventType left join fetch accountingEvent.dealer",
-        countQuery = "select count(accountingEvent) from AccountingEvent accountingEvent"
+        value = "select distinct accountingEvent from AccountingEvent accountingEvent left join fetch accountingEvent.eventType left join fetch accountingEvent.dealer",
+        countQuery = "select count(distinct accountingEvent) from AccountingEvent accountingEvent"
     )
     Page<AccountingEvent> findAllWithToOneRelationships(Pageable pageable);
 
     @Query(
-        "select accountingEvent from AccountingEvent accountingEvent left join fetch accountingEvent.eventType left join fetch accountingEvent.dealer"
+        "select distinct accountingEvent from AccountingEvent accountingEvent left join fetch accountingEvent.eventType left join fetch accountingEvent.dealer"
     )
     List<AccountingEvent> findAllWithToOneRelationships();
 

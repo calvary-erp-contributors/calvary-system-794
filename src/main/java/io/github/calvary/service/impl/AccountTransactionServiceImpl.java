@@ -1,6 +1,6 @@
 package io.github.calvary.service.impl;
 
-import static org.springframework.data.elasticsearch.client.elc.QueryBuilders.*;
+import static org.elasticsearch.index.query.QueryBuilders.*;
 
 import io.github.calvary.domain.AccountTransaction;
 import io.github.calvary.repository.AccountTransactionRepository;
@@ -74,7 +74,8 @@ public class AccountTransactionServiceImpl implements AccountTransactionService 
             })
             .map(accountTransactionRepository::save)
             .map(savedAccountTransaction -> {
-                accountTransactionSearchRepository.index(savedAccountTransaction);
+                accountTransactionSearchRepository.save(savedAccountTransaction);
+
                 return savedAccountTransaction;
             })
             .map(accountTransactionMapper::toDto);
@@ -98,7 +99,7 @@ public class AccountTransactionServiceImpl implements AccountTransactionService 
     public void delete(Long id) {
         log.debug("Request to delete AccountTransaction : {}", id);
         accountTransactionRepository.deleteById(id);
-        accountTransactionSearchRepository.deleteFromIndexById(id);
+        accountTransactionSearchRepository.deleteById(id);
     }
 
     @Override

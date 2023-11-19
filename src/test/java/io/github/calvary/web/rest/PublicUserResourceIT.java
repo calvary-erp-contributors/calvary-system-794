@@ -10,7 +10,7 @@ import io.github.calvary.domain.User;
 import io.github.calvary.repository.UserRepository;
 import io.github.calvary.repository.search.UserSearchRepository;
 import io.github.calvary.security.AuthoritiesConstants;
-import jakarta.persistence.EntityManager;
+import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Integration tests for the {@link PublicUserResource} REST controller.
+ * Integration tests for the {@link UserResource} REST controller.
  */
 @AutoConfigureMockMvc
 @WithMockUser(authorities = AuthoritiesConstants.ADMIN)

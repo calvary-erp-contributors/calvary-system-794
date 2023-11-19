@@ -12,14 +12,12 @@
                                  baseTableName="balance_sheet_item_type"
                                  constraintName="fk_balance_sheet_item_type__transaction_account_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="transaction_account"
-                                 />
+                                 referencedTableName="transaction_account"/>
 
         <addForeignKeyConstraint baseColumnNames="parent_item_id"
                                  baseTableName="balance_sheet_item_type"
                                  constraintName="fk_balance_sheet_item_type__parent_item_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="balance_sheet_item_type"
-                                 />
+                                 referencedTableName="balance_sheet_item_type"/>
     </changeSet>
 </databaseChangeLog>

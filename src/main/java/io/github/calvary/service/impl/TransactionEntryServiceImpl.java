@@ -1,6 +1,6 @@
 package io.github.calvary.service.impl;
 
-import static org.springframework.data.elasticsearch.client.elc.QueryBuilders.*;
+import static org.elasticsearch.index.query.QueryBuilders.*;
 
 import io.github.calvary.domain.TransactionEntry;
 import io.github.calvary.repository.TransactionEntryRepository;
@@ -74,7 +74,8 @@ public class TransactionEntryServiceImpl implements TransactionEntryService {
             })
             .map(transactionEntryRepository::save)
             .map(savedTransactionEntry -> {
-                transactionEntrySearchRepository.index(savedTransactionEntry);
+                transactionEntrySearchRepository.save(savedTransactionEntry);
+
                 return savedTransactionEntry;
             })
             .map(transactionEntryMapper::toDto);
@@ -102,7 +103,7 @@ public class TransactionEntryServiceImpl implements TransactionEntryService {
     public void delete(Long id) {
         log.debug("Request to delete TransactionEntry : {}", id);
         transactionEntryRepository.deleteById(id);
-        transactionEntrySearchRepository.deleteFromIndexById(id);
+        transactionEntrySearchRepository.deleteById(id);
     }
 
     @Override

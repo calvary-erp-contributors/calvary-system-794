@@ -8,6 +8,7 @@ import io.github.calvary.service.criteria.EventTypeCriteria;
 import io.github.calvary.service.dto.EventTypeDTO;
 import io.github.calvary.service.mapper.EventTypeMapper;
 import java.util.List;
+import javax.persistence.criteria.JoinType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;

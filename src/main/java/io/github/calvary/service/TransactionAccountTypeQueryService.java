@@ -8,6 +8,7 @@ import io.github.calvary.service.criteria.TransactionAccountTypeCriteria;
 import io.github.calvary.service.dto.TransactionAccountTypeDTO;
 import io.github.calvary.service.mapper.TransactionAccountTypeMapper;
 import java.util.List;
+import javax.persistence.criteria.JoinType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;

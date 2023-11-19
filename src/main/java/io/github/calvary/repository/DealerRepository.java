@@ -27,12 +27,12 @@ public interface DealerRepository extends JpaRepository<Dealer, Long>, JpaSpecif
     }
 
     @Query(
-        value = "select dealer from Dealer dealer left join fetch dealer.dealerType",
-        countQuery = "select count(dealer) from Dealer dealer"
+        value = "select distinct dealer from Dealer dealer left join fetch dealer.dealerType",
+        countQuery = "select count(distinct dealer) from Dealer dealer"
     )
     Page<Dealer> findAllWithToOneRelationships(Pageable pageable);
 
-    @Query("select dealer from Dealer dealer left join fetch dealer.dealerType")
+    @Query("select distinct dealer from Dealer dealer left join fetch dealer.dealerType")
     List<Dealer> findAllWithToOneRelationships();
 
     @Query("select dealer from Dealer dealer left join fetch dealer.dealerType where dealer.id =:id")

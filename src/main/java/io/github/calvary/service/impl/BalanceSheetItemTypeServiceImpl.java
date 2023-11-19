@@ -1,6 +1,6 @@
 package io.github.calvary.service.impl;
 
-import static org.springframework.data.elasticsearch.client.elc.QueryBuilders.*;
+import static org.elasticsearch.index.query.QueryBuilders.*;
 
 import io.github.calvary.domain.BalanceSheetItemType;
 import io.github.calvary.repository.BalanceSheetItemTypeRepository;
@@ -74,7 +74,8 @@ public class BalanceSheetItemTypeServiceImpl implements BalanceSheetItemTypeServ
             })
             .map(balanceSheetItemTypeRepository::save)
             .map(savedBalanceSheetItemType -> {
-                balanceSheetItemTypeSearchRepository.index(savedBalanceSheetItemType);
+                balanceSheetItemTypeSearchRepository.save(savedBalanceSheetItemType);
+
                 return savedBalanceSheetItemType;
             })
             .map(balanceSheetItemTypeMapper::toDto);
@@ -102,7 +103,7 @@ public class BalanceSheetItemTypeServiceImpl implements BalanceSheetItemTypeServ
     public void delete(Long id) {
         log.debug("Request to delete BalanceSheetItemType : {}", id);
         balanceSheetItemTypeRepository.deleteById(id);
-        balanceSheetItemTypeSearchRepository.deleteFromIndexById(id);
+        balanceSheetItemTypeSearchRepository.deleteById(id);
     }
 
     @Override

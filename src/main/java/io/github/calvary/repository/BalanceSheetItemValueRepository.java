@@ -28,12 +28,14 @@ public interface BalanceSheetItemValueRepository
     }
 
     @Query(
-        value = "select balanceSheetItemValue from BalanceSheetItemValue balanceSheetItemValue left join fetch balanceSheetItemValue.itemType",
-        countQuery = "select count(balanceSheetItemValue) from BalanceSheetItemValue balanceSheetItemValue"
+        value = "select distinct balanceSheetItemValue from BalanceSheetItemValue balanceSheetItemValue left join fetch balanceSheetItemValue.itemType",
+        countQuery = "select count(distinct balanceSheetItemValue) from BalanceSheetItemValue balanceSheetItemValue"
     )
     Page<BalanceSheetItemValue> findAllWithToOneRelationships(Pageable pageable);
 
-    @Query("select balanceSheetItemValue from BalanceSheetItemValue balanceSheetItemValue left join fetch balanceSheetItemValue.itemType")
+    @Query(
+        "select distinct balanceSheetItemValue from BalanceSheetItemValue balanceSheetItemValue left join fetch balanceSheetItemValue.itemType"
+    )
     List<BalanceSheetItemValue> findAllWithToOneRelationships();
 
     @Query(

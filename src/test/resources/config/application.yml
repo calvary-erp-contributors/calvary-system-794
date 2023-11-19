@@ -15,26 +15,22 @@
 
 spring:
   application:
-    name: calvary-erp
+    name: calvarySystem794
   cloud:
-    function:
-      definition: kafkaConsumer;kafkaProducer
     stream:
       kafka:
         binder:
           replicationFactor: 1
           auto-create-topics: true
-      bindings:
-        binding-out-0:
-          content-type: text/plain
-          group: calvary-erp
-        kafkaConsumer-in-0:
-          destination: sse-topic
-          content-type: text/plain
-          group: calvary-erp
-        kafkaProducer-out-0:
-          content-type: text/plain
-          group: calvary-erp
+        bindings:
+          binding-in-sse:
+            destination: sse-topic
+            content-type: text/plain
+            group: calvary-system-794
+          binding-out-sse:
+            destination: sse-topic
+            content-type: text/plain
+            group: calvary-system-794
   # Replace by 'prod, faker' to add the faker context and have sample data loaded in production
   liquibase:
     contexts: test
@@ -45,17 +41,20 @@ spring:
     host: localhost
   main:
     allow-bean-definition-overriding: true
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
   messages:
     basename: i18n/messages
   task:
     execution:
-      thread-name-prefix: calvary-erp-task-
+      thread-name-prefix: calvary-system-794-task-
       pool:
         core-size: 1
         max-size: 50
         queue-capacity: 10000
     scheduling:
-      thread-name-prefix: calvary-erp-scheduling-
+      thread-name-prefix: calvary-system-794-scheduling-
       pool:
         size: 20
   thymeleaf:
@@ -72,9 +71,9 @@ server:
 # ===================================================================
 jhipster:
   clientApp:
-    name: 'calvaryErpApp'
+    name: 'calvarySystem794App'
   mail:
-    from: calvary-erp@localhost.com
+    from: calvarySystem794@localhost.com
     base-url: http://127.0.0.1:8080
   logging:
     # To test json console appender
@@ -83,15 +82,14 @@ jhipster:
       enabled: false
       host: localhost
       port: 5000
-      ring-buffer-size: 512
+      queue-size: 512
   security:
     authentication:
       jwt:
         # This token must be encoded using Base64 (you can type `echo 'secret-key'|base64` on your command line)
-        base64-secret: OTg3MzljNTU4ZjZlODQzOTkwZTViYzk5OTk5MjMxMDdiYWQzOGQyNWMwZmUwYzdlZmNjYzkyNDhlODYzN2EyZTg0NzgzZTMyZGQyMjAxNWViOGYyN2FjNGZkNjJmODNhZTgxNmQ2NmMxMDQ5YzI3NzY3ODE5OTQ3MmNmMTAwOGM=
+        base64-secret: MzljZjJhYjQwNzg0ODkwZmU3YjkyZWM4M2U5YzY4Y2EyZDU3YjMwMGE2ZmY4ZmY1ZmIwZTdmZDU4ZGRhYmFlODZkMzJhOWJjZDg3ZTY0OWUxZjhkMTdhNDI4Zjk5YjUxMWUxOTQ2NTgyYjk3ZTgxYjVmYzE1MmI3MTU3ODkyYWU=
         # Token is valid 24 hours
         token-validity-in-seconds: 86400
-        token-validity-in-seconds-for-remember-me: 86400
 
 # ===================================================================
 # Application specific properties
@@ -107,7 +105,3 @@ management:
   health:
     mail:
       enabled: false
-
-queue:
-  transaction-entry:
-    topic: 'transaction-entry-topic'

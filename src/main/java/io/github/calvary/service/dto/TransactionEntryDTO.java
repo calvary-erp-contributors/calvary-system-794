@@ -1,10 +1,10 @@
 package io.github.calvary.service.dto;
 
 import io.github.calvary.domain.enumeration.TransactionEntryTypes;
-import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
+import javax.validation.constraints.*;
 
 /**
  * A DTO for the {@link io.github.calvary.domain.TransactionEntry} entity.

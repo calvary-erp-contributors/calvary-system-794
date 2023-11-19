@@ -14,16 +14,18 @@ import io.github.calvary.domain.EventType;
 import io.github.calvary.repository.AccountingEventRepository;
 import io.github.calvary.repository.search.AccountingEventSearchRepository;
 import io.github.calvary.service.AccountingEventService;
+import io.github.calvary.service.criteria.AccountingEventCriteria;
 import io.github.calvary.service.dto.AccountingEventDTO;
 import io.github.calvary.service.mapper.AccountingEventMapper;
-import jakarta.persistence.EntityManager;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
+import javax.persistence.EntityManager;
 import org.apache.commons.collections4.IterableUtils;
 import org.assertj.core.util.IterableUtil;
 import org.junit.jupiter.api.AfterEach;
@@ -35,6 +37,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -381,6 +384,7 @@ class AccountingEventResourceIT {
         accountingEvent.setEventType(eventType);
         accountingEventRepository.saveAndFlush(accountingEvent);
         Long eventTypeId = eventType.getId();
+
         // Get all the accountingEventList where eventType equals to eventTypeId
         defaultAccountingEventShouldBeFound("eventTypeId.equals=" + eventTypeId);
 
@@ -403,6 +407,7 @@ class AccountingEventResourceIT {
         accountingEvent.setDealer(dealer);
         accountingEventRepository.saveAndFlush(accountingEvent);
         Long dealerId = dealer.getId();
+
         // Get all the accountingEventList where dealer equals to dealerId
         defaultAccountingEventShouldBeFound("dealerId.equals=" + dealerId);
 
@@ -466,7 +471,7 @@ class AccountingEventResourceIT {
         int searchDatabaseSizeBefore = IterableUtil.sizeOf(accountingEventSearchRepository.findAll());
 
         // Update the accountingEvent
-        AccountingEvent updatedAccountingEvent = accountingEventRepository.findById(accountingEvent.getId()).orElseThrow();
+        AccountingEvent updatedAccountingEvent = accountingEventRepository.findById(accountingEvent.getId()).get();
         // Disconnect from session so that the updates on updatedAccountingEvent are not directly saved in db
         em.detach(updatedAccountingEvent);
         updatedAccountingEvent.eventDate(UPDATED_EVENT_DATE);

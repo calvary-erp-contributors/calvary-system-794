@@ -16,15 +16,17 @@ import io.github.calvary.domain.enumeration.TransactionEntryTypes;
 import io.github.calvary.repository.TransactionEntryRepository;
 import io.github.calvary.repository.search.TransactionEntrySearchRepository;
 import io.github.calvary.service.TransactionEntryService;
+import io.github.calvary.service.criteria.TransactionEntryCriteria;
 import io.github.calvary.service.dto.TransactionEntryDTO;
 import io.github.calvary.service.mapper.TransactionEntryMapper;
-import jakarta.persistence.EntityManager;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
+import javax.persistence.EntityManager;
 import org.apache.commons.collections4.IterableUtils;
 import org.assertj.core.util.IterableUtil;
 import org.junit.jupiter.api.AfterEach;
@@ -36,6 +38,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -694,6 +697,7 @@ class TransactionEntryResourceIT {
         transactionEntry.setTransactionAccount(transactionAccount);
         transactionEntryRepository.saveAndFlush(transactionEntry);
         Long transactionAccountId = transactionAccount.getId();
+
         // Get all the transactionEntryList where transactionAccount equals to transactionAccountId
         defaultTransactionEntryShouldBeFound("transactionAccountId.equals=" + transactionAccountId);
 
@@ -716,6 +720,7 @@ class TransactionEntryResourceIT {
         transactionEntry.setAccountTransaction(accountTransaction);
         transactionEntryRepository.saveAndFlush(transactionEntry);
         Long accountTransactionId = accountTransaction.getId();
+
         // Get all the transactionEntryList where accountTransaction equals to accountTransactionId
         defaultTransactionEntryShouldBeFound("accountTransactionId.equals=" + accountTransactionId);
 
@@ -785,7 +790,7 @@ class TransactionEntryResourceIT {
         int searchDatabaseSizeBefore = IterableUtil.sizeOf(transactionEntrySearchRepository.findAll());
 
         // Update the transactionEntry
-        TransactionEntry updatedTransactionEntry = transactionEntryRepository.findById(transactionEntry.getId()).orElseThrow();
+        TransactionEntry updatedTransactionEntry = transactionEntryRepository.findById(transactionEntry.getId()).get();
         // Disconnect from session so that the updates on updatedTransactionEntry are not directly saved in db
         em.detach(updatedTransactionEntry);
         updatedTransactionEntry
@@ -924,8 +929,9 @@ class TransactionEntryResourceIT {
 
         partialUpdatedTransactionEntry
             .entryAmount(UPDATED_ENTRY_AMOUNT)
-            .transactionEntryType(UPDATED_TRANSACTION_ENTRY_TYPE)
-            .wasProposed(UPDATED_WAS_PROPOSED);
+            .wasProposed(UPDATED_WAS_PROPOSED)
+            .wasPosted(UPDATED_WAS_POSTED)
+            .wasApproved(UPDATED_WAS_APPROVED);
 
         restTransactionEntryMockMvc
             .perform(
@@ -940,12 +946,12 @@ class TransactionEntryResourceIT {
         assertThat(transactionEntryList).hasSize(databaseSizeBeforeUpdate);
         TransactionEntry testTransactionEntry = transactionEntryList.get(transactionEntryList.size() - 1);
         assertThat(testTransactionEntry.getEntryAmount()).isEqualByComparingTo(UPDATED_ENTRY_AMOUNT);
-        assertThat(testTransactionEntry.getTransactionEntryType()).isEqualTo(UPDATED_TRANSACTION_ENTRY_TYPE);
+        assertThat(testTransactionEntry.getTransactionEntryType()).isEqualTo(DEFAULT_TRANSACTION_ENTRY_TYPE);
         assertThat(testTransactionEntry.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
         assertThat(testTransactionEntry.getWasProposed()).isEqualTo(UPDATED_WAS_PROPOSED);
-        assertThat(testTransactionEntry.getWasPosted()).isEqualTo(DEFAULT_WAS_POSTED);
+        assertThat(testTransactionEntry.getWasPosted()).isEqualTo(UPDATED_WAS_POSTED);
         assertThat(testTransactionEntry.getWasDeleted()).isEqualTo(DEFAULT_WAS_DELETED);
-        assertThat(testTransactionEntry.getWasApproved()).isEqualTo(DEFAULT_WAS_APPROVED);
+        assertThat(testTransactionEntry.getWasApproved()).isEqualTo(UPDATED_WAS_APPROVED);
     }
 
     @Test

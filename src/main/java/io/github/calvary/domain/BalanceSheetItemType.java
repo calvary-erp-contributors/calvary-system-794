@@ -1,9 +1,9 @@
 package io.github.calvary.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
 import java.io.Serializable;
+import javax.persistence.*;
+import javax.validation.constraints.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -27,28 +27,22 @@ public class BalanceSheetItemType implements Serializable {
 
     @NotNull
     @Column(name = "item_sequence", nullable = false, unique = true)
-    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Integer)
     private Integer itemSequence;
 
     @NotNull
     @Column(name = "item_number", nullable = false, unique = true)
-    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Text)
     private String itemNumber;
 
     @Column(name = "short_description")
-    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Text)
     private String shortDescription;
 
-    @JsonIgnoreProperties(
-        value = { "parentAccount", "transactionAccountType", "transactionCurrency", "balanceSheetItemType" },
-        allowSetters = true
-    )
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @JsonIgnoreProperties(value = { "parentAccount", "transactionAccountType", "transactionCurrency" }, allowSetters = true)
+    @OneToOne(optional = false)
     @NotNull
     @JoinColumn(unique = true)
     private TransactionAccount transactionAccount;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JsonIgnoreProperties(value = { "transactionAccount", "parentItem" }, allowSetters = true)
     private BalanceSheetItemType parentItem;
 

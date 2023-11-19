@@ -7,8 +7,8 @@ import io.github.calvary.repository.search.BalanceSheetItemValueSearchRepository
 import io.github.calvary.service.criteria.BalanceSheetItemValueCriteria;
 import io.github.calvary.service.dto.BalanceSheetItemValueDTO;
 import io.github.calvary.service.mapper.BalanceSheetItemValueMapper;
-import jakarta.persistence.criteria.JoinType;
 import java.util.List;
+import javax.persistence.criteria.JoinType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;

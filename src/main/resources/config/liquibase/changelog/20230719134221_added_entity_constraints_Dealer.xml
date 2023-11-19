@@ -12,7 +12,6 @@
                                  baseTableName="dealer"
                                  constraintName="fk_dealer__dealer_type_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="dealer_type"
-                                 />
+                                 referencedTableName="dealer_type"/>
     </changeSet>
 </databaseChangeLog>

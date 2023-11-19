@@ -1,10 +1,10 @@
 package io.github.calvary.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.time.LocalDate;
+import javax.persistence.*;
+import javax.validation.constraints.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -30,7 +30,7 @@ public class AccountingEvent implements Serializable {
     @Column(name = "event_date", nullable = false)
     private LocalDate eventDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private EventType eventType;
 
     @ManyToOne(optional = false)

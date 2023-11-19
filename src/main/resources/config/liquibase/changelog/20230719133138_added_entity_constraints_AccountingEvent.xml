@@ -12,14 +12,12 @@
                                  baseTableName="accounting_event"
                                  constraintName="fk_accounting_event__event_type_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="event_type"
-                                 />
+                                 referencedTableName="event_type"/>
 
         <addForeignKeyConstraint baseColumnNames="dealer_id"
                                  baseTableName="accounting_event"
                                  constraintName="fk_accounting_event__dealer_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="dealer"
-                                 />
+                                 referencedTableName="dealer"/>
     </changeSet>
 </databaseChangeLog>

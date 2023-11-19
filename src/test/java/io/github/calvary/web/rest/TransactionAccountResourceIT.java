@@ -9,7 +9,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import io.github.calvary.IntegrationTest;
-import io.github.calvary.domain.BalanceSheetItemType;
 import io.github.calvary.domain.TransactionAccount;
 import io.github.calvary.domain.TransactionAccount;
 import io.github.calvary.domain.TransactionAccountType;
@@ -17,15 +16,17 @@ import io.github.calvary.domain.TransactionCurrency;
 import io.github.calvary.repository.TransactionAccountRepository;
 import io.github.calvary.repository.search.TransactionAccountSearchRepository;
 import io.github.calvary.service.TransactionAccountService;
+import io.github.calvary.service.criteria.TransactionAccountCriteria;
 import io.github.calvary.service.dto.TransactionAccountDTO;
 import io.github.calvary.service.mapper.TransactionAccountMapper;
-import jakarta.persistence.EntityManager;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
+import javax.persistence.EntityManager;
 import org.apache.commons.collections4.IterableUtils;
 import org.assertj.core.util.IterableUtil;
 import org.junit.jupiter.api.AfterEach;
@@ -37,6 +38,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -557,6 +559,7 @@ class TransactionAccountResourceIT {
         transactionAccount.setParentAccount(parentAccount);
         transactionAccountRepository.saveAndFlush(transactionAccount);
         Long parentAccountId = parentAccount.getId();
+
         // Get all the transactionAccountList where parentAccount equals to parentAccountId
         defaultTransactionAccountShouldBeFound("parentAccountId.equals=" + parentAccountId);
 
@@ -579,6 +582,7 @@ class TransactionAccountResourceIT {
         transactionAccount.setTransactionAccountType(transactionAccountType);
         transactionAccountRepository.saveAndFlush(transactionAccount);
         Long transactionAccountTypeId = transactionAccountType.getId();
+
         // Get all the transactionAccountList where transactionAccountType equals to transactionAccountTypeId
         defaultTransactionAccountShouldBeFound("transactionAccountTypeId.equals=" + transactionAccountTypeId);
 
@@ -601,34 +605,12 @@ class TransactionAccountResourceIT {
         transactionAccount.setTransactionCurrency(transactionCurrency);
         transactionAccountRepository.saveAndFlush(transactionAccount);
         Long transactionCurrencyId = transactionCurrency.getId();
+
         // Get all the transactionAccountList where transactionCurrency equals to transactionCurrencyId
         defaultTransactionAccountShouldBeFound("transactionCurrencyId.equals=" + transactionCurrencyId);
 
         // Get all the transactionAccountList where transactionCurrency equals to (transactionCurrencyId + 1)
         defaultTransactionAccountShouldNotBeFound("transactionCurrencyId.equals=" + (transactionCurrencyId + 1));
-    }
-
-    @Test
-    @Transactional
-    void getAllTransactionAccountsByBalanceSheetItemTypeIsEqualToSomething() throws Exception {
-        BalanceSheetItemType balanceSheetItemType;
-        if (TestUtil.findAll(em, BalanceSheetItemType.class).isEmpty()) {
-            transactionAccountRepository.saveAndFlush(transactionAccount);
-            balanceSheetItemType = BalanceSheetItemTypeResourceIT.createEntity(em);
-        } else {
-            balanceSheetItemType = TestUtil.findAll(em, BalanceSheetItemType.class).get(0);
-        }
-        em.persist(balanceSheetItemType);
-        em.flush();
-        transactionAccount.setBalanceSheetItemType(balanceSheetItemType);
-        balanceSheetItemType.setTransactionAccount(transactionAccount);
-        transactionAccountRepository.saveAndFlush(transactionAccount);
-        Long balanceSheetItemTypeId = balanceSheetItemType.getId();
-        // Get all the transactionAccountList where balanceSheetItemType equals to balanceSheetItemTypeId
-        defaultTransactionAccountShouldBeFound("balanceSheetItemTypeId.equals=" + balanceSheetItemTypeId);
-
-        // Get all the transactionAccountList where balanceSheetItemType equals to (balanceSheetItemTypeId + 1)
-        defaultTransactionAccountShouldNotBeFound("balanceSheetItemTypeId.equals=" + (balanceSheetItemTypeId + 1));
     }
 
     /**
@@ -689,7 +671,7 @@ class TransactionAccountResourceIT {
         int searchDatabaseSizeBefore = IterableUtil.sizeOf(transactionAccountSearchRepository.findAll());
 
         // Update the transactionAccount
-        TransactionAccount updatedTransactionAccount = transactionAccountRepository.findById(transactionAccount.getId()).orElseThrow();
+        TransactionAccount updatedTransactionAccount = transactionAccountRepository.findById(transactionAccount.getId()).get();
         // Disconnect from session so that the updates on updatedTransactionAccount are not directly saved in db
         em.detach(updatedTransactionAccount);
         updatedTransactionAccount
@@ -804,7 +786,7 @@ class TransactionAccountResourceIT {
         assertThat(searchDatabaseSizeAfter).isEqualTo(searchDatabaseSizeBefore);
     }
 
-    // @Test
+    @Test
     @Transactional
     void partialUpdateTransactionAccountWithPatch() throws Exception {
         // Initialize the database
@@ -816,7 +798,7 @@ class TransactionAccountResourceIT {
         TransactionAccount partialUpdatedTransactionAccount = new TransactionAccount();
         partialUpdatedTransactionAccount.setId(transactionAccount.getId());
 
-        partialUpdatedTransactionAccount.accountName(UPDATED_ACCOUNT_NAME).accountNumber(UPDATED_ACCOUNT_NUMBER);
+        partialUpdatedTransactionAccount.openingBalance(UPDATED_OPENING_BALANCE);
 
         restTransactionAccountMockMvc
             .perform(
@@ -830,9 +812,9 @@ class TransactionAccountResourceIT {
         List<TransactionAccount> transactionAccountList = transactionAccountRepository.findAll();
         assertThat(transactionAccountList).hasSize(databaseSizeBeforeUpdate);
         TransactionAccount testTransactionAccount = transactionAccountList.get(transactionAccountList.size() - 1);
-        assertThat(testTransactionAccount.getAccountName()).isEqualTo(UPDATED_ACCOUNT_NAME);
-        assertThat(testTransactionAccount.getAccountNumber()).isEqualTo(UPDATED_ACCOUNT_NUMBER);
-        assertThat(testTransactionAccount.getOpeningBalance()).isEqualByComparingTo(DEFAULT_OPENING_BALANCE);
+        assertThat(testTransactionAccount.getAccountName()).isEqualTo(DEFAULT_ACCOUNT_NAME);
+        assertThat(testTransactionAccount.getAccountNumber()).isEqualTo(DEFAULT_ACCOUNT_NUMBER);
+        assertThat(testTransactionAccount.getOpeningBalance()).isEqualByComparingTo(UPDATED_OPENING_BALANCE);
     }
 
     @Test

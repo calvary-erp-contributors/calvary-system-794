@@ -1,5 +1,6 @@
 package io.github.calvary;
 
+import io.github.calvary.CalvarySystem794App;
 import io.github.calvary.config.AsyncSyncConfiguration;
 import io.github.calvary.config.EmbeddedElasticsearch;
 import io.github.calvary.config.EmbeddedKafka;
@@ -16,10 +17,10 @@ import org.springframework.test.annotation.DirtiesContext;
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@SpringBootTest(classes = { CalvaryErpApp.class, AsyncSyncConfiguration.class })
+@SpringBootTest(classes = { CalvarySystem794App.class, AsyncSyncConfiguration.class })
 @EmbeddedElasticsearch
+@EmbeddedKafka
 @EmbeddedSQL
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
-@EmbeddedKafka
 public @interface IntegrationTest {
 }

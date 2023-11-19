@@ -11,13 +11,15 @@ import io.github.calvary.IntegrationTest;
 import io.github.calvary.domain.TransactionCurrency;
 import io.github.calvary.repository.TransactionCurrencyRepository;
 import io.github.calvary.repository.search.TransactionCurrencySearchRepository;
+import io.github.calvary.service.criteria.TransactionCurrencyCriteria;
 import io.github.calvary.service.dto.TransactionCurrencyDTO;
 import io.github.calvary.service.mapper.TransactionCurrencyMapper;
-import jakarta.persistence.EntityManager;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
+import javax.persistence.EntityManager;
 import org.apache.commons.collections4.IterableUtils;
 import org.assertj.core.util.IterableUtil;
 import org.junit.jupiter.api.AfterEach;
@@ -25,6 +27,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -443,7 +448,7 @@ class TransactionCurrencyResourceIT {
         int searchDatabaseSizeBefore = IterableUtil.sizeOf(transactionCurrencySearchRepository.findAll());
 
         // Update the transactionCurrency
-        TransactionCurrency updatedTransactionCurrency = transactionCurrencyRepository.findById(transactionCurrency.getId()).orElseThrow();
+        TransactionCurrency updatedTransactionCurrency = transactionCurrencyRepository.findById(transactionCurrency.getId()).get();
         // Disconnect from session so that the updates on updatedTransactionCurrency are not directly saved in db
         em.detach(updatedTransactionCurrency);
         updatedTransactionCurrency.name(UPDATED_NAME).code(UPDATED_CODE);
@@ -567,8 +572,6 @@ class TransactionCurrencyResourceIT {
         TransactionCurrency partialUpdatedTransactionCurrency = new TransactionCurrency();
         partialUpdatedTransactionCurrency.setId(transactionCurrency.getId());
 
-        partialUpdatedTransactionCurrency.code(UPDATED_CODE);
-
         restTransactionCurrencyMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedTransactionCurrency.getId())
@@ -582,7 +585,7 @@ class TransactionCurrencyResourceIT {
         assertThat(transactionCurrencyList).hasSize(databaseSizeBeforeUpdate);
         TransactionCurrency testTransactionCurrency = transactionCurrencyList.get(transactionCurrencyList.size() - 1);
         assertThat(testTransactionCurrency.getName()).isEqualTo(DEFAULT_NAME);
-        assertThat(testTransactionCurrency.getCode()).isEqualTo(UPDATED_CODE);
+        assertThat(testTransactionCurrency.getCode()).isEqualTo(DEFAULT_CODE);
     }
 
     @Test

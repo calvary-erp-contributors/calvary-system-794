@@ -1,8 +1,8 @@
 package io.github.calvary.service.dto;
 
-import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
+import javax.validation.constraints.*;
 
 /**
  * A DTO for the {@link io.github.calvary.domain.DealerType} entity.

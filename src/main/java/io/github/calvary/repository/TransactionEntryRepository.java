@@ -27,13 +27,13 @@ public interface TransactionEntryRepository extends JpaRepository<TransactionEnt
     }
 
     @Query(
-        value = "select transactionEntry from TransactionEntry transactionEntry left join fetch transactionEntry.transactionAccount left join fetch transactionEntry.accountTransaction",
-        countQuery = "select count(transactionEntry) from TransactionEntry transactionEntry"
+        value = "select distinct transactionEntry from TransactionEntry transactionEntry left join fetch transactionEntry.transactionAccount left join fetch transactionEntry.accountTransaction",
+        countQuery = "select count(distinct transactionEntry) from TransactionEntry transactionEntry"
     )
     Page<TransactionEntry> findAllWithToOneRelationships(Pageable pageable);
 
     @Query(
-        "select transactionEntry from TransactionEntry transactionEntry left join fetch transactionEntry.transactionAccount left join fetch transactionEntry.accountTransaction"
+        "select distinct transactionEntry from TransactionEntry transactionEntry left join fetch transactionEntry.transactionAccount left join fetch transactionEntry.accountTransaction"
     )
     List<TransactionEntry> findAllWithToOneRelationships();
 

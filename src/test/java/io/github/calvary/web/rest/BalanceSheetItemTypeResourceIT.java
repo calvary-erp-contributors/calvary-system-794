@@ -14,14 +14,16 @@ import io.github.calvary.domain.TransactionAccount;
 import io.github.calvary.repository.BalanceSheetItemTypeRepository;
 import io.github.calvary.repository.search.BalanceSheetItemTypeSearchRepository;
 import io.github.calvary.service.BalanceSheetItemTypeService;
+import io.github.calvary.service.criteria.BalanceSheetItemTypeCriteria;
 import io.github.calvary.service.dto.BalanceSheetItemTypeDTO;
 import io.github.calvary.service.mapper.BalanceSheetItemTypeMapper;
-import jakarta.persistence.EntityManager;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
+import javax.persistence.EntityManager;
 import org.apache.commons.collections4.IterableUtils;
 import org.assertj.core.util.IterableUtil;
 import org.junit.jupiter.api.AfterEach;
@@ -33,6 +35,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -637,9 +640,7 @@ class BalanceSheetItemTypeResourceIT {
         int searchDatabaseSizeBefore = IterableUtil.sizeOf(balanceSheetItemTypeSearchRepository.findAll());
 
         // Update the balanceSheetItemType
-        BalanceSheetItemType updatedBalanceSheetItemType = balanceSheetItemTypeRepository
-            .findById(balanceSheetItemType.getId())
-            .orElseThrow();
+        BalanceSheetItemType updatedBalanceSheetItemType = balanceSheetItemTypeRepository.findById(balanceSheetItemType.getId()).get();
         // Disconnect from session so that the updates on updatedBalanceSheetItemType are not directly saved in db
         em.detach(updatedBalanceSheetItemType);
         updatedBalanceSheetItemType
@@ -768,7 +769,10 @@ class BalanceSheetItemTypeResourceIT {
         BalanceSheetItemType partialUpdatedBalanceSheetItemType = new BalanceSheetItemType();
         partialUpdatedBalanceSheetItemType.setId(balanceSheetItemType.getId());
 
-        partialUpdatedBalanceSheetItemType.itemSequence(UPDATED_ITEM_SEQUENCE).itemNumber(UPDATED_ITEM_NUMBER);
+        partialUpdatedBalanceSheetItemType
+            .itemSequence(UPDATED_ITEM_SEQUENCE)
+            .itemNumber(UPDATED_ITEM_NUMBER)
+            .shortDescription(UPDATED_SHORT_DESCRIPTION);
 
         restBalanceSheetItemTypeMockMvc
             .perform(
@@ -784,7 +788,7 @@ class BalanceSheetItemTypeResourceIT {
         BalanceSheetItemType testBalanceSheetItemType = balanceSheetItemTypeList.get(balanceSheetItemTypeList.size() - 1);
         assertThat(testBalanceSheetItemType.getItemSequence()).isEqualTo(UPDATED_ITEM_SEQUENCE);
         assertThat(testBalanceSheetItemType.getItemNumber()).isEqualTo(UPDATED_ITEM_NUMBER);
-        assertThat(testBalanceSheetItemType.getShortDescription()).isEqualTo(DEFAULT_SHORT_DESCRIPTION);
+        assertThat(testBalanceSheetItemType.getShortDescription()).isEqualTo(UPDATED_SHORT_DESCRIPTION);
     }
 
     @Test

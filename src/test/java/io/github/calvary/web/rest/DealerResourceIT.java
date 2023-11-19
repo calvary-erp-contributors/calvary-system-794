@@ -13,14 +13,16 @@ import io.github.calvary.domain.DealerType;
 import io.github.calvary.repository.DealerRepository;
 import io.github.calvary.repository.search.DealerSearchRepository;
 import io.github.calvary.service.DealerService;
+import io.github.calvary.service.criteria.DealerCriteria;
 import io.github.calvary.service.dto.DealerDTO;
 import io.github.calvary.service.mapper.DealerMapper;
-import jakarta.persistence.EntityManager;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
+import javax.persistence.EntityManager;
 import org.apache.commons.collections4.IterableUtils;
 import org.assertj.core.util.IterableUtil;
 import org.junit.jupiter.api.AfterEach;
@@ -32,6 +34,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -345,6 +348,7 @@ class DealerResourceIT {
         dealer.setDealerType(dealerType);
         dealerRepository.saveAndFlush(dealer);
         Long dealerTypeId = dealerType.getId();
+
         // Get all the dealerList where dealerType equals to dealerTypeId
         defaultDealerShouldBeFound("dealerTypeId.equals=" + dealerTypeId);
 
@@ -408,7 +412,7 @@ class DealerResourceIT {
         int searchDatabaseSizeBefore = IterableUtil.sizeOf(dealerSearchRepository.findAll());
 
         // Update the dealer
-        Dealer updatedDealer = dealerRepository.findById(dealer.getId()).orElseThrow();
+        Dealer updatedDealer = dealerRepository.findById(dealer.getId()).get();
         // Disconnect from session so that the updates on updatedDealer are not directly saved in db
         em.detach(updatedDealer);
         updatedDealer.name(UPDATED_NAME);

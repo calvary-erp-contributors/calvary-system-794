@@ -1,21 +1,29 @@
 package io.github.calvary.repository.search;
 
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
-import co.elastic.clients.elasticsearch._types.query_dsl.QueryStringQuery;
 import io.github.calvary.domain.Dealer;
 import io.github.calvary.repository.DealerRepository;
 import java.util.List;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import org.elasticsearch.search.sort.SortBuilder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.elasticsearch.client.elc.ElasticsearchTemplate;
-import org.springframework.data.elasticsearch.client.elc.NativeQuery;
+import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 import org.springframework.data.elasticsearch.core.SearchHit;
 import org.springframework.data.elasticsearch.core.SearchHits;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.data.elasticsearch.core.query.Query;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Spring Data Elasticsearch repository for the {@link Dealer} entity.
@@ -27,43 +35,34 @@ interface DealerSearchRepositoryInternal {
 
     Page<Dealer> search(Query query);
 
-    @Async
     void index(Dealer entity);
-
-    @Async
-    void deleteFromIndexById(Long id);
 }
 
 class DealerSearchRepositoryInternalImpl implements DealerSearchRepositoryInternal {
 
-    private final ElasticsearchTemplate elasticsearchTemplate;
+    private final ElasticsearchRestTemplate elasticsearchTemplate;
     private final DealerRepository repository;
 
-    DealerSearchRepositoryInternalImpl(ElasticsearchTemplate elasticsearchTemplate, DealerRepository repository) {
+    DealerSearchRepositoryInternalImpl(ElasticsearchRestTemplate elasticsearchTemplate, DealerRepository repository) {
         this.elasticsearchTemplate = elasticsearchTemplate;
         this.repository = repository;
     }
 
     @Override
     public Page<Dealer> search(String query, Pageable pageable) {
-        NativeQuery nativeQuery = new NativeQuery(QueryStringQuery.of(qs -> qs.query(query))._toQuery());
-        return search(nativeQuery.setPageable(pageable));
+        NativeSearchQuery nativeSearchQuery = new NativeSearchQuery(queryStringQuery(query));
+        return search(nativeSearchQuery.setPageable(pageable));
     }
 
     @Override
     public Page<Dealer> search(Query query) {
         SearchHits<Dealer> searchHits = elasticsearchTemplate.search(query, Dealer.class);
-        List<Dealer> hits = searchHits.map(SearchHit::getContent).stream().toList();
+        List<Dealer> hits = searchHits.map(SearchHit::getContent).stream().collect(Collectors.toList());
         return new PageImpl<>(hits, query.getPageable(), searchHits.getTotalHits());
     }
 
     @Override
     public void index(Dealer entity) {
         repository.findOneWithEagerRelationships(entity.getId()).ifPresent(elasticsearchTemplate::save);
-    }
-
-    @Override
-    public void deleteFromIndexById(Long id) {
-        elasticsearchTemplate.delete(String.valueOf(id), Dealer.class);
     }
 }

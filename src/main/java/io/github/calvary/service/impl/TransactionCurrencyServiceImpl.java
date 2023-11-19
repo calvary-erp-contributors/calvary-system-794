@@ -1,6 +1,6 @@
 package io.github.calvary.service.impl;
 
-import static org.springframework.data.elasticsearch.client.elc.QueryBuilders.*;
+import static org.elasticsearch.index.query.QueryBuilders.*;
 
 import io.github.calvary.domain.TransactionCurrency;
 import io.github.calvary.repository.TransactionCurrencyRepository;
@@ -74,7 +74,8 @@ public class TransactionCurrencyServiceImpl implements TransactionCurrencyServic
             })
             .map(transactionCurrencyRepository::save)
             .map(savedTransactionCurrency -> {
-                transactionCurrencySearchRepository.index(savedTransactionCurrency);
+                transactionCurrencySearchRepository.save(savedTransactionCurrency);
+
                 return savedTransactionCurrency;
             })
             .map(transactionCurrencyMapper::toDto);
@@ -98,7 +99,7 @@ public class TransactionCurrencyServiceImpl implements TransactionCurrencyServic
     public void delete(Long id) {
         log.debug("Request to delete TransactionCurrency : {}", id);
         transactionCurrencyRepository.deleteById(id);
-        transactionCurrencySearchRepository.deleteFromIndexById(id);
+        transactionCurrencySearchRepository.deleteById(id);
     }
 
     @Override

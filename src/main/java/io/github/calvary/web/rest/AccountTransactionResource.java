@@ -1,6 +1,6 @@
 package io.github.calvary.web.rest;
 
-import static org.springframework.data.elasticsearch.client.elc.QueryBuilders.*;
+import static org.elasticsearch.index.query.QueryBuilders.*;
 
 import io.github.calvary.repository.AccountTransactionRepository;
 import io.github.calvary.service.AccountTransactionQueryService;
@@ -8,14 +8,14 @@ import io.github.calvary.service.AccountTransactionService;
 import io.github.calvary.service.criteria.AccountTransactionCriteria;
 import io.github.calvary.service.dto.AccountTransactionDTO;
 import io.github.calvary.web.rest.errors.BadRequestAlertException;
-import io.github.calvary.web.rest.errors.ElasticsearchExceptionMapper;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.StreamSupport;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -160,10 +160,9 @@ public class AccountTransactionResource {
     @GetMapping("/account-transactions")
     public ResponseEntity<List<AccountTransactionDTO>> getAllAccountTransactions(
         AccountTransactionCriteria criteria,
-        @org.springdoc.core.annotations.ParameterObject Pageable pageable
+        @org.springdoc.api.annotations.ParameterObject Pageable pageable
     ) {
         log.debug("REST request to get AccountTransactions by criteria: {}", criteria);
-
         Page<AccountTransactionDTO> page = accountTransactionQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
@@ -221,15 +220,11 @@ public class AccountTransactionResource {
     @GetMapping("/_search/account-transactions")
     public ResponseEntity<List<AccountTransactionDTO>> searchAccountTransactions(
         @RequestParam String query,
-        @org.springdoc.core.annotations.ParameterObject Pageable pageable
+        @org.springdoc.api.annotations.ParameterObject Pageable pageable
     ) {
         log.debug("REST request to search for a page of AccountTransactions for query {}", query);
-        try {
-            Page<AccountTransactionDTO> page = accountTransactionService.search(query, pageable);
-            HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
-            return ResponseEntity.ok().headers(headers).body(page.getContent());
-        } catch (RuntimeException e) {
-            throw ElasticsearchExceptionMapper.mapException(e);
-        }
+        Page<AccountTransactionDTO> page = accountTransactionService.search(query, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 }

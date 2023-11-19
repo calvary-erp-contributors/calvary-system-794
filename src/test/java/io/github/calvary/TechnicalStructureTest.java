@@ -4,16 +4,17 @@ import static com.tngtech.archunit.base.DescribedPredicate.alwaysTrue;
 import static com.tngtech.archunit.core.domain.JavaClass.Predicates.belongToAnyOf;
 import static com.tngtech.archunit.library.Architectures.layeredArchitecture;
 
+import com.tngtech.archunit.core.importer.ImportOption.DoNotIncludeTests;
+import com.tngtech.archunit.junit.AnalyzeClasses;
 import com.tngtech.archunit.junit.ArchTest;
 import com.tngtech.archunit.lang.ArchRule;
 
-// @AnalyzeClasses(packagesOf = CalvaryErpApp.class, importOptions = DoNotIncludeTests.class)
+@AnalyzeClasses(packagesOf = CalvarySystem794App.class, importOptions = DoNotIncludeTests.class)
 class TechnicalStructureTest {
 
     // prettier-ignore
     @ArchTest
     static final ArchRule respectsTechnicalArchitectureLayers = layeredArchitecture()
-        .consideringAllDependencies()
         .layer("Config").definedBy("..config..")
         .layer("Web").definedBy("..web..")
         .optionalLayer("Service").definedBy("..service..")
@@ -28,7 +29,7 @@ class TechnicalStructureTest {
         .whereLayer("Persistence").mayOnlyBeAccessedByLayers("Service", "Security", "Web", "Config")
         .whereLayer("Domain").mayOnlyBeAccessedByLayers("Persistence", "Service", "Security", "Web", "Config")
 
-        .ignoreDependency(belongToAnyOf(CalvaryErpApp.class), alwaysTrue())
+        .ignoreDependency(belongToAnyOf(CalvarySystem794App.class), alwaysTrue())
         .ignoreDependency(alwaysTrue(), belongToAnyOf(
             io.github.calvary.config.Constants.class,
             io.github.calvary.config.ApplicationProperties.class

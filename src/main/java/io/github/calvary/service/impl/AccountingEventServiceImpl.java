@@ -1,6 +1,6 @@
 package io.github.calvary.service.impl;
 
-import static org.springframework.data.elasticsearch.client.elc.QueryBuilders.*;
+import static org.elasticsearch.index.query.QueryBuilders.*;
 
 import io.github.calvary.domain.AccountingEvent;
 import io.github.calvary.repository.AccountingEventRepository;
@@ -74,7 +74,8 @@ public class AccountingEventServiceImpl implements AccountingEventService {
             })
             .map(accountingEventRepository::save)
             .map(savedAccountingEvent -> {
-                accountingEventSearchRepository.index(savedAccountingEvent);
+                accountingEventSearchRepository.save(savedAccountingEvent);
+
                 return savedAccountingEvent;
             })
             .map(accountingEventMapper::toDto);
@@ -102,7 +103,7 @@ public class AccountingEventServiceImpl implements AccountingEventService {
     public void delete(Long id) {
         log.debug("Request to delete AccountingEvent : {}", id);
         accountingEventRepository.deleteById(id);
-        accountingEventSearchRepository.deleteFromIndexById(id);
+        accountingEventSearchRepository.deleteById(id);
     }
 
     @Override

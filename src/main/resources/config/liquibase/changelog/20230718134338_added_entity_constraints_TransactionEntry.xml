@@ -12,14 +12,12 @@
                                  baseTableName="transaction_entry"
                                  constraintName="fk_transaction_entry__transaction_account_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="transaction_account"
-                                 />
+                                 referencedTableName="transaction_account"/>
 
         <addForeignKeyConstraint baseColumnNames="account_transaction_id"
                                  baseTableName="transaction_entry"
                                  constraintName="fk_transaction_entry__account_transaction_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="account_transaction"
-                                 />
+                                 referencedTableName="account_transaction"/>
     </changeSet>
 </databaseChangeLog>

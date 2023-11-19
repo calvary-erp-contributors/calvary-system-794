@@ -11,13 +11,15 @@ import io.github.calvary.IntegrationTest;
 import io.github.calvary.domain.TransactionAccountType;
 import io.github.calvary.repository.TransactionAccountTypeRepository;
 import io.github.calvary.repository.search.TransactionAccountTypeSearchRepository;
+import io.github.calvary.service.criteria.TransactionAccountTypeCriteria;
 import io.github.calvary.service.dto.TransactionAccountTypeDTO;
 import io.github.calvary.service.mapper.TransactionAccountTypeMapper;
-import jakarta.persistence.EntityManager;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
+import javax.persistence.EntityManager;
 import org.apache.commons.collections4.IterableUtils;
 import org.assertj.core.util.IterableUtil;
 import org.junit.jupiter.api.AfterEach;
@@ -25,6 +27,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -348,7 +353,7 @@ class TransactionAccountTypeResourceIT {
         // Update the transactionAccountType
         TransactionAccountType updatedTransactionAccountType = transactionAccountTypeRepository
             .findById(transactionAccountType.getId())
-            .orElseThrow();
+            .get();
         // Disconnect from session so that the updates on updatedTransactionAccountType are not directly saved in db
         em.detach(updatedTransactionAccountType);
         updatedTransactionAccountType.name(UPDATED_NAME);
@@ -470,8 +475,6 @@ class TransactionAccountTypeResourceIT {
         TransactionAccountType partialUpdatedTransactionAccountType = new TransactionAccountType();
         partialUpdatedTransactionAccountType.setId(transactionAccountType.getId());
 
-        partialUpdatedTransactionAccountType.name(UPDATED_NAME);
-
         restTransactionAccountTypeMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedTransactionAccountType.getId())
@@ -484,7 +487,7 @@ class TransactionAccountTypeResourceIT {
         List<TransactionAccountType> transactionAccountTypeList = transactionAccountTypeRepository.findAll();
         assertThat(transactionAccountTypeList).hasSize(databaseSizeBeforeUpdate);
         TransactionAccountType testTransactionAccountType = transactionAccountTypeList.get(transactionAccountTypeList.size() - 1);
-        assertThat(testTransactionAccountType.getName()).isEqualTo(UPDATED_NAME);
+        assertThat(testTransactionAccountType.getName()).isEqualTo(DEFAULT_NAME);
     }
 
     @Test

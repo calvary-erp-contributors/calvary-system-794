@@ -1,17 +1,21 @@
 package io.github.calvary.config;
 
-import java.time.Duration;
-import org.ehcache.config.builders.*;
-import org.ehcache.jsr107.Eh107Configuration;
-import org.hibernate.cache.jcache.ConfigSettings;
+import com.hazelcast.config.*;
+import com.hazelcast.core.Hazelcast;
+import com.hazelcast.core.HazelcastInstance;
+import javax.annotation.PreDestroy;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.cache.JCacheManagerCustomizer;
-import org.springframework.boot.autoconfigure.orm.jpa.HibernatePropertiesCustomizer;
 import org.springframework.boot.info.BuildProperties;
 import org.springframework.boot.info.GitProperties;
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.interceptor.KeyGenerator;
 import org.springframework.context.annotation.*;
+import org.springframework.core.env.Environment;
+import org.springframework.core.env.Profiles;
+import tech.jhipster.config.JHipsterConstants;
 import tech.jhipster.config.JHipsterProperties;
 import tech.jhipster.config.cache.PrefixedKeyGenerator;
 
@@ -21,56 +25,88 @@ public class CacheConfiguration {
 
     private GitProperties gitProperties;
     private BuildProperties buildProperties;
-    private final javax.cache.configuration.Configuration<Object, Object> jcacheConfiguration;
 
-    public CacheConfiguration(JHipsterProperties jHipsterProperties) {
-        JHipsterProperties.Cache.Ehcache ehcache = jHipsterProperties.getCache().getEhcache();
+    private final Logger log = LoggerFactory.getLogger(CacheConfiguration.class);
 
-        jcacheConfiguration =
-            Eh107Configuration.fromEhcacheCacheConfiguration(
-                CacheConfigurationBuilder
-                    .newCacheConfigurationBuilder(Object.class, Object.class, ResourcePoolsBuilder.heap(ehcache.getMaxEntries()))
-                    .withExpiry(ExpiryPolicyBuilder.timeToLiveExpiration(Duration.ofSeconds(ehcache.getTimeToLiveSeconds())))
-                    .build()
-            );
+    private final Environment env;
+
+    public CacheConfiguration(Environment env) {
+        this.env = env;
+    }
+
+    @PreDestroy
+    public void destroy() {
+        log.info("Closing Cache Manager");
+        Hazelcast.shutdownAll();
     }
 
     @Bean
-    public HibernatePropertiesCustomizer hibernatePropertiesCustomizer(javax.cache.CacheManager cacheManager) {
-        return hibernateProperties -> hibernateProperties.put(ConfigSettings.CACHE_MANAGER, cacheManager);
+    public CacheManager cacheManager(HazelcastInstance hazelcastInstance) {
+        log.debug("Starting HazelcastCacheManager");
+        return new com.hazelcast.spring.cache.HazelcastCacheManager(hazelcastInstance);
     }
 
     @Bean
-    public JCacheManagerCustomizer cacheManagerCustomizer() {
-        return cm -> {
-            createCache(cm, io.github.calvary.repository.UserRepository.USERS_BY_LOGIN_CACHE);
-            createCache(cm, io.github.calvary.repository.UserRepository.USERS_BY_EMAIL_CACHE);
-            createCache(cm, io.github.calvary.domain.User.class.getName());
-            createCache(cm, io.github.calvary.domain.Authority.class.getName());
-            createCache(cm, io.github.calvary.domain.User.class.getName() + ".authorities");
-            createCache(cm, io.github.calvary.domain.TransactionAccount.class.getName());
-            createCache(cm, io.github.calvary.domain.TransactionEntry.class.getName());
-            createCache(cm, io.github.calvary.domain.AccountTransaction.class.getName());
-            createCache(cm, io.github.calvary.domain.AccountTransaction.class.getName() + ".transactionEntries");
-            createCache(cm, io.github.calvary.domain.EventType.class.getName());
-            createCache(cm, io.github.calvary.domain.AccountingEvent.class.getName());
-            createCache(cm, io.github.calvary.domain.DealerType.class.getName());
-            createCache(cm, io.github.calvary.domain.Dealer.class.getName());
-            createCache(cm, io.github.calvary.domain.TransactionAccountType.class.getName());
-            createCache(cm, io.github.calvary.domain.TransactionCurrency.class.getName());
-            createCache(cm, io.github.calvary.domain.BalanceSheetItemType.class.getName());
-            createCache(cm, io.github.calvary.domain.BalanceSheetItemValue.class.getName());
-            // jhipster-needle-ehcache-add-entry
-        };
-    }
-
-    private void createCache(javax.cache.CacheManager cm, String cacheName) {
-        javax.cache.Cache<Object, Object> cache = cm.getCache(cacheName);
-        if (cache != null) {
-            cache.clear();
-        } else {
-            cm.createCache(cacheName, jcacheConfiguration);
+    public HazelcastInstance hazelcastInstance(JHipsterProperties jHipsterProperties) {
+        log.debug("Configuring Hazelcast");
+        HazelcastInstance hazelCastInstance = Hazelcast.getHazelcastInstanceByName("calvarySystem794");
+        if (hazelCastInstance != null) {
+            log.debug("Hazelcast already initialized");
+            return hazelCastInstance;
         }
+        Config config = new Config();
+        config.setInstanceName("calvarySystem794");
+        config.getNetworkConfig().setPort(5701);
+        config.getNetworkConfig().setPortAutoIncrement(true);
+
+        // In development, remove multicast auto-configuration
+        if (env.acceptsProfiles(Profiles.of(JHipsterConstants.SPRING_PROFILE_DEVELOPMENT))) {
+            System.setProperty("hazelcast.local.localAddress", "127.0.0.1");
+
+            config.getNetworkConfig().getJoin().getAwsConfig().setEnabled(false);
+            config.getNetworkConfig().getJoin().getMulticastConfig().setEnabled(false);
+            config.getNetworkConfig().getJoin().getTcpIpConfig().setEnabled(false);
+        }
+        config.setManagementCenterConfig(new ManagementCenterConfig());
+        config.addMapConfig(initializeDefaultMapConfig(jHipsterProperties));
+        config.addMapConfig(initializeDomainMapConfig(jHipsterProperties));
+        return Hazelcast.newHazelcastInstance(config);
+    }
+
+    private MapConfig initializeDefaultMapConfig(JHipsterProperties jHipsterProperties) {
+        MapConfig mapConfig = new MapConfig("default");
+
+        /*
+        Number of backups. If 1 is set as the backup-count for example,
+        then all entries of the map will be copied to another JVM for
+        fail-safety. Valid numbers are 0 (no backup), 1, 2, 3.
+        */
+        mapConfig.setBackupCount(jHipsterProperties.getCache().getHazelcast().getBackupCount());
+
+        /*
+        Valid values are:
+        NONE (no eviction),
+        LRU (Least Recently Used),
+        LFU (Least Frequently Used).
+        NONE is the default.
+        */
+        mapConfig.getEvictionConfig().setEvictionPolicy(EvictionPolicy.LRU);
+
+        /*
+        Maximum size of the map. When max size is reached,
+        map is evicted based on the policy defined.
+        Any integer between 0 and Integer.MAX_VALUE. 0 means
+        Integer.MAX_VALUE. Default is 0.
+        */
+        mapConfig.getEvictionConfig().setMaxSizePolicy(MaxSizePolicy.USED_HEAP_SIZE);
+
+        return mapConfig;
+    }
+
+    private MapConfig initializeDomainMapConfig(JHipsterProperties jHipsterProperties) {
+        MapConfig mapConfig = new MapConfig("io.github.calvary.domain.*");
+        mapConfig.setTimeToLiveSeconds(jHipsterProperties.getCache().getHazelcast().getTimeToLiveSeconds());
+        return mapConfig;
     }
 
     @Autowired(required = false)

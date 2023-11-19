@@ -1,6 +1,6 @@
 package io.github.calvary.service.impl;
 
-import static org.springframework.data.elasticsearch.client.elc.QueryBuilders.*;
+import static org.elasticsearch.index.query.QueryBuilders.*;
 
 import io.github.calvary.domain.Dealer;
 import io.github.calvary.repository.DealerRepository;
@@ -70,7 +70,8 @@ public class DealerServiceImpl implements DealerService {
             })
             .map(dealerRepository::save)
             .map(savedDealer -> {
-                dealerSearchRepository.index(savedDealer);
+                dealerSearchRepository.save(savedDealer);
+
                 return savedDealer;
             })
             .map(dealerMapper::toDto);
@@ -98,7 +99,7 @@ public class DealerServiceImpl implements DealerService {
     public void delete(Long id) {
         log.debug("Request to delete Dealer : {}", id);
         dealerRepository.deleteById(id);
-        dealerSearchRepository.deleteFromIndexById(id);
+        dealerSearchRepository.deleteById(id);
     }
 
     @Override

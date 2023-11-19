@@ -5,8 +5,8 @@
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
     <property name="now" value="current_timestamp" dbms="postgresql"/>
     <property name="floatType" value="float4" dbms="postgresql"/>
-    <property name="clobType" value="clob" dbms="postgresql"/>
-    <property name="blobType" value="blob" dbms="postgresql"/>
+    <property name="clobType" value="longvarchar" dbms="postgresql"/>
+    <property name="blobType" value="bytea" dbms="postgresql"/>
     <property name="uuidType" value="uuid" dbms="postgresql"/>
     <property name="datetimeType" value="datetime" dbms="postgresql"/>
 
@@ -22,6 +22,8 @@
     <include file="config/liquibase/changelog/20230719164054_added_entity_TransactionCurrency.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20230722195450_added_entity_BalanceSheetItemType.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20230723070135_added_entity_BalanceSheetItemValue.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20231118180444_added_entity_TransactionClass.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20231119140628_added_entity_TransactionItem.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20230718095043_added_entity_constraints_TransactionAccount.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20230718134338_added_entity_constraints_TransactionEntry.xml" relativeToChangelogFile="false"/>
@@ -29,6 +31,7 @@
     <include file="config/liquibase/changelog/20230719134221_added_entity_constraints_Dealer.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20230722195450_added_entity_constraints_BalanceSheetItemType.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20230723070135_added_entity_constraints_BalanceSheetItemValue.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20231119140628_added_entity_constraints_TransactionItem.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
     <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
 </databaseChangeLog>

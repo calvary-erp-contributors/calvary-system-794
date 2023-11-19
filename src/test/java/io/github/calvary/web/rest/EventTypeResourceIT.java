@@ -11,13 +11,15 @@ import io.github.calvary.IntegrationTest;
 import io.github.calvary.domain.EventType;
 import io.github.calvary.repository.EventTypeRepository;
 import io.github.calvary.repository.search.EventTypeSearchRepository;
+import io.github.calvary.service.criteria.EventTypeCriteria;
 import io.github.calvary.service.dto.EventTypeDTO;
 import io.github.calvary.service.mapper.EventTypeMapper;
-import jakarta.persistence.EntityManager;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
+import javax.persistence.EntityManager;
 import org.apache.commons.collections4.IterableUtils;
 import org.assertj.core.util.IterableUtil;
 import org.junit.jupiter.api.AfterEach;
@@ -25,6 +27,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -334,7 +339,7 @@ class EventTypeResourceIT {
         int searchDatabaseSizeBefore = IterableUtil.sizeOf(eventTypeSearchRepository.findAll());
 
         // Update the eventType
-        EventType updatedEventType = eventTypeRepository.findById(eventType.getId()).orElseThrow();
+        EventType updatedEventType = eventTypeRepository.findById(eventType.getId()).get();
         // Disconnect from session so that the updates on updatedEventType are not directly saved in db
         em.detach(updatedEventType);
         updatedEventType.name(UPDATED_NAME);
@@ -450,6 +455,8 @@ class EventTypeResourceIT {
         EventType partialUpdatedEventType = new EventType();
         partialUpdatedEventType.setId(eventType.getId());
 
+        partialUpdatedEventType.name(UPDATED_NAME);
+
         restEventTypeMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedEventType.getId())
@@ -462,7 +469,7 @@ class EventTypeResourceIT {
         List<EventType> eventTypeList = eventTypeRepository.findAll();
         assertThat(eventTypeList).hasSize(databaseSizeBeforeUpdate);
         EventType testEventType = eventTypeList.get(eventTypeList.size() - 1);
-        assertThat(testEventType.getName()).isEqualTo(DEFAULT_NAME);
+        assertThat(testEventType.getName()).isEqualTo(UPDATED_NAME);
     }
 
     @Test

@@ -1,7 +1,10 @@
 package io.github.calvary.erp;
 
+import io.github.calvary.repository.UserRepository;
+import io.github.calvary.service.PostingNotificationService;
+import io.github.calvary.service.dto.AccountTransactionDTO;
+import io.jsonwebtoken.Jwt;
 import java.util.Collection;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
@@ -9,12 +12,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
-
-import io.github.calvary.repository.UserRepository;
-import io.github.calvary.service.PostingNotificationService;
-import io.github.calvary.service.dto.AccountTransactionDTO;
 
 /**
  * Email notification for transaction post sequence
@@ -25,25 +23,21 @@ public class UserNotificationService {
     private static final Logger log = LoggerFactory.getLogger(UserNotificationService.class);
 
     private final PostingNotificationService postingNotificationService;
-    public UserNotificationService(PostingNotificationService postingNotificationService,
-            UserRepository userRepository) {
+
+    public UserNotificationService(PostingNotificationService postingNotificationService, UserRepository userRepository) {
         this.postingNotificationService = postingNotificationService;
         this.userRepository = userRepository;
     }
 
     private final UserRepository userRepository;
 
-
-    
     public void notifyUser(AccountTransactionDTO accountTransaction) {
-
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         String username = "";
         Collection<? extends GrantedAuthority> authorities;
 
         if (authentication != null && authentication.isAuthenticated()) {
-
             Object principal = authentication.getPrincipal();
 
             if (principal instanceof UserDetails) {
@@ -55,11 +49,12 @@ public class UserNotificationService {
                 // Case 2: The principal is a Jwt object
                 Jwt jwt = (Jwt) principal;
                 System.out.println("JWT Claims: " + jwt.getClaims());
-                jwt.getClaims().forEach((k,v) -> {
+                jwt
+                    .getClaims()
+                    .forEach((k, v) -> {
+                        log.debug("JWT Claim: {} -> {}", k.strip(), v.toString());
+                    });
 
-                    log.debug("JWT Claim: {} -> {}", k.strip(), v.toString());
-                });
-                
                 username = jwt.getClaimAsString("sub");
             }
         } else {
@@ -68,9 +63,13 @@ public class UserNotificationService {
 
         String finalUsername = username;
 
-        userRepository.findOneByLogin(username).ifPresentOrElse(
-            (user -> postingNotificationService.sendMailNotification(user, accountTransaction)),
-            () -> {throw new UsernameNotFoundException("username: " + finalUsername + " not found in the repo");}
-        );
+        userRepository
+            .findOneByLogin(username)
+            .ifPresentOrElse(
+                (user -> postingNotificationService.sendMailNotification(user, accountTransaction)),
+                () -> {
+                    throw new UsernameNotFoundException("username: " + finalUsername + " not found in the repo");
+                }
+            );
     }
 }

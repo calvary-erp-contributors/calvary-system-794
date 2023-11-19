@@ -1,6 +1,6 @@
 package io.github.calvary.service.impl;
 
-import static org.springframework.data.elasticsearch.client.elc.QueryBuilders.*;
+import static org.elasticsearch.index.query.QueryBuilders.*;
 
 import io.github.calvary.domain.EventType;
 import io.github.calvary.repository.EventTypeRepository;
@@ -74,7 +74,8 @@ public class EventTypeServiceImpl implements EventTypeService {
             })
             .map(eventTypeRepository::save)
             .map(savedEventType -> {
-                eventTypeSearchRepository.index(savedEventType);
+                eventTypeSearchRepository.save(savedEventType);
+
                 return savedEventType;
             })
             .map(eventTypeMapper::toDto);
@@ -98,7 +99,7 @@ public class EventTypeServiceImpl implements EventTypeService {
     public void delete(Long id) {
         log.debug("Request to delete EventType : {}", id);
         eventTypeRepository.deleteById(id);
-        eventTypeSearchRepository.deleteFromIndexById(id);
+        eventTypeSearchRepository.deleteById(id);
     }
 
     @Override

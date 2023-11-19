@@ -2,7 +2,7 @@ package io.github.calvary.service.criteria;
 
 import java.io.Serializable;
 import java.util.Objects;
-import org.springdoc.core.annotations.ParameterObject;
+import org.springdoc.api.annotations.ParameterObject;
 import tech.jhipster.service.Criteria;
 import tech.jhipster.service.filter.*;
 
@@ -35,8 +35,6 @@ public class TransactionAccountCriteria implements Serializable, Criteria {
 
     private LongFilter transactionCurrencyId;
 
-    private LongFilter balanceSheetItemTypeId;
-
     private Boolean distinct;
 
     public TransactionAccountCriteria() {}
@@ -49,7 +47,6 @@ public class TransactionAccountCriteria implements Serializable, Criteria {
         this.parentAccountId = other.parentAccountId == null ? null : other.parentAccountId.copy();
         this.transactionAccountTypeId = other.transactionAccountTypeId == null ? null : other.transactionAccountTypeId.copy();
         this.transactionCurrencyId = other.transactionCurrencyId == null ? null : other.transactionCurrencyId.copy();
-        this.balanceSheetItemTypeId = other.balanceSheetItemTypeId == null ? null : other.balanceSheetItemTypeId.copy();
         this.distinct = other.distinct;
     }
 
@@ -163,21 +160,6 @@ public class TransactionAccountCriteria implements Serializable, Criteria {
         this.transactionCurrencyId = transactionCurrencyId;
     }
 
-    public LongFilter getBalanceSheetItemTypeId() {
-        return balanceSheetItemTypeId;
-    }
-
-    public LongFilter balanceSheetItemTypeId() {
-        if (balanceSheetItemTypeId == null) {
-            balanceSheetItemTypeId = new LongFilter();
-        }
-        return balanceSheetItemTypeId;
-    }
-
-    public void setBalanceSheetItemTypeId(LongFilter balanceSheetItemTypeId) {
-        this.balanceSheetItemTypeId = balanceSheetItemTypeId;
-    }
-
     public Boolean getDistinct() {
         return distinct;
     }
@@ -203,7 +185,6 @@ public class TransactionAccountCriteria implements Serializable, Criteria {
             Objects.equals(parentAccountId, that.parentAccountId) &&
             Objects.equals(transactionAccountTypeId, that.transactionAccountTypeId) &&
             Objects.equals(transactionCurrencyId, that.transactionCurrencyId) &&
-            Objects.equals(balanceSheetItemTypeId, that.balanceSheetItemTypeId) &&
             Objects.equals(distinct, that.distinct)
         );
     }
@@ -218,7 +199,6 @@ public class TransactionAccountCriteria implements Serializable, Criteria {
             parentAccountId,
             transactionAccountTypeId,
             transactionCurrencyId,
-            balanceSheetItemTypeId,
             distinct
         );
     }
@@ -234,7 +214,6 @@ public class TransactionAccountCriteria implements Serializable, Criteria {
             (parentAccountId != null ? "parentAccountId=" + parentAccountId + ", " : "") +
             (transactionAccountTypeId != null ? "transactionAccountTypeId=" + transactionAccountTypeId + ", " : "") +
             (transactionCurrencyId != null ? "transactionCurrencyId=" + transactionCurrencyId + ", " : "") +
-            (balanceSheetItemTypeId != null ? "balanceSheetItemTypeId=" + balanceSheetItemTypeId + ", " : "") +
             (distinct != null ? "distinct=" + distinct + ", " : "") +
             "}";
     }

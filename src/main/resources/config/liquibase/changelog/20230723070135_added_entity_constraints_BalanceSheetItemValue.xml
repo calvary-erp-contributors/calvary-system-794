@@ -12,7 +12,6 @@
                                  baseTableName="balance_sheet_item_value"
                                  constraintName="fk_balance_sheet_item_value__item_type_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="balance_sheet_item_type"
-                                 />
+                                 referencedTableName="balance_sheet_item_type"/>
     </changeSet>
 </databaseChangeLog>

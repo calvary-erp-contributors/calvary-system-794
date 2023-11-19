@@ -1,8 +1,8 @@
 package io.github.calvary.domain;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
 import java.io.Serializable;
+import javax.persistence.*;
+import javax.validation.constraints.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -26,12 +26,10 @@ public class TransactionCurrency implements Serializable {
 
     @NotNull
     @Column(name = "name", nullable = false, unique = true)
-    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Text)
     private String name;
 
     @NotNull
     @Column(name = "code", nullable = false, unique = true)
-    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Text)
     private String code;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
