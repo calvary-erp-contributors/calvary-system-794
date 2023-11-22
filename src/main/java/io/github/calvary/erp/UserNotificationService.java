@@ -3,16 +3,17 @@ package io.github.calvary.erp;
 import io.github.calvary.repository.UserRepository;
 import io.github.calvary.service.PostingNotificationService;
 import io.github.calvary.service.dto.AccountTransactionDTO;
-import io.jsonwebtoken.Jwt;
 import java.util.Collection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import tech.jhipster.config.JHipsterDefaults;
 
 /**
  * Email notification for transaction post sequence
@@ -45,18 +46,18 @@ public class UserNotificationService {
                 UserDetails userDetails = (UserDetails) principal;
                 username = userDetails.getUsername();
                 // Other UserDetails-related operations...
-            } else if (principal instanceof Jwt) {
-                // Case 2: The principal is a Jwt object
-                Jwt jwt = (Jwt) principal;
-                System.out.println("JWT Claims: " + jwt.getClaims());
-                jwt
-                    .getClaims()
-                    .forEach((k, v) -> {
-                        log.debug("JWT Claim: {} -> {}", k.strip(), v.toString());
-                    });
-
-                username = jwt.getClaimAsString("sub");
             }
+            //            else {
+            //                // Case 2: The principal is a Jwt object
+            //                OAuth2ResourceServerProperties.Jwt jwt = (OAuth2ResourceServerProperties.Jwt) principal;
+            //                System.out.println("JWT Claims: " + jwt.getClaims());
+            //                jwt.getClaims()
+            //                    .forEach((k, v) -> {
+            //                        log.debug("JWT Claim: {} -> {}", k.strip(), v.toString());
+            //                    });
+            //
+            //                username = jwt.getClaimAsString("sub");
+            //            }
         } else {
             throw new UsernameNotFoundException("User with username: " + username);
         }

@@ -361,6 +361,12 @@
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-messaging</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>RELEASE</version>
+            <scope>compile</scope>
+        </dependency>
         <!-- jhipster-needle-maven-add-dependency -->
     </dependencies>
 
@@ -809,6 +815,7 @@
             </plugins>
         </pluginManagement>
     </build>
+
     <profiles>
         <profile>
             <id>no-liquibase</id>
@@ -944,10 +951,6 @@
                     </plugins>
                 </pluginManagement>
             </build>
-            <properties>
-                <!-- default Spring profiles -->
-                <spring.profiles.active>dev${profile.tls}${profile.no-liquibase}</spring.profiles.active>
-            </properties>
         </profile>
         <profile>
             <id>prod</id>
@@ -957,9 +960,9 @@
                 <profile.test>testprod</profile.test>
                 <!--<liquibase-plugin.url>jdbc:postgresql://localhost:5432/calvary-erp</liquibase-plugin.url>
                 <liquibase-plugin.username>calvary-erp</liquibase-plugin.username>-->
-                <liquibase-plugin.url>${env.LOCAL_PG_SERVER}/calvary-erp-dev</liquibase-plugin.url>
-                <liquibase-plugin.username>${env.PG_DATABASE_PROD_USER}</liquibase-plugin.username>
-                <liquibase-plugin.password>${env.PG_DATABASE_PROD_PASSWORD}</liquibase-plugin.password>
+                <liquibase-plugin.url>${env.LOCAL_PG_SERVER}/calvary-erp</liquibase-plugin.url>
+                <liquibase-plugin.username>${env.PG_DATABASE_DEV_USER}</liquibase-plugin.username>
+                <liquibase-plugin.password>${env.PG_DATABASE_DEV_PASSWORD}</liquibase-plugin.password>
                 <!--<application.port>8383</application.port>-->
                 <application.port>${env.CALVARY_ERP_PROD_PORT}</application.port>
             </properties>
@@ -1083,10 +1086,6 @@
                     </plugin>
                 </plugins>
             </build>
-            <properties>
-                <!-- default Spring profiles -->
-                <spring.profiles.active>prod${profile.api-docs}${profile.tls}${profile.e2e}${profile.no-liquibase}</spring.profiles.active>
-            </properties>
         </profile>
         <profile>
             <id>war</id>
