@@ -30,11 +30,11 @@
       "relationshipValidateRules": ["required"]
     },
     {
-      "otherEntityField": "transactionItemAmount",
-      "otherEntityName": "transactionItemAmount",
+      "otherEntityField": "description",
+      "otherEntityName": "transactionItemEntry",
       "otherEntityRelationshipName": "salesReceipt",
       "ownerSide": true,
-      "relationshipName": "transactionItemAmount",
+      "relationshipName": "transactionItemEntry",
       "relationshipType": "many-to-many",
       "relationshipValidateRules": ["required"]
     }

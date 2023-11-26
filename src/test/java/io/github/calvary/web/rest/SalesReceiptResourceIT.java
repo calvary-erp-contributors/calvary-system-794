@@ -11,7 +11,7 @@ import io.github.calvary.IntegrationTest;
 import io.github.calvary.domain.Dealer;
 import io.github.calvary.domain.SalesReceipt;
 import io.github.calvary.domain.TransactionClass;
-import io.github.calvary.domain.TransactionItemAmount;
+import io.github.calvary.domain.TransactionItemEntry;
 import io.github.calvary.repository.SalesReceiptRepository;
 import io.github.calvary.repository.search.SalesReceiptSearchRepository;
 import io.github.calvary.service.SalesReceiptService;
@@ -107,15 +107,15 @@ class SalesReceiptResourceIT {
         }
         salesReceipt.setDealer(dealer);
         // Add required entity
-        TransactionItemAmount transactionItemAmount;
-        if (TestUtil.findAll(em, TransactionItemAmount.class).isEmpty()) {
-            transactionItemAmount = TransactionItemAmountResourceIT.createEntity(em);
-            em.persist(transactionItemAmount);
+        TransactionItemEntry transactionItemEntry;
+        if (TestUtil.findAll(em, TransactionItemEntry.class).isEmpty()) {
+            transactionItemEntry = TransactionItemEntryResourceIT.createEntity(em);
+            em.persist(transactionItemEntry);
             em.flush();
         } else {
-            transactionItemAmount = TestUtil.findAll(em, TransactionItemAmount.class).get(0);
+            transactionItemEntry = TestUtil.findAll(em, TransactionItemEntry.class).get(0);
         }
-        salesReceipt.getTransactionItemAmounts().add(transactionItemAmount);
+        salesReceipt.getTransactionItemEntries().add(transactionItemEntry);
         return salesReceipt;
     }
 
@@ -138,15 +138,15 @@ class SalesReceiptResourceIT {
         }
         salesReceipt.setDealer(dealer);
         // Add required entity
-        TransactionItemAmount transactionItemAmount;
-        if (TestUtil.findAll(em, TransactionItemAmount.class).isEmpty()) {
-            transactionItemAmount = TransactionItemAmountResourceIT.createUpdatedEntity(em);
-            em.persist(transactionItemAmount);
+        TransactionItemEntry transactionItemEntry;
+        if (TestUtil.findAll(em, TransactionItemEntry.class).isEmpty()) {
+            transactionItemEntry = TransactionItemEntryResourceIT.createUpdatedEntity(em);
+            em.persist(transactionItemEntry);
             em.flush();
         } else {
-            transactionItemAmount = TestUtil.findAll(em, TransactionItemAmount.class).get(0);
+            transactionItemEntry = TestUtil.findAll(em, TransactionItemEntry.class).get(0);
         }
-        salesReceipt.getTransactionItemAmounts().add(transactionItemAmount);
+        salesReceipt.getTransactionItemEntries().add(transactionItemEntry);
         return salesReceipt;
     }
 
@@ -457,25 +457,25 @@ class SalesReceiptResourceIT {
 
     @Test
     @Transactional
-    void getAllSalesReceiptsByTransactionItemAmountIsEqualToSomething() throws Exception {
-        TransactionItemAmount transactionItemAmount;
-        if (TestUtil.findAll(em, TransactionItemAmount.class).isEmpty()) {
+    void getAllSalesReceiptsByTransactionItemEntryIsEqualToSomething() throws Exception {
+        TransactionItemEntry transactionItemEntry;
+        if (TestUtil.findAll(em, TransactionItemEntry.class).isEmpty()) {
             salesReceiptRepository.saveAndFlush(salesReceipt);
-            transactionItemAmount = TransactionItemAmountResourceIT.createEntity(em);
+            transactionItemEntry = TransactionItemEntryResourceIT.createEntity(em);
         } else {
-            transactionItemAmount = TestUtil.findAll(em, TransactionItemAmount.class).get(0);
+            transactionItemEntry = TestUtil.findAll(em, TransactionItemEntry.class).get(0);
         }
-        em.persist(transactionItemAmount);
+        em.persist(transactionItemEntry);
         em.flush();
-        salesReceipt.addTransactionItemAmount(transactionItemAmount);
+        salesReceipt.addTransactionItemEntry(transactionItemEntry);
         salesReceiptRepository.saveAndFlush(salesReceipt);
-        Long transactionItemAmountId = transactionItemAmount.getId();
+        Long transactionItemEntryId = transactionItemEntry.getId();
 
-        // Get all the salesReceiptList where transactionItemAmount equals to transactionItemAmountId
-        defaultSalesReceiptShouldBeFound("transactionItemAmountId.equals=" + transactionItemAmountId);
+        // Get all the salesReceiptList where transactionItemEntry equals to transactionItemEntryId
+        defaultSalesReceiptShouldBeFound("transactionItemEntryId.equals=" + transactionItemEntryId);
 
-        // Get all the salesReceiptList where transactionItemAmount equals to (transactionItemAmountId + 1)
-        defaultSalesReceiptShouldNotBeFound("transactionItemAmountId.equals=" + (transactionItemAmountId + 1));
+        // Get all the salesReceiptList where transactionItemEntry equals to (transactionItemEntryId + 1)
+        defaultSalesReceiptShouldNotBeFound("transactionItemEntryId.equals=" + (transactionItemEntryId + 1));
     }
 
     /**

@@ -44,13 +44,13 @@ public class SalesReceipt implements Serializable {
     @ManyToMany
     @NotNull
     @JoinTable(
-        name = "rel_sales_receipt__transaction_item_amount",
+        name = "rel_sales_receipt__transaction_item_entry",
         joinColumns = @JoinColumn(name = "sales_receipt_id"),
-        inverseJoinColumns = @JoinColumn(name = "transaction_item_amount_id")
+        inverseJoinColumns = @JoinColumn(name = "transaction_item_entry_id")
     )
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnoreProperties(value = { "transactionItem" }, allowSetters = true)
-    private Set<TransactionItemAmount> transactionItemAmounts = new HashSet<>();
+    private Set<TransactionItemEntry> transactionItemEntries = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -119,26 +119,26 @@ public class SalesReceipt implements Serializable {
         return this;
     }
 
-    public Set<TransactionItemAmount> getTransactionItemAmounts() {
-        return this.transactionItemAmounts;
+    public Set<TransactionItemEntry> getTransactionItemEntries() {
+        return this.transactionItemEntries;
     }
 
-    public void setTransactionItemAmounts(Set<TransactionItemAmount> transactionItemAmounts) {
-        this.transactionItemAmounts = transactionItemAmounts;
+    public void setTransactionItemEntries(Set<TransactionItemEntry> transactionItemEntries) {
+        this.transactionItemEntries = transactionItemEntries;
     }
 
-    public SalesReceipt transactionItemAmounts(Set<TransactionItemAmount> transactionItemAmounts) {
-        this.setTransactionItemAmounts(transactionItemAmounts);
+    public SalesReceipt transactionItemEntries(Set<TransactionItemEntry> transactionItemEntries) {
+        this.setTransactionItemEntries(transactionItemEntries);
         return this;
     }
 
-    public SalesReceipt addTransactionItemAmount(TransactionItemAmount transactionItemAmount) {
-        this.transactionItemAmounts.add(transactionItemAmount);
+    public SalesReceipt addTransactionItemEntry(TransactionItemEntry transactionItemEntry) {
+        this.transactionItemEntries.add(transactionItemEntry);
         return this;
     }
 
-    public SalesReceipt removeTransactionItemAmount(TransactionItemAmount transactionItemAmount) {
-        this.transactionItemAmounts.remove(transactionItemAmount);
+    public SalesReceipt removeTransactionItemEntry(TransactionItemEntry transactionItemEntry) {
+        this.transactionItemEntries.remove(transactionItemEntry);
         return this;
     }
 

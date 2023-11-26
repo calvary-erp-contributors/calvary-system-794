@@ -22,7 +22,7 @@ public class SalesReceiptRepositoryWithBagRelationshipsImpl implements SalesRece
 
     @Override
     public Optional<SalesReceipt> fetchBagRelationships(Optional<SalesReceipt> salesReceipt) {
-        return salesReceipt.map(this::fetchTransactionItemAmounts);
+        return salesReceipt.map(this::fetchTransactionItemEntries);
     }
 
     @Override
@@ -36,13 +36,13 @@ public class SalesReceiptRepositoryWithBagRelationshipsImpl implements SalesRece
 
     @Override
     public List<SalesReceipt> fetchBagRelationships(List<SalesReceipt> salesReceipts) {
-        return Optional.of(salesReceipts).map(this::fetchTransactionItemAmounts).orElse(Collections.emptyList());
+        return Optional.of(salesReceipts).map(this::fetchTransactionItemEntries).orElse(Collections.emptyList());
     }
 
-    SalesReceipt fetchTransactionItemAmounts(SalesReceipt result) {
+    SalesReceipt fetchTransactionItemEntries(SalesReceipt result) {
         return entityManager
             .createQuery(
-                "select salesReceipt from SalesReceipt salesReceipt left join fetch salesReceipt.transactionItemAmounts where salesReceipt is :salesReceipt",
+                "select salesReceipt from SalesReceipt salesReceipt left join fetch salesReceipt.transactionItemEntries where salesReceipt is :salesReceipt",
                 SalesReceipt.class
             )
             .setParameter("salesReceipt", result)
@@ -50,12 +50,12 @@ public class SalesReceiptRepositoryWithBagRelationshipsImpl implements SalesRece
             .getSingleResult();
     }
 
-    List<SalesReceipt> fetchTransactionItemAmounts(List<SalesReceipt> salesReceipts) {
+    List<SalesReceipt> fetchTransactionItemEntries(List<SalesReceipt> salesReceipts) {
         HashMap<Object, Integer> order = new HashMap<>();
         IntStream.range(0, salesReceipts.size()).forEach(index -> order.put(salesReceipts.get(index).getId(), index));
         List<SalesReceipt> result = entityManager
             .createQuery(
-                "select distinct salesReceipt from SalesReceipt salesReceipt left join fetch salesReceipt.transactionItemAmounts where salesReceipt in :salesReceipts",
+                "select distinct salesReceipt from SalesReceipt salesReceipt left join fetch salesReceipt.transactionItemEntries where salesReceipt in :salesReceipts",
                 SalesReceipt.class
             )
             .setParameter("salesReceipts", salesReceipts)

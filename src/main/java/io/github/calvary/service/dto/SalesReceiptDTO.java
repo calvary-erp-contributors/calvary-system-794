@@ -22,7 +22,7 @@ public class SalesReceiptDTO implements Serializable {
 
     private DealerDTO dealer;
 
-    private Set<TransactionItemAmountDTO> transactionItemAmounts = new HashSet<>();
+    private Set<TransactionItemEntryDTO> transactionItemEntries = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -64,12 +64,12 @@ public class SalesReceiptDTO implements Serializable {
         this.dealer = dealer;
     }
 
-    public Set<TransactionItemAmountDTO> getTransactionItemAmounts() {
-        return transactionItemAmounts;
+    public Set<TransactionItemEntryDTO> getTransactionItemEntries() {
+        return transactionItemEntries;
     }
 
-    public void setTransactionItemAmounts(Set<TransactionItemAmountDTO> transactionItemAmounts) {
-        this.transactionItemAmounts = transactionItemAmounts;
+    public void setTransactionItemEntries(Set<TransactionItemEntryDTO> transactionItemEntries) {
+        this.transactionItemEntries = transactionItemEntries;
     }
 
     @Override
@@ -102,7 +102,7 @@ public class SalesReceiptDTO implements Serializable {
             ", description='" + getDescription() + "'" +
             ", transactionClass=" + getTransactionClass() +
             ", dealer=" + getDealer() +
-            ", transactionItemAmounts=" + getTransactionItemAmounts() +
+            ", transactionItemEntries=" + getTransactionItemEntries() +
             "}";
     }
 }

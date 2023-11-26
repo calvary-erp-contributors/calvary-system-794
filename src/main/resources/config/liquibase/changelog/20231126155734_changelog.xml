@@ -1,0 +1,43 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet author="Hp (generated)" id="1701014268493-11">
+        <createTable tableName="rel_sales_receipt__transaction_item_entry">
+            <column name="sales_receipt_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="rel_sales_receipt__transaction_item_entryPK"/>
+            </column>
+            <column name="transaction_item_entry_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="rel_sales_receipt__transaction_item_entryPK"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Hp (generated)" id="1701014268493-12">
+        <addForeignKeyConstraint baseColumnNames="sales_receipt_id" baseTableName="rel_sales_receipt__transaction_item_entry" constraintName="FKdmmgbwevs3yiq0oigwebn2yr5" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="sales_receipt" validate="true"/>
+    </changeSet>
+    <changeSet author="Hp (generated)" id="1701014268493-13">
+        <addForeignKeyConstraint baseColumnNames="transaction_item_entry_id" baseTableName="rel_sales_receipt__transaction_item_entry" constraintName="FKfqfpqcw1wtjh50odjurekngxt" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="transaction_item_entry" validate="true"/>
+    </changeSet>
+    <changeSet author="Hp (generated)" id="1701014268493-14">
+        <dropForeignKeyConstraint baseTableName="rel_sales_receipt__transaction_item_amount" constraintName="fk_rel_sales_receipt__transacti__sales_receipt_a7_id"/>
+    </changeSet>
+    <changeSet author="Hp (generated)" id="1701014268493-15">
+        <dropForeignKeyConstraint baseTableName="rel_sales_receipt__transaction_item_amount" constraintName="fk_rel_sales_receipt__transacti__transaction_item_amount_5d_id"/>
+    </changeSet>
+    <changeSet author="Hp (generated)" id="1701014268493-16">
+        <dropTable tableName="rel_sales_receipt__transaction_item_amount"/>
+    </changeSet>
+    <changeSet author="Hp (generated)" id="1701014268493-1">
+        <dropUniqueConstraint constraintName="UC_BALANCE_SHEET_ITEM_TYPEITEM_NUMBER_COL" tableName="balance_sheet_item_type"/>
+    </changeSet>
+    <changeSet author="Hp (generated)" id="1701014268493-2">
+        <addUniqueConstraint columnNames="item_number" constraintName="UC_BALANCE_SHEET_ITEM_TYPEITEM_NUMBER_COL" tableName="balance_sheet_item_type"/>
+    </changeSet>
+    <changeSet author="Hp (generated)" id="1701014268493-4">
+        <addUniqueConstraint columnNames="item_sequence" constraintName="UC_BALANCE_SHEET_ITEM_TYPEITEM_SEQUENCE_COL" tableName="balance_sheet_item_type"/>
+    </changeSet>
+    <changeSet author="Hp (generated)" id="1701014268493-8">
+        <addUniqueConstraint columnNames="account_number" constraintName="UC_TRANSACTION_ACCOUNTACCOUNT_NUMBER_COL" tableName="transaction_account"/>
+    </changeSet>
+    <changeSet author="Hp (generated)" id="1701014268493-10">
+        <addUniqueConstraint columnNames="name" constraintName="UC_TRANSACTION_CURRENCYNAME_COL" tableName="transaction_currency"/>
+    </changeSet>
+</databaseChangeLog>
