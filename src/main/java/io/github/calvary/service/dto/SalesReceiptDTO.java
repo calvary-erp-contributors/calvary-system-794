@@ -1,6 +1,7 @@
 package io.github.calvary.service.dto;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -17,6 +18,13 @@ public class SalesReceiptDTO implements Serializable {
     private String salesReceiptTitle;
 
     private String description;
+
+    @NotNull
+    private LocalDate transactionDate;
+
+    private Boolean hasBeenEmailed;
+
+    private Boolean hasBeenProposed;
 
     private TransactionClassDTO transactionClass;
 
@@ -46,6 +54,30 @@ public class SalesReceiptDTO implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public LocalDate getTransactionDate() {
+        return transactionDate;
+    }
+
+    public void setTransactionDate(LocalDate transactionDate) {
+        this.transactionDate = transactionDate;
+    }
+
+    public Boolean getHasBeenEmailed() {
+        return hasBeenEmailed;
+    }
+
+    public void setHasBeenEmailed(Boolean hasBeenEmailed) {
+        this.hasBeenEmailed = hasBeenEmailed;
+    }
+
+    public Boolean getHasBeenProposed() {
+        return hasBeenProposed;
+    }
+
+    public void setHasBeenProposed(Boolean hasBeenProposed) {
+        this.hasBeenProposed = hasBeenProposed;
     }
 
     public TransactionClassDTO getTransactionClass() {
@@ -100,6 +132,9 @@ public class SalesReceiptDTO implements Serializable {
             "id=" + getId() +
             ", salesReceiptTitle='" + getSalesReceiptTitle() + "'" +
             ", description='" + getDescription() + "'" +
+            ", transactionDate='" + getTransactionDate() + "'" +
+            ", hasBeenEmailed='" + getHasBeenEmailed() + "'" +
+            ", hasBeenProposed='" + getHasBeenProposed() + "'" +
             ", transactionClass=" + getTransactionClass() +
             ", dealer=" + getDealer() +
             ", transactionItemEntries=" + getTransactionItemEntries() +

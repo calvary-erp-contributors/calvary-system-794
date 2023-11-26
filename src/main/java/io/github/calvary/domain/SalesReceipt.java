@@ -2,6 +2,7 @@ package io.github.calvary.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
@@ -32,6 +33,16 @@ public class SalesReceipt implements Serializable {
 
     @Column(name = "description")
     private String description;
+
+    @NotNull
+    @Column(name = "transaction_date", nullable = false)
+    private LocalDate transactionDate;
+
+    @Column(name = "has_been_emailed")
+    private Boolean hasBeenEmailed;
+
+    @Column(name = "has_been_proposed")
+    private Boolean hasBeenProposed;
 
     @ManyToOne
     private TransactionClass transactionClass;
@@ -91,6 +102,45 @@ public class SalesReceipt implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public LocalDate getTransactionDate() {
+        return this.transactionDate;
+    }
+
+    public SalesReceipt transactionDate(LocalDate transactionDate) {
+        this.setTransactionDate(transactionDate);
+        return this;
+    }
+
+    public void setTransactionDate(LocalDate transactionDate) {
+        this.transactionDate = transactionDate;
+    }
+
+    public Boolean getHasBeenEmailed() {
+        return this.hasBeenEmailed;
+    }
+
+    public SalesReceipt hasBeenEmailed(Boolean hasBeenEmailed) {
+        this.setHasBeenEmailed(hasBeenEmailed);
+        return this;
+    }
+
+    public void setHasBeenEmailed(Boolean hasBeenEmailed) {
+        this.hasBeenEmailed = hasBeenEmailed;
+    }
+
+    public Boolean getHasBeenProposed() {
+        return this.hasBeenProposed;
+    }
+
+    public SalesReceipt hasBeenProposed(Boolean hasBeenProposed) {
+        this.setHasBeenProposed(hasBeenProposed);
+        return this;
+    }
+
+    public void setHasBeenProposed(Boolean hasBeenProposed) {
+        this.hasBeenProposed = hasBeenProposed;
     }
 
     public TransactionClass getTransactionClass() {
@@ -168,6 +218,9 @@ public class SalesReceipt implements Serializable {
             "id=" + getId() +
             ", salesReceiptTitle='" + getSalesReceiptTitle() + "'" +
             ", description='" + getDescription() + "'" +
+            ", transactionDate='" + getTransactionDate() + "'" +
+            ", hasBeenEmailed='" + getHasBeenEmailed() + "'" +
+            ", hasBeenProposed='" + getHasBeenProposed() + "'" +
             "}";
     }
 }

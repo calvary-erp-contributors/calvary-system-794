@@ -18,6 +18,8 @@ import io.github.calvary.service.SalesReceiptService;
 import io.github.calvary.service.criteria.SalesReceiptCriteria;
 import io.github.calvary.service.dto.SalesReceiptDTO;
 import io.github.calvary.service.mapper.SalesReceiptMapper;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -58,6 +60,16 @@ class SalesReceiptResourceIT {
     private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
     private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
 
+    private static final LocalDate DEFAULT_TRANSACTION_DATE = LocalDate.ofEpochDay(0L);
+    private static final LocalDate UPDATED_TRANSACTION_DATE = LocalDate.now(ZoneId.systemDefault());
+    private static final LocalDate SMALLER_TRANSACTION_DATE = LocalDate.ofEpochDay(-1L);
+
+    private static final Boolean DEFAULT_HAS_BEEN_EMAILED = false;
+    private static final Boolean UPDATED_HAS_BEEN_EMAILED = true;
+
+    private static final Boolean DEFAULT_HAS_BEEN_PROPOSED = false;
+    private static final Boolean UPDATED_HAS_BEEN_PROPOSED = true;
+
     private static final String ENTITY_API_URL = "/api/sales-receipts";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
     private static final String ENTITY_SEARCH_API_URL = "/api/_search/sales-receipts";
@@ -95,7 +107,12 @@ class SalesReceiptResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static SalesReceipt createEntity(EntityManager em) {
-        SalesReceipt salesReceipt = new SalesReceipt().salesReceiptTitle(DEFAULT_SALES_RECEIPT_TITLE).description(DEFAULT_DESCRIPTION);
+        SalesReceipt salesReceipt = new SalesReceipt()
+            .salesReceiptTitle(DEFAULT_SALES_RECEIPT_TITLE)
+            .description(DEFAULT_DESCRIPTION)
+            .transactionDate(DEFAULT_TRANSACTION_DATE)
+            .hasBeenEmailed(DEFAULT_HAS_BEEN_EMAILED)
+            .hasBeenProposed(DEFAULT_HAS_BEEN_PROPOSED);
         // Add required entity
         Dealer dealer;
         if (TestUtil.findAll(em, Dealer.class).isEmpty()) {
@@ -126,7 +143,12 @@ class SalesReceiptResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static SalesReceipt createUpdatedEntity(EntityManager em) {
-        SalesReceipt salesReceipt = new SalesReceipt().salesReceiptTitle(UPDATED_SALES_RECEIPT_TITLE).description(UPDATED_DESCRIPTION);
+        SalesReceipt salesReceipt = new SalesReceipt()
+            .salesReceiptTitle(UPDATED_SALES_RECEIPT_TITLE)
+            .description(UPDATED_DESCRIPTION)
+            .transactionDate(UPDATED_TRANSACTION_DATE)
+            .hasBeenEmailed(UPDATED_HAS_BEEN_EMAILED)
+            .hasBeenProposed(UPDATED_HAS_BEEN_PROPOSED);
         // Add required entity
         Dealer dealer;
         if (TestUtil.findAll(em, Dealer.class).isEmpty()) {
@@ -186,6 +208,9 @@ class SalesReceiptResourceIT {
         SalesReceipt testSalesReceipt = salesReceiptList.get(salesReceiptList.size() - 1);
         assertThat(testSalesReceipt.getSalesReceiptTitle()).isEqualTo(DEFAULT_SALES_RECEIPT_TITLE);
         assertThat(testSalesReceipt.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
+        assertThat(testSalesReceipt.getTransactionDate()).isEqualTo(DEFAULT_TRANSACTION_DATE);
+        assertThat(testSalesReceipt.getHasBeenEmailed()).isEqualTo(DEFAULT_HAS_BEEN_EMAILED);
+        assertThat(testSalesReceipt.getHasBeenProposed()).isEqualTo(DEFAULT_HAS_BEEN_PROPOSED);
     }
 
     @Test
@@ -214,6 +239,29 @@ class SalesReceiptResourceIT {
 
     @Test
     @Transactional
+    void checkTransactionDateIsRequired() throws Exception {
+        int databaseSizeBeforeTest = salesReceiptRepository.findAll().size();
+        int searchDatabaseSizeBefore = IterableUtil.sizeOf(salesReceiptSearchRepository.findAll());
+        // set the field null
+        salesReceipt.setTransactionDate(null);
+
+        // Create the SalesReceipt, which fails.
+        SalesReceiptDTO salesReceiptDTO = salesReceiptMapper.toDto(salesReceipt);
+
+        restSalesReceiptMockMvc
+            .perform(
+                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(salesReceiptDTO))
+            )
+            .andExpect(status().isBadRequest());
+
+        List<SalesReceipt> salesReceiptList = salesReceiptRepository.findAll();
+        assertThat(salesReceiptList).hasSize(databaseSizeBeforeTest);
+        int searchDatabaseSizeAfter = IterableUtil.sizeOf(salesReceiptSearchRepository.findAll());
+        assertThat(searchDatabaseSizeAfter).isEqualTo(searchDatabaseSizeBefore);
+    }
+
+    @Test
+    @Transactional
     void getAllSalesReceipts() throws Exception {
         // Initialize the database
         salesReceiptRepository.saveAndFlush(salesReceipt);
@@ -225,7 +273,10 @@ class SalesReceiptResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(salesReceipt.getId().intValue())))
             .andExpect(jsonPath("$.[*].salesReceiptTitle").value(hasItem(DEFAULT_SALES_RECEIPT_TITLE)))
-            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)));
+            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
+            .andExpect(jsonPath("$.[*].transactionDate").value(hasItem(DEFAULT_TRANSACTION_DATE.toString())))
+            .andExpect(jsonPath("$.[*].hasBeenEmailed").value(hasItem(DEFAULT_HAS_BEEN_EMAILED.booleanValue())))
+            .andExpect(jsonPath("$.[*].hasBeenProposed").value(hasItem(DEFAULT_HAS_BEEN_PROPOSED.booleanValue())));
     }
 
     @SuppressWarnings({ "unchecked" })
@@ -258,7 +309,10 @@ class SalesReceiptResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(salesReceipt.getId().intValue()))
             .andExpect(jsonPath("$.salesReceiptTitle").value(DEFAULT_SALES_RECEIPT_TITLE))
-            .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION));
+            .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION))
+            .andExpect(jsonPath("$.transactionDate").value(DEFAULT_TRANSACTION_DATE.toString()))
+            .andExpect(jsonPath("$.hasBeenEmailed").value(DEFAULT_HAS_BEEN_EMAILED.booleanValue()))
+            .andExpect(jsonPath("$.hasBeenProposed").value(DEFAULT_HAS_BEEN_PROPOSED.booleanValue()));
     }
 
     @Test
@@ -411,6 +465,175 @@ class SalesReceiptResourceIT {
 
     @Test
     @Transactional
+    void getAllSalesReceiptsByTransactionDateIsEqualToSomething() throws Exception {
+        // Initialize the database
+        salesReceiptRepository.saveAndFlush(salesReceipt);
+
+        // Get all the salesReceiptList where transactionDate equals to DEFAULT_TRANSACTION_DATE
+        defaultSalesReceiptShouldBeFound("transactionDate.equals=" + DEFAULT_TRANSACTION_DATE);
+
+        // Get all the salesReceiptList where transactionDate equals to UPDATED_TRANSACTION_DATE
+        defaultSalesReceiptShouldNotBeFound("transactionDate.equals=" + UPDATED_TRANSACTION_DATE);
+    }
+
+    @Test
+    @Transactional
+    void getAllSalesReceiptsByTransactionDateIsInShouldWork() throws Exception {
+        // Initialize the database
+        salesReceiptRepository.saveAndFlush(salesReceipt);
+
+        // Get all the salesReceiptList where transactionDate in DEFAULT_TRANSACTION_DATE or UPDATED_TRANSACTION_DATE
+        defaultSalesReceiptShouldBeFound("transactionDate.in=" + DEFAULT_TRANSACTION_DATE + "," + UPDATED_TRANSACTION_DATE);
+
+        // Get all the salesReceiptList where transactionDate equals to UPDATED_TRANSACTION_DATE
+        defaultSalesReceiptShouldNotBeFound("transactionDate.in=" + UPDATED_TRANSACTION_DATE);
+    }
+
+    @Test
+    @Transactional
+    void getAllSalesReceiptsByTransactionDateIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        salesReceiptRepository.saveAndFlush(salesReceipt);
+
+        // Get all the salesReceiptList where transactionDate is not null
+        defaultSalesReceiptShouldBeFound("transactionDate.specified=true");
+
+        // Get all the salesReceiptList where transactionDate is null
+        defaultSalesReceiptShouldNotBeFound("transactionDate.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllSalesReceiptsByTransactionDateIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        salesReceiptRepository.saveAndFlush(salesReceipt);
+
+        // Get all the salesReceiptList where transactionDate is greater than or equal to DEFAULT_TRANSACTION_DATE
+        defaultSalesReceiptShouldBeFound("transactionDate.greaterThanOrEqual=" + DEFAULT_TRANSACTION_DATE);
+
+        // Get all the salesReceiptList where transactionDate is greater than or equal to UPDATED_TRANSACTION_DATE
+        defaultSalesReceiptShouldNotBeFound("transactionDate.greaterThanOrEqual=" + UPDATED_TRANSACTION_DATE);
+    }
+
+    @Test
+    @Transactional
+    void getAllSalesReceiptsByTransactionDateIsLessThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        salesReceiptRepository.saveAndFlush(salesReceipt);
+
+        // Get all the salesReceiptList where transactionDate is less than or equal to DEFAULT_TRANSACTION_DATE
+        defaultSalesReceiptShouldBeFound("transactionDate.lessThanOrEqual=" + DEFAULT_TRANSACTION_DATE);
+
+        // Get all the salesReceiptList where transactionDate is less than or equal to SMALLER_TRANSACTION_DATE
+        defaultSalesReceiptShouldNotBeFound("transactionDate.lessThanOrEqual=" + SMALLER_TRANSACTION_DATE);
+    }
+
+    @Test
+    @Transactional
+    void getAllSalesReceiptsByTransactionDateIsLessThanSomething() throws Exception {
+        // Initialize the database
+        salesReceiptRepository.saveAndFlush(salesReceipt);
+
+        // Get all the salesReceiptList where transactionDate is less than DEFAULT_TRANSACTION_DATE
+        defaultSalesReceiptShouldNotBeFound("transactionDate.lessThan=" + DEFAULT_TRANSACTION_DATE);
+
+        // Get all the salesReceiptList where transactionDate is less than UPDATED_TRANSACTION_DATE
+        defaultSalesReceiptShouldBeFound("transactionDate.lessThan=" + UPDATED_TRANSACTION_DATE);
+    }
+
+    @Test
+    @Transactional
+    void getAllSalesReceiptsByTransactionDateIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        salesReceiptRepository.saveAndFlush(salesReceipt);
+
+        // Get all the salesReceiptList where transactionDate is greater than DEFAULT_TRANSACTION_DATE
+        defaultSalesReceiptShouldNotBeFound("transactionDate.greaterThan=" + DEFAULT_TRANSACTION_DATE);
+
+        // Get all the salesReceiptList where transactionDate is greater than SMALLER_TRANSACTION_DATE
+        defaultSalesReceiptShouldBeFound("transactionDate.greaterThan=" + SMALLER_TRANSACTION_DATE);
+    }
+
+    @Test
+    @Transactional
+    void getAllSalesReceiptsByHasBeenEmailedIsEqualToSomething() throws Exception {
+        // Initialize the database
+        salesReceiptRepository.saveAndFlush(salesReceipt);
+
+        // Get all the salesReceiptList where hasBeenEmailed equals to DEFAULT_HAS_BEEN_EMAILED
+        defaultSalesReceiptShouldBeFound("hasBeenEmailed.equals=" + DEFAULT_HAS_BEEN_EMAILED);
+
+        // Get all the salesReceiptList where hasBeenEmailed equals to UPDATED_HAS_BEEN_EMAILED
+        defaultSalesReceiptShouldNotBeFound("hasBeenEmailed.equals=" + UPDATED_HAS_BEEN_EMAILED);
+    }
+
+    @Test
+    @Transactional
+    void getAllSalesReceiptsByHasBeenEmailedIsInShouldWork() throws Exception {
+        // Initialize the database
+        salesReceiptRepository.saveAndFlush(salesReceipt);
+
+        // Get all the salesReceiptList where hasBeenEmailed in DEFAULT_HAS_BEEN_EMAILED or UPDATED_HAS_BEEN_EMAILED
+        defaultSalesReceiptShouldBeFound("hasBeenEmailed.in=" + DEFAULT_HAS_BEEN_EMAILED + "," + UPDATED_HAS_BEEN_EMAILED);
+
+        // Get all the salesReceiptList where hasBeenEmailed equals to UPDATED_HAS_BEEN_EMAILED
+        defaultSalesReceiptShouldNotBeFound("hasBeenEmailed.in=" + UPDATED_HAS_BEEN_EMAILED);
+    }
+
+    @Test
+    @Transactional
+    void getAllSalesReceiptsByHasBeenEmailedIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        salesReceiptRepository.saveAndFlush(salesReceipt);
+
+        // Get all the salesReceiptList where hasBeenEmailed is not null
+        defaultSalesReceiptShouldBeFound("hasBeenEmailed.specified=true");
+
+        // Get all the salesReceiptList where hasBeenEmailed is null
+        defaultSalesReceiptShouldNotBeFound("hasBeenEmailed.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllSalesReceiptsByHasBeenProposedIsEqualToSomething() throws Exception {
+        // Initialize the database
+        salesReceiptRepository.saveAndFlush(salesReceipt);
+
+        // Get all the salesReceiptList where hasBeenProposed equals to DEFAULT_HAS_BEEN_PROPOSED
+        defaultSalesReceiptShouldBeFound("hasBeenProposed.equals=" + DEFAULT_HAS_BEEN_PROPOSED);
+
+        // Get all the salesReceiptList where hasBeenProposed equals to UPDATED_HAS_BEEN_PROPOSED
+        defaultSalesReceiptShouldNotBeFound("hasBeenProposed.equals=" + UPDATED_HAS_BEEN_PROPOSED);
+    }
+
+    @Test
+    @Transactional
+    void getAllSalesReceiptsByHasBeenProposedIsInShouldWork() throws Exception {
+        // Initialize the database
+        salesReceiptRepository.saveAndFlush(salesReceipt);
+
+        // Get all the salesReceiptList where hasBeenProposed in DEFAULT_HAS_BEEN_PROPOSED or UPDATED_HAS_BEEN_PROPOSED
+        defaultSalesReceiptShouldBeFound("hasBeenProposed.in=" + DEFAULT_HAS_BEEN_PROPOSED + "," + UPDATED_HAS_BEEN_PROPOSED);
+
+        // Get all the salesReceiptList where hasBeenProposed equals to UPDATED_HAS_BEEN_PROPOSED
+        defaultSalesReceiptShouldNotBeFound("hasBeenProposed.in=" + UPDATED_HAS_BEEN_PROPOSED);
+    }
+
+    @Test
+    @Transactional
+    void getAllSalesReceiptsByHasBeenProposedIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        salesReceiptRepository.saveAndFlush(salesReceipt);
+
+        // Get all the salesReceiptList where hasBeenProposed is not null
+        defaultSalesReceiptShouldBeFound("hasBeenProposed.specified=true");
+
+        // Get all the salesReceiptList where hasBeenProposed is null
+        defaultSalesReceiptShouldNotBeFound("hasBeenProposed.specified=false");
+    }
+
+    @Test
+    @Transactional
     void getAllSalesReceiptsByTransactionClassIsEqualToSomething() throws Exception {
         TransactionClass transactionClass;
         if (TestUtil.findAll(em, TransactionClass.class).isEmpty()) {
@@ -488,7 +711,10 @@ class SalesReceiptResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(salesReceipt.getId().intValue())))
             .andExpect(jsonPath("$.[*].salesReceiptTitle").value(hasItem(DEFAULT_SALES_RECEIPT_TITLE)))
-            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)));
+            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
+            .andExpect(jsonPath("$.[*].transactionDate").value(hasItem(DEFAULT_TRANSACTION_DATE.toString())))
+            .andExpect(jsonPath("$.[*].hasBeenEmailed").value(hasItem(DEFAULT_HAS_BEEN_EMAILED.booleanValue())))
+            .andExpect(jsonPath("$.[*].hasBeenProposed").value(hasItem(DEFAULT_HAS_BEEN_PROPOSED.booleanValue())));
 
         // Check, that the count call also returns 1
         restSalesReceiptMockMvc
@@ -538,7 +764,12 @@ class SalesReceiptResourceIT {
         SalesReceipt updatedSalesReceipt = salesReceiptRepository.findById(salesReceipt.getId()).get();
         // Disconnect from session so that the updates on updatedSalesReceipt are not directly saved in db
         em.detach(updatedSalesReceipt);
-        updatedSalesReceipt.salesReceiptTitle(UPDATED_SALES_RECEIPT_TITLE).description(UPDATED_DESCRIPTION);
+        updatedSalesReceipt
+            .salesReceiptTitle(UPDATED_SALES_RECEIPT_TITLE)
+            .description(UPDATED_DESCRIPTION)
+            .transactionDate(UPDATED_TRANSACTION_DATE)
+            .hasBeenEmailed(UPDATED_HAS_BEEN_EMAILED)
+            .hasBeenProposed(UPDATED_HAS_BEEN_PROPOSED);
         SalesReceiptDTO salesReceiptDTO = salesReceiptMapper.toDto(updatedSalesReceipt);
 
         restSalesReceiptMockMvc
@@ -555,6 +786,9 @@ class SalesReceiptResourceIT {
         SalesReceipt testSalesReceipt = salesReceiptList.get(salesReceiptList.size() - 1);
         assertThat(testSalesReceipt.getSalesReceiptTitle()).isEqualTo(UPDATED_SALES_RECEIPT_TITLE);
         assertThat(testSalesReceipt.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
+        assertThat(testSalesReceipt.getTransactionDate()).isEqualTo(UPDATED_TRANSACTION_DATE);
+        assertThat(testSalesReceipt.getHasBeenEmailed()).isEqualTo(UPDATED_HAS_BEEN_EMAILED);
+        assertThat(testSalesReceipt.getHasBeenProposed()).isEqualTo(UPDATED_HAS_BEEN_PROPOSED);
         await()
             .atMost(5, TimeUnit.SECONDS)
             .untilAsserted(() -> {
@@ -564,6 +798,9 @@ class SalesReceiptResourceIT {
                 SalesReceipt testSalesReceiptSearch = salesReceiptSearchList.get(searchDatabaseSizeAfter - 1);
                 assertThat(testSalesReceiptSearch.getSalesReceiptTitle()).isEqualTo(UPDATED_SALES_RECEIPT_TITLE);
                 assertThat(testSalesReceiptSearch.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
+                assertThat(testSalesReceiptSearch.getTransactionDate()).isEqualTo(UPDATED_TRANSACTION_DATE);
+                assertThat(testSalesReceiptSearch.getHasBeenEmailed()).isEqualTo(UPDATED_HAS_BEEN_EMAILED);
+                assertThat(testSalesReceiptSearch.getHasBeenProposed()).isEqualTo(UPDATED_HAS_BEEN_PROPOSED);
             });
     }
 
@@ -655,7 +892,10 @@ class SalesReceiptResourceIT {
         SalesReceipt partialUpdatedSalesReceipt = new SalesReceipt();
         partialUpdatedSalesReceipt.setId(salesReceipt.getId());
 
-        partialUpdatedSalesReceipt.salesReceiptTitle(UPDATED_SALES_RECEIPT_TITLE).description(UPDATED_DESCRIPTION);
+        partialUpdatedSalesReceipt
+            .salesReceiptTitle(UPDATED_SALES_RECEIPT_TITLE)
+            .description(UPDATED_DESCRIPTION)
+            .hasBeenEmailed(UPDATED_HAS_BEEN_EMAILED);
 
         restSalesReceiptMockMvc
             .perform(
@@ -671,6 +911,9 @@ class SalesReceiptResourceIT {
         SalesReceipt testSalesReceipt = salesReceiptList.get(salesReceiptList.size() - 1);
         assertThat(testSalesReceipt.getSalesReceiptTitle()).isEqualTo(UPDATED_SALES_RECEIPT_TITLE);
         assertThat(testSalesReceipt.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
+        assertThat(testSalesReceipt.getTransactionDate()).isEqualTo(DEFAULT_TRANSACTION_DATE);
+        assertThat(testSalesReceipt.getHasBeenEmailed()).isEqualTo(UPDATED_HAS_BEEN_EMAILED);
+        assertThat(testSalesReceipt.getHasBeenProposed()).isEqualTo(DEFAULT_HAS_BEEN_PROPOSED);
     }
 
     @Test
@@ -685,7 +928,12 @@ class SalesReceiptResourceIT {
         SalesReceipt partialUpdatedSalesReceipt = new SalesReceipt();
         partialUpdatedSalesReceipt.setId(salesReceipt.getId());
 
-        partialUpdatedSalesReceipt.salesReceiptTitle(UPDATED_SALES_RECEIPT_TITLE).description(UPDATED_DESCRIPTION);
+        partialUpdatedSalesReceipt
+            .salesReceiptTitle(UPDATED_SALES_RECEIPT_TITLE)
+            .description(UPDATED_DESCRIPTION)
+            .transactionDate(UPDATED_TRANSACTION_DATE)
+            .hasBeenEmailed(UPDATED_HAS_BEEN_EMAILED)
+            .hasBeenProposed(UPDATED_HAS_BEEN_PROPOSED);
 
         restSalesReceiptMockMvc
             .perform(
@@ -701,6 +949,9 @@ class SalesReceiptResourceIT {
         SalesReceipt testSalesReceipt = salesReceiptList.get(salesReceiptList.size() - 1);
         assertThat(testSalesReceipt.getSalesReceiptTitle()).isEqualTo(UPDATED_SALES_RECEIPT_TITLE);
         assertThat(testSalesReceipt.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
+        assertThat(testSalesReceipt.getTransactionDate()).isEqualTo(UPDATED_TRANSACTION_DATE);
+        assertThat(testSalesReceipt.getHasBeenEmailed()).isEqualTo(UPDATED_HAS_BEEN_EMAILED);
+        assertThat(testSalesReceipt.getHasBeenProposed()).isEqualTo(UPDATED_HAS_BEEN_PROPOSED);
     }
 
     @Test
@@ -819,6 +1070,9 @@ class SalesReceiptResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(salesReceipt.getId().intValue())))
             .andExpect(jsonPath("$.[*].salesReceiptTitle").value(hasItem(DEFAULT_SALES_RECEIPT_TITLE)))
-            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)));
+            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
+            .andExpect(jsonPath("$.[*].transactionDate").value(hasItem(DEFAULT_TRANSACTION_DATE.toString())))
+            .andExpect(jsonPath("$.[*].hasBeenEmailed").value(hasItem(DEFAULT_HAS_BEEN_EMAILED.booleanValue())))
+            .andExpect(jsonPath("$.[*].hasBeenProposed").value(hasItem(DEFAULT_HAS_BEEN_PROPOSED.booleanValue())));
     }
 }

@@ -1,11 +1,11 @@
-id;sales_receipt_title;description;dealer_id
-1;real-time Buckinghamshire;dynamic front-end Hawaii;1
-2;Pizza Corner;Account Branding;2
-3;multi-state Progressive uniform;Wisconsin logistical morph;3
-4;initiatives;Lebanon;4
-5;Jersey Response wireless;Iceland e-commerce drive;5
-6;mission-critical Trafficway;envisioneer;6
-7;cyan;Jersey;7
-8;fresh-thinking;Wooden;8
-9;USB;Applications Health Fantastic;9
-10;Cotton Tobago alliance;Buckinghamshire Beauty Hat;10
+id;sales_receipt_title;description;transaction_date;has_been_emailed;has_been_proposed;dealer_id
+1;real-time Buckinghamshire;dynamic front-end Hawaii;2023-11-22;false;true;1
+2;Corner Myanmar Chief;Product Account;2023-11-22;false;true;2
+3;multi-byte Iowa;morph Inverse;2023-11-22;false;true;3
+4;Dinar Wyoming;facilitate;2023-11-22;true;true;4
+5;navigating withdrawal;Guinea Minnesota Keyboard;2023-11-22;false;false;5
+6;XSS;South fresh-thinking;2023-11-22;false;false;6
+7;Fresh Synergistic;4th bypass;2023-11-22;false;false;7
+8;Cotton Tobago alliance;Buckinghamshire Beauty Hat;2023-11-22;false;true;8
+9;Shirt Cotton Fresh;Computers blue Moroccan;2023-11-22;true;false;9
+10;utilize ADP next-generation;orchid;2023-11-22;true;false;10

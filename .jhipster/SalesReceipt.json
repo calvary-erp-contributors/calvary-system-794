@@ -9,6 +9,19 @@
     {
       "fieldName": "description",
       "fieldType": "String"
+    },
+    {
+      "fieldName": "transactionDate",
+      "fieldType": "LocalDate",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "hasBeenEmailed",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "hasBeenProposed",
+      "fieldType": "Boolean"
     }
   ],
   "jpaMetamodelFiltering": true,
