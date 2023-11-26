@@ -44,6 +44,9 @@ public class SalesReceipt implements Serializable {
     @Column(name = "has_been_proposed")
     private Boolean hasBeenProposed;
 
+    @Column(name = "should_be_emailed")
+    private Boolean shouldBeEmailed;
+
     @ManyToOne
     private TransactionClass transactionClass;
 
@@ -143,6 +146,19 @@ public class SalesReceipt implements Serializable {
         this.hasBeenProposed = hasBeenProposed;
     }
 
+    public Boolean getShouldBeEmailed() {
+        return this.shouldBeEmailed;
+    }
+
+    public SalesReceipt shouldBeEmailed(Boolean shouldBeEmailed) {
+        this.setShouldBeEmailed(shouldBeEmailed);
+        return this;
+    }
+
+    public void setShouldBeEmailed(Boolean shouldBeEmailed) {
+        this.shouldBeEmailed = shouldBeEmailed;
+    }
+
     public TransactionClass getTransactionClass() {
         return this.transactionClass;
     }
@@ -221,6 +237,7 @@ public class SalesReceipt implements Serializable {
             ", transactionDate='" + getTransactionDate() + "'" +
             ", hasBeenEmailed='" + getHasBeenEmailed() + "'" +
             ", hasBeenProposed='" + getHasBeenProposed() + "'" +
+            ", shouldBeEmailed='" + getShouldBeEmailed() + "'" +
             "}";
     }
 }

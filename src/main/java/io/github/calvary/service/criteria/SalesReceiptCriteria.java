@@ -33,6 +33,8 @@ public class SalesReceiptCriteria implements Serializable, Criteria {
 
     private BooleanFilter hasBeenProposed;
 
+    private BooleanFilter shouldBeEmailed;
+
     private LongFilter transactionClassId;
 
     private LongFilter dealerId;
@@ -50,6 +52,7 @@ public class SalesReceiptCriteria implements Serializable, Criteria {
         this.transactionDate = other.transactionDate == null ? null : other.transactionDate.copy();
         this.hasBeenEmailed = other.hasBeenEmailed == null ? null : other.hasBeenEmailed.copy();
         this.hasBeenProposed = other.hasBeenProposed == null ? null : other.hasBeenProposed.copy();
+        this.shouldBeEmailed = other.shouldBeEmailed == null ? null : other.shouldBeEmailed.copy();
         this.transactionClassId = other.transactionClassId == null ? null : other.transactionClassId.copy();
         this.dealerId = other.dealerId == null ? null : other.dealerId.copy();
         this.transactionItemEntryId = other.transactionItemEntryId == null ? null : other.transactionItemEntryId.copy();
@@ -151,6 +154,21 @@ public class SalesReceiptCriteria implements Serializable, Criteria {
         this.hasBeenProposed = hasBeenProposed;
     }
 
+    public BooleanFilter getShouldBeEmailed() {
+        return shouldBeEmailed;
+    }
+
+    public BooleanFilter shouldBeEmailed() {
+        if (shouldBeEmailed == null) {
+            shouldBeEmailed = new BooleanFilter();
+        }
+        return shouldBeEmailed;
+    }
+
+    public void setShouldBeEmailed(BooleanFilter shouldBeEmailed) {
+        this.shouldBeEmailed = shouldBeEmailed;
+    }
+
     public LongFilter getTransactionClassId() {
         return transactionClassId;
     }
@@ -220,6 +238,7 @@ public class SalesReceiptCriteria implements Serializable, Criteria {
             Objects.equals(transactionDate, that.transactionDate) &&
             Objects.equals(hasBeenEmailed, that.hasBeenEmailed) &&
             Objects.equals(hasBeenProposed, that.hasBeenProposed) &&
+            Objects.equals(shouldBeEmailed, that.shouldBeEmailed) &&
             Objects.equals(transactionClassId, that.transactionClassId) &&
             Objects.equals(dealerId, that.dealerId) &&
             Objects.equals(transactionItemEntryId, that.transactionItemEntryId) &&
@@ -236,6 +255,7 @@ public class SalesReceiptCriteria implements Serializable, Criteria {
             transactionDate,
             hasBeenEmailed,
             hasBeenProposed,
+            shouldBeEmailed,
             transactionClassId,
             dealerId,
             transactionItemEntryId,
@@ -253,6 +273,7 @@ public class SalesReceiptCriteria implements Serializable, Criteria {
             (transactionDate != null ? "transactionDate=" + transactionDate + ", " : "") +
             (hasBeenEmailed != null ? "hasBeenEmailed=" + hasBeenEmailed + ", " : "") +
             (hasBeenProposed != null ? "hasBeenProposed=" + hasBeenProposed + ", " : "") +
+            (shouldBeEmailed != null ? "shouldBeEmailed=" + shouldBeEmailed + ", " : "") +
             (transactionClassId != null ? "transactionClassId=" + transactionClassId + ", " : "") +
             (dealerId != null ? "dealerId=" + dealerId + ", " : "") +
             (transactionItemEntryId != null ? "transactionItemEntryId=" + transactionItemEntryId + ", " : "") +

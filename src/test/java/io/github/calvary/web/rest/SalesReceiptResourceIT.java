@@ -70,6 +70,9 @@ class SalesReceiptResourceIT {
     private static final Boolean DEFAULT_HAS_BEEN_PROPOSED = false;
     private static final Boolean UPDATED_HAS_BEEN_PROPOSED = true;
 
+    private static final Boolean DEFAULT_SHOULD_BE_EMAILED = false;
+    private static final Boolean UPDATED_SHOULD_BE_EMAILED = true;
+
     private static final String ENTITY_API_URL = "/api/sales-receipts";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
     private static final String ENTITY_SEARCH_API_URL = "/api/_search/sales-receipts";
@@ -112,7 +115,8 @@ class SalesReceiptResourceIT {
             .description(DEFAULT_DESCRIPTION)
             .transactionDate(DEFAULT_TRANSACTION_DATE)
             .hasBeenEmailed(DEFAULT_HAS_BEEN_EMAILED)
-            .hasBeenProposed(DEFAULT_HAS_BEEN_PROPOSED);
+            .hasBeenProposed(DEFAULT_HAS_BEEN_PROPOSED)
+            .shouldBeEmailed(DEFAULT_SHOULD_BE_EMAILED);
         // Add required entity
         Dealer dealer;
         if (TestUtil.findAll(em, Dealer.class).isEmpty()) {
@@ -148,7 +152,8 @@ class SalesReceiptResourceIT {
             .description(UPDATED_DESCRIPTION)
             .transactionDate(UPDATED_TRANSACTION_DATE)
             .hasBeenEmailed(UPDATED_HAS_BEEN_EMAILED)
-            .hasBeenProposed(UPDATED_HAS_BEEN_PROPOSED);
+            .hasBeenProposed(UPDATED_HAS_BEEN_PROPOSED)
+            .shouldBeEmailed(UPDATED_SHOULD_BE_EMAILED);
         // Add required entity
         Dealer dealer;
         if (TestUtil.findAll(em, Dealer.class).isEmpty()) {
@@ -211,6 +216,7 @@ class SalesReceiptResourceIT {
         assertThat(testSalesReceipt.getTransactionDate()).isEqualTo(DEFAULT_TRANSACTION_DATE);
         assertThat(testSalesReceipt.getHasBeenEmailed()).isEqualTo(DEFAULT_HAS_BEEN_EMAILED);
         assertThat(testSalesReceipt.getHasBeenProposed()).isEqualTo(DEFAULT_HAS_BEEN_PROPOSED);
+        assertThat(testSalesReceipt.getShouldBeEmailed()).isEqualTo(DEFAULT_SHOULD_BE_EMAILED);
     }
 
     @Test
@@ -276,7 +282,8 @@ class SalesReceiptResourceIT {
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
             .andExpect(jsonPath("$.[*].transactionDate").value(hasItem(DEFAULT_TRANSACTION_DATE.toString())))
             .andExpect(jsonPath("$.[*].hasBeenEmailed").value(hasItem(DEFAULT_HAS_BEEN_EMAILED.booleanValue())))
-            .andExpect(jsonPath("$.[*].hasBeenProposed").value(hasItem(DEFAULT_HAS_BEEN_PROPOSED.booleanValue())));
+            .andExpect(jsonPath("$.[*].hasBeenProposed").value(hasItem(DEFAULT_HAS_BEEN_PROPOSED.booleanValue())))
+            .andExpect(jsonPath("$.[*].shouldBeEmailed").value(hasItem(DEFAULT_SHOULD_BE_EMAILED.booleanValue())));
     }
 
     @SuppressWarnings({ "unchecked" })
@@ -312,7 +319,8 @@ class SalesReceiptResourceIT {
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION))
             .andExpect(jsonPath("$.transactionDate").value(DEFAULT_TRANSACTION_DATE.toString()))
             .andExpect(jsonPath("$.hasBeenEmailed").value(DEFAULT_HAS_BEEN_EMAILED.booleanValue()))
-            .andExpect(jsonPath("$.hasBeenProposed").value(DEFAULT_HAS_BEEN_PROPOSED.booleanValue()));
+            .andExpect(jsonPath("$.hasBeenProposed").value(DEFAULT_HAS_BEEN_PROPOSED.booleanValue()))
+            .andExpect(jsonPath("$.shouldBeEmailed").value(DEFAULT_SHOULD_BE_EMAILED.booleanValue()));
     }
 
     @Test
@@ -634,6 +642,45 @@ class SalesReceiptResourceIT {
 
     @Test
     @Transactional
+    void getAllSalesReceiptsByShouldBeEmailedIsEqualToSomething() throws Exception {
+        // Initialize the database
+        salesReceiptRepository.saveAndFlush(salesReceipt);
+
+        // Get all the salesReceiptList where shouldBeEmailed equals to DEFAULT_SHOULD_BE_EMAILED
+        defaultSalesReceiptShouldBeFound("shouldBeEmailed.equals=" + DEFAULT_SHOULD_BE_EMAILED);
+
+        // Get all the salesReceiptList where shouldBeEmailed equals to UPDATED_SHOULD_BE_EMAILED
+        defaultSalesReceiptShouldNotBeFound("shouldBeEmailed.equals=" + UPDATED_SHOULD_BE_EMAILED);
+    }
+
+    @Test
+    @Transactional
+    void getAllSalesReceiptsByShouldBeEmailedIsInShouldWork() throws Exception {
+        // Initialize the database
+        salesReceiptRepository.saveAndFlush(salesReceipt);
+
+        // Get all the salesReceiptList where shouldBeEmailed in DEFAULT_SHOULD_BE_EMAILED or UPDATED_SHOULD_BE_EMAILED
+        defaultSalesReceiptShouldBeFound("shouldBeEmailed.in=" + DEFAULT_SHOULD_BE_EMAILED + "," + UPDATED_SHOULD_BE_EMAILED);
+
+        // Get all the salesReceiptList where shouldBeEmailed equals to UPDATED_SHOULD_BE_EMAILED
+        defaultSalesReceiptShouldNotBeFound("shouldBeEmailed.in=" + UPDATED_SHOULD_BE_EMAILED);
+    }
+
+    @Test
+    @Transactional
+    void getAllSalesReceiptsByShouldBeEmailedIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        salesReceiptRepository.saveAndFlush(salesReceipt);
+
+        // Get all the salesReceiptList where shouldBeEmailed is not null
+        defaultSalesReceiptShouldBeFound("shouldBeEmailed.specified=true");
+
+        // Get all the salesReceiptList where shouldBeEmailed is null
+        defaultSalesReceiptShouldNotBeFound("shouldBeEmailed.specified=false");
+    }
+
+    @Test
+    @Transactional
     void getAllSalesReceiptsByTransactionClassIsEqualToSomething() throws Exception {
         TransactionClass transactionClass;
         if (TestUtil.findAll(em, TransactionClass.class).isEmpty()) {
@@ -714,7 +761,8 @@ class SalesReceiptResourceIT {
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
             .andExpect(jsonPath("$.[*].transactionDate").value(hasItem(DEFAULT_TRANSACTION_DATE.toString())))
             .andExpect(jsonPath("$.[*].hasBeenEmailed").value(hasItem(DEFAULT_HAS_BEEN_EMAILED.booleanValue())))
-            .andExpect(jsonPath("$.[*].hasBeenProposed").value(hasItem(DEFAULT_HAS_BEEN_PROPOSED.booleanValue())));
+            .andExpect(jsonPath("$.[*].hasBeenProposed").value(hasItem(DEFAULT_HAS_BEEN_PROPOSED.booleanValue())))
+            .andExpect(jsonPath("$.[*].shouldBeEmailed").value(hasItem(DEFAULT_SHOULD_BE_EMAILED.booleanValue())));
 
         // Check, that the count call also returns 1
         restSalesReceiptMockMvc
@@ -769,7 +817,8 @@ class SalesReceiptResourceIT {
             .description(UPDATED_DESCRIPTION)
             .transactionDate(UPDATED_TRANSACTION_DATE)
             .hasBeenEmailed(UPDATED_HAS_BEEN_EMAILED)
-            .hasBeenProposed(UPDATED_HAS_BEEN_PROPOSED);
+            .hasBeenProposed(UPDATED_HAS_BEEN_PROPOSED)
+            .shouldBeEmailed(UPDATED_SHOULD_BE_EMAILED);
         SalesReceiptDTO salesReceiptDTO = salesReceiptMapper.toDto(updatedSalesReceipt);
 
         restSalesReceiptMockMvc
@@ -789,6 +838,7 @@ class SalesReceiptResourceIT {
         assertThat(testSalesReceipt.getTransactionDate()).isEqualTo(UPDATED_TRANSACTION_DATE);
         assertThat(testSalesReceipt.getHasBeenEmailed()).isEqualTo(UPDATED_HAS_BEEN_EMAILED);
         assertThat(testSalesReceipt.getHasBeenProposed()).isEqualTo(UPDATED_HAS_BEEN_PROPOSED);
+        assertThat(testSalesReceipt.getShouldBeEmailed()).isEqualTo(UPDATED_SHOULD_BE_EMAILED);
         await()
             .atMost(5, TimeUnit.SECONDS)
             .untilAsserted(() -> {
@@ -801,6 +851,7 @@ class SalesReceiptResourceIT {
                 assertThat(testSalesReceiptSearch.getTransactionDate()).isEqualTo(UPDATED_TRANSACTION_DATE);
                 assertThat(testSalesReceiptSearch.getHasBeenEmailed()).isEqualTo(UPDATED_HAS_BEEN_EMAILED);
                 assertThat(testSalesReceiptSearch.getHasBeenProposed()).isEqualTo(UPDATED_HAS_BEEN_PROPOSED);
+                assertThat(testSalesReceiptSearch.getShouldBeEmailed()).isEqualTo(UPDATED_SHOULD_BE_EMAILED);
             });
     }
 
@@ -914,6 +965,7 @@ class SalesReceiptResourceIT {
         assertThat(testSalesReceipt.getTransactionDate()).isEqualTo(DEFAULT_TRANSACTION_DATE);
         assertThat(testSalesReceipt.getHasBeenEmailed()).isEqualTo(UPDATED_HAS_BEEN_EMAILED);
         assertThat(testSalesReceipt.getHasBeenProposed()).isEqualTo(DEFAULT_HAS_BEEN_PROPOSED);
+        assertThat(testSalesReceipt.getShouldBeEmailed()).isEqualTo(DEFAULT_SHOULD_BE_EMAILED);
     }
 
     @Test
@@ -933,7 +985,8 @@ class SalesReceiptResourceIT {
             .description(UPDATED_DESCRIPTION)
             .transactionDate(UPDATED_TRANSACTION_DATE)
             .hasBeenEmailed(UPDATED_HAS_BEEN_EMAILED)
-            .hasBeenProposed(UPDATED_HAS_BEEN_PROPOSED);
+            .hasBeenProposed(UPDATED_HAS_BEEN_PROPOSED)
+            .shouldBeEmailed(UPDATED_SHOULD_BE_EMAILED);
 
         restSalesReceiptMockMvc
             .perform(
@@ -952,6 +1005,7 @@ class SalesReceiptResourceIT {
         assertThat(testSalesReceipt.getTransactionDate()).isEqualTo(UPDATED_TRANSACTION_DATE);
         assertThat(testSalesReceipt.getHasBeenEmailed()).isEqualTo(UPDATED_HAS_BEEN_EMAILED);
         assertThat(testSalesReceipt.getHasBeenProposed()).isEqualTo(UPDATED_HAS_BEEN_PROPOSED);
+        assertThat(testSalesReceipt.getShouldBeEmailed()).isEqualTo(UPDATED_SHOULD_BE_EMAILED);
     }
 
     @Test
@@ -1073,6 +1127,7 @@ class SalesReceiptResourceIT {
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
             .andExpect(jsonPath("$.[*].transactionDate").value(hasItem(DEFAULT_TRANSACTION_DATE.toString())))
             .andExpect(jsonPath("$.[*].hasBeenEmailed").value(hasItem(DEFAULT_HAS_BEEN_EMAILED.booleanValue())))
-            .andExpect(jsonPath("$.[*].hasBeenProposed").value(hasItem(DEFAULT_HAS_BEEN_PROPOSED.booleanValue())));
+            .andExpect(jsonPath("$.[*].hasBeenProposed").value(hasItem(DEFAULT_HAS_BEEN_PROPOSED.booleanValue())))
+            .andExpect(jsonPath("$.[*].shouldBeEmailed").value(hasItem(DEFAULT_SHOULD_BE_EMAILED.booleanValue())));
     }
 }

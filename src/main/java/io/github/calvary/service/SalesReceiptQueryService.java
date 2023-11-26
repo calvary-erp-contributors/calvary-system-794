@@ -114,6 +114,9 @@ public class SalesReceiptQueryService extends QueryService<SalesReceipt> {
             if (criteria.getHasBeenProposed() != null) {
                 specification = specification.and(buildSpecification(criteria.getHasBeenProposed(), SalesReceipt_.hasBeenProposed));
             }
+            if (criteria.getShouldBeEmailed() != null) {
+                specification = specification.and(buildSpecification(criteria.getShouldBeEmailed(), SalesReceipt_.shouldBeEmailed));
+            }
             if (criteria.getTransactionClassId() != null) {
                 specification =
                     specification.and(

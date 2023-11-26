@@ -22,6 +22,10 @@
     {
       "fieldName": "hasBeenProposed",
       "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "shouldBeEmailed",
+      "fieldType": "Boolean"
     }
   ],
   "jpaMetamodelFiltering": true,

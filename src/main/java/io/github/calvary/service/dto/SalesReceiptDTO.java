@@ -26,6 +26,8 @@ public class SalesReceiptDTO implements Serializable {
 
     private Boolean hasBeenProposed;
 
+    private Boolean shouldBeEmailed;
+
     private TransactionClassDTO transactionClass;
 
     private DealerDTO dealer;
@@ -78,6 +80,14 @@ public class SalesReceiptDTO implements Serializable {
 
     public void setHasBeenProposed(Boolean hasBeenProposed) {
         this.hasBeenProposed = hasBeenProposed;
+    }
+
+    public Boolean getShouldBeEmailed() {
+        return shouldBeEmailed;
+    }
+
+    public void setShouldBeEmailed(Boolean shouldBeEmailed) {
+        this.shouldBeEmailed = shouldBeEmailed;
     }
 
     public TransactionClassDTO getTransactionClass() {
@@ -135,6 +145,7 @@ public class SalesReceiptDTO implements Serializable {
             ", transactionDate='" + getTransactionDate() + "'" +
             ", hasBeenEmailed='" + getHasBeenEmailed() + "'" +
             ", hasBeenProposed='" + getHasBeenProposed() + "'" +
+            ", shouldBeEmailed='" + getShouldBeEmailed() + "'" +
             ", transactionClass=" + getTransactionClass() +
             ", dealer=" + getDealer() +
             ", transactionItemEntries=" + getTransactionItemEntries() +
