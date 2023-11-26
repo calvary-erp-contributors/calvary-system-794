@@ -544,7 +544,7 @@ class TransactionAccountResourceIT {
         defaultTransactionAccountShouldBeFound("openingBalance.greaterThan=" + SMALLER_OPENING_BALANCE);
     }
 
-    // @Test
+    @Test
     @Transactional
     void getAllTransactionAccountsByParentAccountIsEqualToSomething() throws Exception {
         TransactionAccount parentAccount;

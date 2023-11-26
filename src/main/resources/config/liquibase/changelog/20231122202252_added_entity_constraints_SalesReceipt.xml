@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <!--
+        Added the constraints for entity SalesReceipt.
+    -->
+    <changeSet id="20231122202252-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="transaction_class_id"
+                                 baseTableName="sales_receipt"
+                                 constraintName="fk_sales_receipt__transaction_class_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="transaction_class"/>
+
+        <addForeignKeyConstraint baseColumnNames="dealer_id"
+                                 baseTableName="sales_receipt"
+                                 constraintName="fk_sales_receipt__dealer_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="dealer"/>
+
+        <addForeignKeyConstraint baseColumnNames="sales_receipt_id"
+                                 baseTableName="rel_sales_receipt__transaction_item_amount"
+                                 constraintName="fk_rel_sales_receipt__transacti__sales_receipt_a7_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="sales_receipt"/>
+
+        <addForeignKeyConstraint baseColumnNames="transaction_item_amount_id"
+                                 baseTableName="rel_sales_receipt__transaction_item_amount"
+                                 constraintName="fk_rel_sales_receipt__transacti__transaction_item_amount_5d_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="transaction_item_amount"/>
+    </changeSet>
+</databaseChangeLog>

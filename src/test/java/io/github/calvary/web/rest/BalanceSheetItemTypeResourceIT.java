@@ -553,6 +553,7 @@ class BalanceSheetItemTypeResourceIT {
         TransactionAccount transactionAccount = balanceSheetItemType.getTransactionAccount();
         balanceSheetItemTypeRepository.saveAndFlush(balanceSheetItemType);
         Long transactionAccountId = transactionAccount.getId();
+
         // Get all the balanceSheetItemTypeList where transactionAccount equals to transactionAccountId
         defaultBalanceSheetItemTypeShouldBeFound("transactionAccountId.equals=" + transactionAccountId);
 
@@ -560,7 +561,7 @@ class BalanceSheetItemTypeResourceIT {
         defaultBalanceSheetItemTypeShouldNotBeFound("transactionAccountId.equals=" + (transactionAccountId + 1));
     }
 
-    // @Test
+    @Test
     @Transactional
     void getAllBalanceSheetItemTypesByParentItemIsEqualToSomething() throws Exception {
         BalanceSheetItemType parentItem;
@@ -575,6 +576,7 @@ class BalanceSheetItemTypeResourceIT {
         balanceSheetItemType.setParentItem(parentItem);
         balanceSheetItemTypeRepository.saveAndFlush(balanceSheetItemType);
         Long parentItemId = parentItem.getId();
+
         // Get all the balanceSheetItemTypeList where parentItem equals to parentItemId
         defaultBalanceSheetItemTypeShouldBeFound("parentItemId.equals=" + parentItemId);
 
