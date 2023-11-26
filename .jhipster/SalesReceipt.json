@@ -3,10 +3,6 @@
   "dto": "mapstruct",
   "fields": [
     {
-      "fieldName": "salesReceiptTitle",
-      "fieldType": "String"
-    },
-    {
       "fieldName": "description",
       "fieldType": "String"
     },
@@ -53,6 +49,13 @@
       "ownerSide": true,
       "relationshipName": "transactionItemEntry",
       "relationshipType": "many-to-many",
+      "relationshipValidateRules": ["required"]
+    },
+    {
+      "otherEntityField": "receiptTitle",
+      "otherEntityName": "salesReceiptTitle",
+      "relationshipName": "salesReceiptTitle",
+      "relationshipType": "many-to-one",
       "relationshipValidateRules": ["required"]
     }
   ],

@@ -28,9 +28,6 @@ public class SalesReceipt implements Serializable {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "sales_receipt_title")
-    private String salesReceiptTitle;
-
     @Column(name = "description")
     private String description;
 
@@ -66,6 +63,10 @@ public class SalesReceipt implements Serializable {
     @JsonIgnoreProperties(value = { "transactionItem" }, allowSetters = true)
     private Set<TransactionItemEntry> transactionItemEntries = new HashSet<>();
 
+    @ManyToOne(optional = false)
+    @NotNull
+    private SalesReceiptTitle salesReceiptTitle;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
     public Long getId() {
@@ -79,19 +80,6 @@ public class SalesReceipt implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getSalesReceiptTitle() {
-        return this.salesReceiptTitle;
-    }
-
-    public SalesReceipt salesReceiptTitle(String salesReceiptTitle) {
-        this.setSalesReceiptTitle(salesReceiptTitle);
-        return this;
-    }
-
-    public void setSalesReceiptTitle(String salesReceiptTitle) {
-        this.salesReceiptTitle = salesReceiptTitle;
     }
 
     public String getDescription() {
@@ -208,6 +196,19 @@ public class SalesReceipt implements Serializable {
         return this;
     }
 
+    public SalesReceiptTitle getSalesReceiptTitle() {
+        return this.salesReceiptTitle;
+    }
+
+    public void setSalesReceiptTitle(SalesReceiptTitle salesReceiptTitle) {
+        this.salesReceiptTitle = salesReceiptTitle;
+    }
+
+    public SalesReceipt salesReceiptTitle(SalesReceiptTitle salesReceiptTitle) {
+        this.setSalesReceiptTitle(salesReceiptTitle);
+        return this;
+    }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -232,7 +233,6 @@ public class SalesReceipt implements Serializable {
     public String toString() {
         return "SalesReceipt{" +
             "id=" + getId() +
-            ", salesReceiptTitle='" + getSalesReceiptTitle() + "'" +
             ", description='" + getDescription() + "'" +
             ", transactionDate='" + getTransactionDate() + "'" +
             ", hasBeenEmailed='" + getHasBeenEmailed() + "'" +

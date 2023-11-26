@@ -31,18 +31,18 @@ public interface SalesReceiptRepository
     }
 
     @Query(
-        value = "select distinct salesReceipt from SalesReceipt salesReceipt left join fetch salesReceipt.transactionClass left join fetch salesReceipt.dealer",
+        value = "select distinct salesReceipt from SalesReceipt salesReceipt left join fetch salesReceipt.transactionClass left join fetch salesReceipt.dealer left join fetch salesReceipt.salesReceiptTitle",
         countQuery = "select count(distinct salesReceipt) from SalesReceipt salesReceipt"
     )
     Page<SalesReceipt> findAllWithToOneRelationships(Pageable pageable);
 
     @Query(
-        "select distinct salesReceipt from SalesReceipt salesReceipt left join fetch salesReceipt.transactionClass left join fetch salesReceipt.dealer"
+        "select distinct salesReceipt from SalesReceipt salesReceipt left join fetch salesReceipt.transactionClass left join fetch salesReceipt.dealer left join fetch salesReceipt.salesReceiptTitle"
     )
     List<SalesReceipt> findAllWithToOneRelationships();
 
     @Query(
-        "select salesReceipt from SalesReceipt salesReceipt left join fetch salesReceipt.transactionClass left join fetch salesReceipt.dealer where salesReceipt.id =:id"
+        "select salesReceipt from SalesReceipt salesReceipt left join fetch salesReceipt.transactionClass left join fetch salesReceipt.dealer left join fetch salesReceipt.salesReceiptTitle where salesReceipt.id =:id"
     )
     Optional<SalesReceipt> findOneWithToOneRelationships(@Param("id") Long id);
 }

@@ -15,8 +15,6 @@ public class SalesReceiptDTO implements Serializable {
 
     private Long id;
 
-    private String salesReceiptTitle;
-
     private String description;
 
     @NotNull
@@ -34,20 +32,14 @@ public class SalesReceiptDTO implements Serializable {
 
     private Set<TransactionItemEntryDTO> transactionItemEntries = new HashSet<>();
 
+    private SalesReceiptTitleDTO salesReceiptTitle;
+
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getSalesReceiptTitle() {
-        return salesReceiptTitle;
-    }
-
-    public void setSalesReceiptTitle(String salesReceiptTitle) {
-        this.salesReceiptTitle = salesReceiptTitle;
     }
 
     public String getDescription() {
@@ -114,6 +106,14 @@ public class SalesReceiptDTO implements Serializable {
         this.transactionItemEntries = transactionItemEntries;
     }
 
+    public SalesReceiptTitleDTO getSalesReceiptTitle() {
+        return salesReceiptTitle;
+    }
+
+    public void setSalesReceiptTitle(SalesReceiptTitleDTO salesReceiptTitle) {
+        this.salesReceiptTitle = salesReceiptTitle;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -140,7 +140,6 @@ public class SalesReceiptDTO implements Serializable {
     public String toString() {
         return "SalesReceiptDTO{" +
             "id=" + getId() +
-            ", salesReceiptTitle='" + getSalesReceiptTitle() + "'" +
             ", description='" + getDescription() + "'" +
             ", transactionDate='" + getTransactionDate() + "'" +
             ", hasBeenEmailed='" + getHasBeenEmailed() + "'" +
@@ -149,6 +148,7 @@ public class SalesReceiptDTO implements Serializable {
             ", transactionClass=" + getTransactionClass() +
             ", dealer=" + getDealer() +
             ", transactionItemEntries=" + getTransactionItemEntries() +
+            ", salesReceiptTitle=" + getSalesReceiptTitle() +
             "}";
     }
 }

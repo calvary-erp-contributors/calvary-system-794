@@ -98,10 +98,6 @@ public class SalesReceiptQueryService extends QueryService<SalesReceipt> {
             if (criteria.getId() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getId(), SalesReceipt_.id));
             }
-            if (criteria.getSalesReceiptTitle() != null) {
-                specification =
-                    specification.and(buildStringSpecification(criteria.getSalesReceiptTitle(), SalesReceipt_.salesReceiptTitle));
-            }
             if (criteria.getDescription() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getDescription(), SalesReceipt_.description));
             }
@@ -138,6 +134,15 @@ public class SalesReceiptQueryService extends QueryService<SalesReceipt> {
                         buildSpecification(
                             criteria.getTransactionItemEntryId(),
                             root -> root.join(SalesReceipt_.transactionItemEntries, JoinType.LEFT).get(TransactionItemEntry_.id)
+                        )
+                    );
+            }
+            if (criteria.getSalesReceiptTitleId() != null) {
+                specification =
+                    specification.and(
+                        buildSpecification(
+                            criteria.getSalesReceiptTitleId(),
+                            root -> root.join(SalesReceipt_.salesReceiptTitle, JoinType.LEFT).get(SalesReceiptTitle_.id)
                         )
                     );
             }

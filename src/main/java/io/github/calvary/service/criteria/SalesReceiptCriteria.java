@@ -23,8 +23,6 @@ public class SalesReceiptCriteria implements Serializable, Criteria {
 
     private LongFilter id;
 
-    private StringFilter salesReceiptTitle;
-
     private StringFilter description;
 
     private LocalDateFilter transactionDate;
@@ -41,13 +39,14 @@ public class SalesReceiptCriteria implements Serializable, Criteria {
 
     private LongFilter transactionItemEntryId;
 
+    private LongFilter salesReceiptTitleId;
+
     private Boolean distinct;
 
     public SalesReceiptCriteria() {}
 
     public SalesReceiptCriteria(SalesReceiptCriteria other) {
         this.id = other.id == null ? null : other.id.copy();
-        this.salesReceiptTitle = other.salesReceiptTitle == null ? null : other.salesReceiptTitle.copy();
         this.description = other.description == null ? null : other.description.copy();
         this.transactionDate = other.transactionDate == null ? null : other.transactionDate.copy();
         this.hasBeenEmailed = other.hasBeenEmailed == null ? null : other.hasBeenEmailed.copy();
@@ -56,6 +55,7 @@ public class SalesReceiptCriteria implements Serializable, Criteria {
         this.transactionClassId = other.transactionClassId == null ? null : other.transactionClassId.copy();
         this.dealerId = other.dealerId == null ? null : other.dealerId.copy();
         this.transactionItemEntryId = other.transactionItemEntryId == null ? null : other.transactionItemEntryId.copy();
+        this.salesReceiptTitleId = other.salesReceiptTitleId == null ? null : other.salesReceiptTitleId.copy();
         this.distinct = other.distinct;
     }
 
@@ -77,21 +77,6 @@ public class SalesReceiptCriteria implements Serializable, Criteria {
 
     public void setId(LongFilter id) {
         this.id = id;
-    }
-
-    public StringFilter getSalesReceiptTitle() {
-        return salesReceiptTitle;
-    }
-
-    public StringFilter salesReceiptTitle() {
-        if (salesReceiptTitle == null) {
-            salesReceiptTitle = new StringFilter();
-        }
-        return salesReceiptTitle;
-    }
-
-    public void setSalesReceiptTitle(StringFilter salesReceiptTitle) {
-        this.salesReceiptTitle = salesReceiptTitle;
     }
 
     public StringFilter getDescription() {
@@ -214,6 +199,21 @@ public class SalesReceiptCriteria implements Serializable, Criteria {
         this.transactionItemEntryId = transactionItemEntryId;
     }
 
+    public LongFilter getSalesReceiptTitleId() {
+        return salesReceiptTitleId;
+    }
+
+    public LongFilter salesReceiptTitleId() {
+        if (salesReceiptTitleId == null) {
+            salesReceiptTitleId = new LongFilter();
+        }
+        return salesReceiptTitleId;
+    }
+
+    public void setSalesReceiptTitleId(LongFilter salesReceiptTitleId) {
+        this.salesReceiptTitleId = salesReceiptTitleId;
+    }
+
     public Boolean getDistinct() {
         return distinct;
     }
@@ -233,7 +233,6 @@ public class SalesReceiptCriteria implements Serializable, Criteria {
         final SalesReceiptCriteria that = (SalesReceiptCriteria) o;
         return (
             Objects.equals(id, that.id) &&
-            Objects.equals(salesReceiptTitle, that.salesReceiptTitle) &&
             Objects.equals(description, that.description) &&
             Objects.equals(transactionDate, that.transactionDate) &&
             Objects.equals(hasBeenEmailed, that.hasBeenEmailed) &&
@@ -242,6 +241,7 @@ public class SalesReceiptCriteria implements Serializable, Criteria {
             Objects.equals(transactionClassId, that.transactionClassId) &&
             Objects.equals(dealerId, that.dealerId) &&
             Objects.equals(transactionItemEntryId, that.transactionItemEntryId) &&
+            Objects.equals(salesReceiptTitleId, that.salesReceiptTitleId) &&
             Objects.equals(distinct, that.distinct)
         );
     }
@@ -250,7 +250,6 @@ public class SalesReceiptCriteria implements Serializable, Criteria {
     public int hashCode() {
         return Objects.hash(
             id,
-            salesReceiptTitle,
             description,
             transactionDate,
             hasBeenEmailed,
@@ -259,6 +258,7 @@ public class SalesReceiptCriteria implements Serializable, Criteria {
             transactionClassId,
             dealerId,
             transactionItemEntryId,
+            salesReceiptTitleId,
             distinct
         );
     }
@@ -268,7 +268,6 @@ public class SalesReceiptCriteria implements Serializable, Criteria {
     public String toString() {
         return "SalesReceiptCriteria{" +
             (id != null ? "id=" + id + ", " : "") +
-            (salesReceiptTitle != null ? "salesReceiptTitle=" + salesReceiptTitle + ", " : "") +
             (description != null ? "description=" + description + ", " : "") +
             (transactionDate != null ? "transactionDate=" + transactionDate + ", " : "") +
             (hasBeenEmailed != null ? "hasBeenEmailed=" + hasBeenEmailed + ", " : "") +
@@ -277,6 +276,7 @@ public class SalesReceiptCriteria implements Serializable, Criteria {
             (transactionClassId != null ? "transactionClassId=" + transactionClassId + ", " : "") +
             (dealerId != null ? "dealerId=" + dealerId + ", " : "") +
             (transactionItemEntryId != null ? "transactionItemEntryId=" + transactionItemEntryId + ", " : "") +
+            (salesReceiptTitleId != null ? "salesReceiptTitleId=" + salesReceiptTitleId + ", " : "") +
             (distinct != null ? "distinct=" + distinct + ", " : "") +
             "}";
     }

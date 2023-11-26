@@ -1,11 +1,11 @@
-id;sales_receipt_title;description;transaction_date;has_been_emailed;has_been_proposed;should_be_emailed;dealer_id
-1;real-time Buckinghamshire;dynamic front-end Hawaii;2023-11-22;false;true;true;1
-2;Intelligent Account;withdrawal multi-state Progressive;2023-11-22;true;false;true;2
-3;Planner Nevada;Bike;2023-11-22;false;false;true;3
-4;Dinar Wyoming;facilitate;2023-11-22;true;true;false;4
-5;e-commerce drive Guinea;Trafficway Shirt;2023-11-22;false;false;true;5
-6;Rubber hacking grow;Cotton;2023-11-21;true;false;true;6
-7;Glens Skyway envisioneer;Direct;2023-11-21;true;true;true;7
-8;Shoes;Beauty;2023-11-22;true;true;true;8
-9;IB Security;Cotton Fresh auxiliary;2023-11-21;false;false;false;9
-10;Berkshire Georgia utilize;supply-chains navigating orchid;2023-11-22;true;false;true;10
+id;description;transaction_date;has_been_emailed;has_been_proposed;should_be_emailed;dealer_id;sales_receipt_title_id
+1;real-time Buckinghamshire;2023-11-21;false;false;false;1;1
+2;Dakota blue;2023-11-22;true;true;false;2;2
+3;Open-source;2023-11-22;true;true;true;3;3
+4;Product Account;2023-11-22;false;true;false;4;4
+5;Wisconsin logistical morph;2023-11-22;false;false;false;5;5
+6;Lebanon;2023-11-22;true;true;true;6;6
+7;exuding digital Iceland;2023-11-22;true;true;false;7;7
+8;connecting salmon GB;2023-11-22;false;false;false;8;8
+9;XSS;2023-11-22;true;true;false;9;9
+10;grow;2023-11-22;false;false;false;10;10
