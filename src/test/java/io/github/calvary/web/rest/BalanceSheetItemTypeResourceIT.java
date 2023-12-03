@@ -561,7 +561,7 @@ class BalanceSheetItemTypeResourceIT {
         defaultBalanceSheetItemTypeShouldNotBeFound("transactionAccountId.equals=" + (transactionAccountId + 1));
     }
 
-    // @Test
+    @Test
     @Transactional
     void getAllBalanceSheetItemTypesByParentItemIsEqualToSomething() throws Exception {
         BalanceSheetItemType parentItem;

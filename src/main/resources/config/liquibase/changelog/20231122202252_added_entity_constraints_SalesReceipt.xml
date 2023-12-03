@@ -21,15 +21,21 @@
                                  referencedTableName="dealer"/>
 
         <addForeignKeyConstraint baseColumnNames="sales_receipt_id"
-                                 baseTableName="rel_sales_receipt__transaction_item_amount"
-                                 constraintName="fk_rel_sales_receipt__transacti__sales_receipt_a7_id"
+                                 baseTableName="rel_sales_receipt__transaction_item_entry"
+                                 constraintName="fk_rel_sales_receipt__transaction_item_entry__sales_receipt_id"
                                  referencedColumnNames="id"
                                  referencedTableName="sales_receipt"/>
 
-        <addForeignKeyConstraint baseColumnNames="transaction_item_amount_id"
-                                 baseTableName="rel_sales_receipt__transaction_item_amount"
-                                 constraintName="fk_rel_sales_receipt__transacti__transaction_item_amount_5d_id"
+        <addForeignKeyConstraint baseColumnNames="transaction_item_entry_id"
+                                 baseTableName="rel_sales_receipt__transaction_item_entry"
+                                 constraintName="fk_rel_sales_receipt__transacti__transaction_item_entry_e3_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="transaction_item_amount"/>
+                                 referencedTableName="transaction_item_entry"/>
+
+        <addForeignKeyConstraint baseColumnNames="sales_receipt_title_id"
+                                 baseTableName="sales_receipt"
+                                 constraintName="fk_sales_receipt__sales_receipt_title_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="sales_receipt_title"/>
     </changeSet>
 </databaseChangeLog>

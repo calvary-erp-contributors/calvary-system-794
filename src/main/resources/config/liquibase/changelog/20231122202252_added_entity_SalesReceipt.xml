@@ -14,10 +14,19 @@
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="sales_receipt_title" type="varchar(255)">
+            <column name="description" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-            <column name="description" type="varchar(255)">
+            <column name="transaction_date" type="date">
+                <constraints nullable="false" />
+            </column>
+            <column name="has_been_emailed" type="boolean">
+                <constraints nullable="true" />
+            </column>
+            <column name="has_been_proposed" type="boolean">
+                <constraints nullable="true" />
+            </column>
+            <column name="should_be_emailed" type="boolean">
                 <constraints nullable="true" />
             </column>
             <column name="transaction_class_id" type="bigint">
@@ -26,14 +35,17 @@
             <column name="dealer_id" type="bigint">
                 <constraints nullable="false" />
             </column>
+            <column name="sales_receipt_title_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
     </changeSet>
 
     <changeSet id="20231122202252-1-relations" author="jhipster">
 
-        <createTable tableName="rel_sales_receipt__transaction_item_amount">
-            <column name="transaction_item_amount_id" type="bigint">
+        <createTable tableName="rel_sales_receipt__transaction_item_entry">
+            <column name="transaction_item_entry_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
             <column name="sales_receipt_id" type="bigint">
@@ -41,7 +53,7 @@
             </column>
         </createTable>
 
-        <addPrimaryKey columnNames="sales_receipt_id, transaction_item_amount_id" tableName="rel_sales_receipt__transaction_item_amount"/>
+        <addPrimaryKey columnNames="sales_receipt_id, transaction_item_entry_id" tableName="rel_sales_receipt__transaction_item_entry"/>
     </changeSet>
 
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
@@ -61,9 +73,13 @@
                   tableName="sales_receipt"
                   usePreparedStatements="true">
             <column name="id" type="numeric"/>
-            <column name="sales_receipt_title" type="string"/>
             <column name="description" type="string"/>
+            <column name="transaction_date" type="date"/>
+            <column name="has_been_emailed" type="boolean"/>
+            <column name="has_been_proposed" type="boolean"/>
+            <column name="should_be_emailed" type="boolean"/>
             <column name="dealer_id" type="numeric"/>
+            <column name="sales_receipt_title_id" type="numeric"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>

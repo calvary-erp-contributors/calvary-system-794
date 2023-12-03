@@ -1,11 +1,11 @@
-id;name;dealer_type_id
-1;system;1
-2;Automotive vertical e-commerce;2
-3;aggregate Bedfordshire;3
-4;Roads blue;4
-5;Infrastructure;5
-6;turn-key;6
-7;reintermediate Planner Vista;7
-8;Chips;8
-9;Tools;9
-10;Toys;10
+id;name;main_email;dealer_type_id
+1;system;Automotive vertical e-commerce;1
+2;aggregate Bedfordshire;Roads blue;2
+3;Infrastructure;turn-key;3
+4;reintermediate Planner Vista;Chips;4
+5;Tools;Toys;5
+6;Carolina Reactive;Metal Account Walks;6
+7;IB;mobile Uruguay reboot;7
+8;Checking Auto Loan;invoice challenge Configurable;8
+9;maroon;Baby Shoes;9
+10;Plastic optimize;District Wall Future;10

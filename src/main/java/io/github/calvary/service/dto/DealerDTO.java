@@ -15,6 +15,8 @@ public class DealerDTO implements Serializable {
     @NotNull
     private String name;
 
+    private String mainEmail;
+
     private DealerTypeDTO dealerType;
 
     public Long getId() {
@@ -31,6 +33,14 @@ public class DealerDTO implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getMainEmail() {
+        return mainEmail;
+    }
+
+    public void setMainEmail(String mainEmail) {
+        this.mainEmail = mainEmail;
     }
 
     public DealerTypeDTO getDealerType() {
@@ -68,6 +78,7 @@ public class DealerDTO implements Serializable {
         return "DealerDTO{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
+            ", mainEmail='" + getMainEmail() + "'" +
             ", dealerType=" + getDealerType() +
             "}";
     }

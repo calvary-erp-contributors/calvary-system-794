@@ -28,6 +28,9 @@ public class Dealer implements Serializable {
     @Column(name = "name", nullable = false, unique = true)
     private String name;
 
+    @Column(name = "main_email")
+    private String mainEmail;
+
     @ManyToOne(optional = false)
     @NotNull
     private DealerType dealerType;
@@ -58,6 +61,19 @@ public class Dealer implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getMainEmail() {
+        return this.mainEmail;
+    }
+
+    public Dealer mainEmail(String mainEmail) {
+        this.setMainEmail(mainEmail);
+        return this;
+    }
+
+    public void setMainEmail(String mainEmail) {
+        this.mainEmail = mainEmail;
     }
 
     public DealerType getDealerType() {
@@ -98,6 +114,7 @@ public class Dealer implements Serializable {
         return "Dealer{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
+            ", mainEmail='" + getMainEmail() + "'" +
             "}";
     }
 }

@@ -53,6 +53,9 @@ class DealerResourceIT {
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
 
+    private static final String DEFAULT_MAIN_EMAIL = "AAAAAAAAAA";
+    private static final String UPDATED_MAIN_EMAIL = "BBBBBBBBBB";
+
     private static final String ENTITY_API_URL = "/api/dealers";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
     private static final String ENTITY_SEARCH_API_URL = "/api/_search/dealers";
@@ -90,7 +93,7 @@ class DealerResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Dealer createEntity(EntityManager em) {
-        Dealer dealer = new Dealer().name(DEFAULT_NAME);
+        Dealer dealer = new Dealer().name(DEFAULT_NAME).mainEmail(DEFAULT_MAIN_EMAIL);
         // Add required entity
         DealerType dealerType;
         if (TestUtil.findAll(em, DealerType.class).isEmpty()) {
@@ -111,7 +114,7 @@ class DealerResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Dealer createUpdatedEntity(EntityManager em) {
-        Dealer dealer = new Dealer().name(UPDATED_NAME);
+        Dealer dealer = new Dealer().name(UPDATED_NAME).mainEmail(UPDATED_MAIN_EMAIL);
         // Add required entity
         DealerType dealerType;
         if (TestUtil.findAll(em, DealerType.class).isEmpty()) {
@@ -158,6 +161,7 @@ class DealerResourceIT {
             });
         Dealer testDealer = dealerList.get(dealerList.size() - 1);
         assertThat(testDealer.getName()).isEqualTo(DEFAULT_NAME);
+        assertThat(testDealer.getMainEmail()).isEqualTo(DEFAULT_MAIN_EMAIL);
     }
 
     @Test
@@ -215,7 +219,8 @@ class DealerResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(dealer.getId().intValue())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)));
+            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
+            .andExpect(jsonPath("$.[*].mainEmail").value(hasItem(DEFAULT_MAIN_EMAIL)));
     }
 
     @SuppressWarnings({ "unchecked" })
@@ -247,7 +252,8 @@ class DealerResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(dealer.getId().intValue()))
-            .andExpect(jsonPath("$.name").value(DEFAULT_NAME));
+            .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
+            .andExpect(jsonPath("$.mainEmail").value(DEFAULT_MAIN_EMAIL));
     }
 
     @Test
@@ -335,6 +341,71 @@ class DealerResourceIT {
 
     @Test
     @Transactional
+    void getAllDealersByMainEmailIsEqualToSomething() throws Exception {
+        // Initialize the database
+        dealerRepository.saveAndFlush(dealer);
+
+        // Get all the dealerList where mainEmail equals to DEFAULT_MAIN_EMAIL
+        defaultDealerShouldBeFound("mainEmail.equals=" + DEFAULT_MAIN_EMAIL);
+
+        // Get all the dealerList where mainEmail equals to UPDATED_MAIN_EMAIL
+        defaultDealerShouldNotBeFound("mainEmail.equals=" + UPDATED_MAIN_EMAIL);
+    }
+
+    @Test
+    @Transactional
+    void getAllDealersByMainEmailIsInShouldWork() throws Exception {
+        // Initialize the database
+        dealerRepository.saveAndFlush(dealer);
+
+        // Get all the dealerList where mainEmail in DEFAULT_MAIN_EMAIL or UPDATED_MAIN_EMAIL
+        defaultDealerShouldBeFound("mainEmail.in=" + DEFAULT_MAIN_EMAIL + "," + UPDATED_MAIN_EMAIL);
+
+        // Get all the dealerList where mainEmail equals to UPDATED_MAIN_EMAIL
+        defaultDealerShouldNotBeFound("mainEmail.in=" + UPDATED_MAIN_EMAIL);
+    }
+
+    @Test
+    @Transactional
+    void getAllDealersByMainEmailIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        dealerRepository.saveAndFlush(dealer);
+
+        // Get all the dealerList where mainEmail is not null
+        defaultDealerShouldBeFound("mainEmail.specified=true");
+
+        // Get all the dealerList where mainEmail is null
+        defaultDealerShouldNotBeFound("mainEmail.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllDealersByMainEmailContainsSomething() throws Exception {
+        // Initialize the database
+        dealerRepository.saveAndFlush(dealer);
+
+        // Get all the dealerList where mainEmail contains DEFAULT_MAIN_EMAIL
+        defaultDealerShouldBeFound("mainEmail.contains=" + DEFAULT_MAIN_EMAIL);
+
+        // Get all the dealerList where mainEmail contains UPDATED_MAIN_EMAIL
+        defaultDealerShouldNotBeFound("mainEmail.contains=" + UPDATED_MAIN_EMAIL);
+    }
+
+    @Test
+    @Transactional
+    void getAllDealersByMainEmailNotContainsSomething() throws Exception {
+        // Initialize the database
+        dealerRepository.saveAndFlush(dealer);
+
+        // Get all the dealerList where mainEmail does not contain DEFAULT_MAIN_EMAIL
+        defaultDealerShouldNotBeFound("mainEmail.doesNotContain=" + DEFAULT_MAIN_EMAIL);
+
+        // Get all the dealerList where mainEmail does not contain UPDATED_MAIN_EMAIL
+        defaultDealerShouldBeFound("mainEmail.doesNotContain=" + UPDATED_MAIN_EMAIL);
+    }
+
+    @Test
+    @Transactional
     void getAllDealersByDealerTypeIsEqualToSomething() throws Exception {
         DealerType dealerType;
         if (TestUtil.findAll(em, DealerType.class).isEmpty()) {
@@ -365,7 +436,8 @@ class DealerResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(dealer.getId().intValue())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)));
+            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
+            .andExpect(jsonPath("$.[*].mainEmail").value(hasItem(DEFAULT_MAIN_EMAIL)));
 
         // Check, that the count call also returns 1
         restDealerMockMvc
@@ -415,7 +487,7 @@ class DealerResourceIT {
         Dealer updatedDealer = dealerRepository.findById(dealer.getId()).get();
         // Disconnect from session so that the updates on updatedDealer are not directly saved in db
         em.detach(updatedDealer);
-        updatedDealer.name(UPDATED_NAME);
+        updatedDealer.name(UPDATED_NAME).mainEmail(UPDATED_MAIN_EMAIL);
         DealerDTO dealerDTO = dealerMapper.toDto(updatedDealer);
 
         restDealerMockMvc
@@ -431,6 +503,7 @@ class DealerResourceIT {
         assertThat(dealerList).hasSize(databaseSizeBeforeUpdate);
         Dealer testDealer = dealerList.get(dealerList.size() - 1);
         assertThat(testDealer.getName()).isEqualTo(UPDATED_NAME);
+        assertThat(testDealer.getMainEmail()).isEqualTo(UPDATED_MAIN_EMAIL);
         await()
             .atMost(5, TimeUnit.SECONDS)
             .untilAsserted(() -> {
@@ -439,6 +512,7 @@ class DealerResourceIT {
                 List<Dealer> dealerSearchList = IterableUtils.toList(dealerSearchRepository.findAll());
                 Dealer testDealerSearch = dealerSearchList.get(searchDatabaseSizeAfter - 1);
                 assertThat(testDealerSearch.getName()).isEqualTo(UPDATED_NAME);
+                assertThat(testDealerSearch.getMainEmail()).isEqualTo(UPDATED_MAIN_EMAIL);
             });
     }
 
@@ -528,6 +602,8 @@ class DealerResourceIT {
         Dealer partialUpdatedDealer = new Dealer();
         partialUpdatedDealer.setId(dealer.getId());
 
+        partialUpdatedDealer.mainEmail(UPDATED_MAIN_EMAIL);
+
         restDealerMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedDealer.getId())
@@ -541,6 +617,7 @@ class DealerResourceIT {
         assertThat(dealerList).hasSize(databaseSizeBeforeUpdate);
         Dealer testDealer = dealerList.get(dealerList.size() - 1);
         assertThat(testDealer.getName()).isEqualTo(DEFAULT_NAME);
+        assertThat(testDealer.getMainEmail()).isEqualTo(UPDATED_MAIN_EMAIL);
     }
 
     @Test
@@ -555,7 +632,7 @@ class DealerResourceIT {
         Dealer partialUpdatedDealer = new Dealer();
         partialUpdatedDealer.setId(dealer.getId());
 
-        partialUpdatedDealer.name(UPDATED_NAME);
+        partialUpdatedDealer.name(UPDATED_NAME).mainEmail(UPDATED_MAIN_EMAIL);
 
         restDealerMockMvc
             .perform(
@@ -570,6 +647,7 @@ class DealerResourceIT {
         assertThat(dealerList).hasSize(databaseSizeBeforeUpdate);
         Dealer testDealer = dealerList.get(dealerList.size() - 1);
         assertThat(testDealer.getName()).isEqualTo(UPDATED_NAME);
+        assertThat(testDealer.getMainEmail()).isEqualTo(UPDATED_MAIN_EMAIL);
     }
 
     @Test
@@ -685,6 +763,7 @@ class DealerResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(dealer.getId().intValue())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)));
+            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
+            .andExpect(jsonPath("$.[*].mainEmail").value(hasItem(DEFAULT_MAIN_EMAIL)));
     }
 }

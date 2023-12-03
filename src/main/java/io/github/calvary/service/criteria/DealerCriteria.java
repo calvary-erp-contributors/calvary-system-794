@@ -25,6 +25,8 @@ public class DealerCriteria implements Serializable, Criteria {
 
     private StringFilter name;
 
+    private StringFilter mainEmail;
+
     private LongFilter dealerTypeId;
 
     private Boolean distinct;
@@ -34,6 +36,7 @@ public class DealerCriteria implements Serializable, Criteria {
     public DealerCriteria(DealerCriteria other) {
         this.id = other.id == null ? null : other.id.copy();
         this.name = other.name == null ? null : other.name.copy();
+        this.mainEmail = other.mainEmail == null ? null : other.mainEmail.copy();
         this.dealerTypeId = other.dealerTypeId == null ? null : other.dealerTypeId.copy();
         this.distinct = other.distinct;
     }
@@ -73,6 +76,21 @@ public class DealerCriteria implements Serializable, Criteria {
         this.name = name;
     }
 
+    public StringFilter getMainEmail() {
+        return mainEmail;
+    }
+
+    public StringFilter mainEmail() {
+        if (mainEmail == null) {
+            mainEmail = new StringFilter();
+        }
+        return mainEmail;
+    }
+
+    public void setMainEmail(StringFilter mainEmail) {
+        this.mainEmail = mainEmail;
+    }
+
     public LongFilter getDealerTypeId() {
         return dealerTypeId;
     }
@@ -108,6 +126,7 @@ public class DealerCriteria implements Serializable, Criteria {
         return (
             Objects.equals(id, that.id) &&
             Objects.equals(name, that.name) &&
+            Objects.equals(mainEmail, that.mainEmail) &&
             Objects.equals(dealerTypeId, that.dealerTypeId) &&
             Objects.equals(distinct, that.distinct)
         );
@@ -115,7 +134,7 @@ public class DealerCriteria implements Serializable, Criteria {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, dealerTypeId, distinct);
+        return Objects.hash(id, name, mainEmail, dealerTypeId, distinct);
     }
 
     // prettier-ignore
@@ -124,6 +143,7 @@ public class DealerCriteria implements Serializable, Criteria {
         return "DealerCriteria{" +
             (id != null ? "id=" + id + ", " : "") +
             (name != null ? "name=" + name + ", " : "") +
+            (mainEmail != null ? "mainEmail=" + mainEmail + ", " : "") +
             (dealerTypeId != null ? "dealerTypeId=" + dealerTypeId + ", " : "") +
             (distinct != null ? "distinct=" + distinct + ", " : "") +
             "}";

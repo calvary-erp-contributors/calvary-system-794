@@ -17,6 +17,9 @@
             <column name="name" type="varchar(255)">
                 <constraints nullable="false" unique="true" uniqueConstraintName="ux_dealer__name" />
             </column>
+            <column name="main_email" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
             <column name="dealer_type_id" type="bigint">
                 <constraints nullable="false" />
             </column>
@@ -42,6 +45,7 @@
                   usePreparedStatements="true">
             <column name="id" type="numeric"/>
             <column name="name" type="string"/>
+            <column name="main_email" type="string"/>
             <column name="dealer_type_id" type="numeric"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>

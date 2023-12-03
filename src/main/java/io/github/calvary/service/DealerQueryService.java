@@ -97,6 +97,9 @@ public class DealerQueryService extends QueryService<Dealer> {
             if (criteria.getName() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getName(), Dealer_.name));
             }
+            if (criteria.getMainEmail() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getMainEmail(), Dealer_.mainEmail));
+            }
             if (criteria.getDealerTypeId() != null) {
                 specification =
                     specification.and(
