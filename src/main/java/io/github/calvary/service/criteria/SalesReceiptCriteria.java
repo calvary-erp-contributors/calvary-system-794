@@ -41,6 +41,8 @@ public class SalesReceiptCriteria implements Serializable, Criteria {
 
     private LongFilter transactionItemEntryId;
 
+    private LongFilter transferItemEntryId;
+
     private Boolean distinct;
 
     public SalesReceiptCriteria() {}
@@ -56,6 +58,7 @@ public class SalesReceiptCriteria implements Serializable, Criteria {
         this.dealerId = other.dealerId == null ? null : other.dealerId.copy();
         this.salesReceiptTitleId = other.salesReceiptTitleId == null ? null : other.salesReceiptTitleId.copy();
         this.transactionItemEntryId = other.transactionItemEntryId == null ? null : other.transactionItemEntryId.copy();
+        this.transferItemEntryId = other.transferItemEntryId == null ? null : other.transferItemEntryId.copy();
         this.distinct = other.distinct;
     }
 
@@ -214,6 +217,21 @@ public class SalesReceiptCriteria implements Serializable, Criteria {
         this.transactionItemEntryId = transactionItemEntryId;
     }
 
+    public LongFilter getTransferItemEntryId() {
+        return transferItemEntryId;
+    }
+
+    public LongFilter transferItemEntryId() {
+        if (transferItemEntryId == null) {
+            transferItemEntryId = new LongFilter();
+        }
+        return transferItemEntryId;
+    }
+
+    public void setTransferItemEntryId(LongFilter transferItemEntryId) {
+        this.transferItemEntryId = transferItemEntryId;
+    }
+
     public Boolean getDistinct() {
         return distinct;
     }
@@ -242,6 +260,7 @@ public class SalesReceiptCriteria implements Serializable, Criteria {
             Objects.equals(dealerId, that.dealerId) &&
             Objects.equals(salesReceiptTitleId, that.salesReceiptTitleId) &&
             Objects.equals(transactionItemEntryId, that.transactionItemEntryId) &&
+            Objects.equals(transferItemEntryId, that.transferItemEntryId) &&
             Objects.equals(distinct, that.distinct)
         );
     }
@@ -259,6 +278,7 @@ public class SalesReceiptCriteria implements Serializable, Criteria {
             dealerId,
             salesReceiptTitleId,
             transactionItemEntryId,
+            transferItemEntryId,
             distinct
         );
     }
@@ -277,6 +297,7 @@ public class SalesReceiptCriteria implements Serializable, Criteria {
             (dealerId != null ? "dealerId=" + dealerId + ", " : "") +
             (salesReceiptTitleId != null ? "salesReceiptTitleId=" + salesReceiptTitleId + ", " : "") +
             (transactionItemEntryId != null ? "transactionItemEntryId=" + transactionItemEntryId + ", " : "") +
+            (transferItemEntryId != null ? "transferItemEntryId=" + transferItemEntryId + ", " : "") +
             (distinct != null ? "distinct=" + distinct + ", " : "") +
             "}";
     }

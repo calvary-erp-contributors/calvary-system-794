@@ -62,6 +62,12 @@ public class SalesReceipt implements Serializable {
     @JsonIgnoreProperties(value = { "transactionItem", "salesReceipt" }, allowSetters = true)
     private Set<TransactionItemEntry> transactionItemEntries = new HashSet<>();
 
+    @OneToMany(mappedBy = "salesReceipt")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @org.springframework.data.annotation.Transient
+    @JsonIgnoreProperties(value = { "transactionItem", "salesReceipt" }, allowSetters = true)
+    private Set<TransferItemEntry> transferItemEntries = new HashSet<>();
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
     public Long getId() {
@@ -209,6 +215,37 @@ public class SalesReceipt implements Serializable {
     public SalesReceipt removeTransactionItemEntry(TransactionItemEntry transactionItemEntry) {
         this.transactionItemEntries.remove(transactionItemEntry);
         transactionItemEntry.setSalesReceipt(null);
+        return this;
+    }
+
+    public Set<TransferItemEntry> getTransferItemEntries() {
+        return this.transferItemEntries;
+    }
+
+    public void setTransferItemEntries(Set<TransferItemEntry> transferItemEntries) {
+        if (this.transferItemEntries != null) {
+            this.transferItemEntries.forEach(i -> i.setSalesReceipt(null));
+        }
+        if (transferItemEntries != null) {
+            transferItemEntries.forEach(i -> i.setSalesReceipt(this));
+        }
+        this.transferItemEntries = transferItemEntries;
+    }
+
+    public SalesReceipt transferItemEntries(Set<TransferItemEntry> transferItemEntries) {
+        this.setTransferItemEntries(transferItemEntries);
+        return this;
+    }
+
+    public SalesReceipt addTransferItemEntry(TransferItemEntry transferItemEntry) {
+        this.transferItemEntries.add(transferItemEntry);
+        transferItemEntry.setSalesReceipt(this);
+        return this;
+    }
+
+    public SalesReceipt removeTransferItemEntry(TransferItemEntry transferItemEntry) {
+        this.transferItemEntries.remove(transferItemEntry);
+        transferItemEntry.setSalesReceipt(null);
         return this;
     }
 

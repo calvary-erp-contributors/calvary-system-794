@@ -13,6 +13,7 @@ import io.github.calvary.domain.SalesReceipt;
 import io.github.calvary.domain.SalesReceiptTitle;
 import io.github.calvary.domain.TransactionClass;
 import io.github.calvary.domain.TransactionItemEntry;
+import io.github.calvary.domain.TransferItemEntry;
 import io.github.calvary.repository.SalesReceiptRepository;
 import io.github.calvary.repository.search.SalesReceiptSearchRepository;
 import io.github.calvary.service.SalesReceiptService;
@@ -697,6 +698,29 @@ class SalesReceiptResourceIT {
 
         // Get all the salesReceiptList where transactionItemEntry equals to (transactionItemEntryId + 1)
         defaultSalesReceiptShouldNotBeFound("transactionItemEntryId.equals=" + (transactionItemEntryId + 1));
+    }
+
+    @Test
+    @Transactional
+    void getAllSalesReceiptsByTransferItemEntryIsEqualToSomething() throws Exception {
+        TransferItemEntry transferItemEntry;
+        if (TestUtil.findAll(em, TransferItemEntry.class).isEmpty()) {
+            salesReceiptRepository.saveAndFlush(salesReceipt);
+            transferItemEntry = TransferItemEntryResourceIT.createEntity(em);
+        } else {
+            transferItemEntry = TestUtil.findAll(em, TransferItemEntry.class).get(0);
+        }
+        em.persist(transferItemEntry);
+        em.flush();
+        salesReceipt.addTransferItemEntry(transferItemEntry);
+        salesReceiptRepository.saveAndFlush(salesReceipt);
+        Long transferItemEntryId = transferItemEntry.getId();
+
+        // Get all the salesReceiptList where transferItemEntry equals to transferItemEntryId
+        defaultSalesReceiptShouldBeFound("transferItemEntryId.equals=" + transferItemEntryId);
+
+        // Get all the salesReceiptList where transferItemEntry equals to (transferItemEntryId + 1)
+        defaultSalesReceiptShouldNotBeFound("transferItemEntryId.equals=" + (transferItemEntryId + 1));
     }
 
     /**

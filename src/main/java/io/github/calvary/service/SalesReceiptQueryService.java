@@ -146,6 +146,15 @@ public class SalesReceiptQueryService extends QueryService<SalesReceipt> {
                         )
                     );
             }
+            if (criteria.getTransferItemEntryId() != null) {
+                specification =
+                    specification.and(
+                        buildSpecification(
+                            criteria.getTransferItemEntryId(),
+                            root -> root.join(SalesReceipt_.transferItemEntries, JoinType.LEFT).get(TransferItemEntry_.id)
+                        )
+                    );
+            }
         }
         return specification;
     }

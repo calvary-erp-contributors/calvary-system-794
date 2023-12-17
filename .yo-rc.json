@@ -35,14 +35,15 @@
       "SalesReceipt",
       "TransactionItemAmount",
       "TransactionItemEntry",
-      "SalesReceiptTitle"
+      "SalesReceiptTitle",
+      "TransferItemEntry"
     ],
     "entitySuffix": "",
     "jhiPrefix": "jhi",
     "jhipsterVersion": "7.9.4",
     "jwtSecretKey": "MzljZjJhYjQwNzg0ODkwZmU3YjkyZWM4M2U5YzY4Y2EyZDU3YjMwMGE2ZmY4ZmY1ZmIwZTdmZDU4ZGRhYmFlODZkMzJhOWJjZDg3ZTY0OWUxZjhkMTdhNDI4Zjk5YjUxMWUxOTQ2NTgyYjk3ZTgxYjVmYzE1MmI3MTU3ODkyYWU=",
     "languages": ["en", "fr"],
-    "lastLiquibaseTimestamp": 1701025405000,
+    "lastLiquibaseTimestamp": 1702815514000,
     "messageBroker": "kafka",
     "microfrontend": false,
     "microfrontends": [],

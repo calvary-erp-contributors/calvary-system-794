@@ -9,14 +9,14 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
- * A TransactionItemEntry.
+ * A TransferItemEntry.
  */
 @Entity
-@Table(name = "transaction_item_entry")
+@Table(name = "transfer_item_entry")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-@org.springframework.data.elasticsearch.annotations.Document(indexName = "transactionitementry")
+@org.springframework.data.elasticsearch.annotations.Document(indexName = "transferitementry")
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class TransactionItemEntry implements Serializable {
+public class TransferItemEntry implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -29,7 +29,8 @@ public class TransactionItemEntry implements Serializable {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "item_amount", precision = 21, scale = 2)
+    @NotNull
+    @Column(name = "item_amount", precision = 21, scale = 2, nullable = false)
     private BigDecimal itemAmount;
 
     @ManyToOne(optional = false)
@@ -37,7 +38,8 @@ public class TransactionItemEntry implements Serializable {
     @JsonIgnoreProperties(value = { "transactionClass", "transactionAccount" }, allowSetters = true)
     private TransactionItem transactionItem;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
+    @NotNull
     @JsonIgnoreProperties(
         value = { "transactionClass", "dealer", "salesReceiptTitle", "transactionItemEntries", "transferItemEntries" },
         allowSetters = true
@@ -50,7 +52,7 @@ public class TransactionItemEntry implements Serializable {
         return this.id;
     }
 
-    public TransactionItemEntry id(Long id) {
+    public TransferItemEntry id(Long id) {
         this.setId(id);
         return this;
     }
@@ -63,7 +65,7 @@ public class TransactionItemEntry implements Serializable {
         return this.description;
     }
 
-    public TransactionItemEntry description(String description) {
+    public TransferItemEntry description(String description) {
         this.setDescription(description);
         return this;
     }
@@ -76,7 +78,7 @@ public class TransactionItemEntry implements Serializable {
         return this.itemAmount;
     }
 
-    public TransactionItemEntry itemAmount(BigDecimal itemAmount) {
+    public TransferItemEntry itemAmount(BigDecimal itemAmount) {
         this.setItemAmount(itemAmount);
         return this;
     }
@@ -93,7 +95,7 @@ public class TransactionItemEntry implements Serializable {
         this.transactionItem = transactionItem;
     }
 
-    public TransactionItemEntry transactionItem(TransactionItem transactionItem) {
+    public TransferItemEntry transactionItem(TransactionItem transactionItem) {
         this.setTransactionItem(transactionItem);
         return this;
     }
@@ -106,7 +108,7 @@ public class TransactionItemEntry implements Serializable {
         this.salesReceipt = salesReceipt;
     }
 
-    public TransactionItemEntry salesReceipt(SalesReceipt salesReceipt) {
+    public TransferItemEntry salesReceipt(SalesReceipt salesReceipt) {
         this.setSalesReceipt(salesReceipt);
         return this;
     }
@@ -118,10 +120,10 @@ public class TransactionItemEntry implements Serializable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof TransactionItemEntry)) {
+        if (!(o instanceof TransferItemEntry)) {
             return false;
         }
-        return id != null && id.equals(((TransactionItemEntry) o).id);
+        return id != null && id.equals(((TransferItemEntry) o).id);
     }
 
     @Override
@@ -133,7 +135,7 @@ public class TransactionItemEntry implements Serializable {
     // prettier-ignore
     @Override
     public String toString() {
-        return "TransactionItemEntry{" +
+        return "TransferItemEntry{" +
             "id=" + getId() +
             ", description='" + getDescription() + "'" +
             ", itemAmount=" + getItemAmount() +
