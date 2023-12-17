@@ -1,0 +1,26 @@
+{
+  "changelogDate": "20231217154147",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "timeOfPosting",
+      "fieldType": "ZonedDateTime",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "postingIdentifier",
+      "fieldType": "UUID",
+      "fieldValidateRules": ["required", "unique"]
+    },
+    {
+      "fieldName": "numberOfReceiptsPosted",
+      "fieldType": "Integer"
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "SalesReceiptProposal",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [],
+  "service": "serviceImpl"
+}
