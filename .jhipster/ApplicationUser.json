@@ -1,0 +1,58 @@
+{
+  "changelogDate": "20231217163755",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "applicationIdentity",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "unique"]
+    },
+    {
+      "fieldName": "lastLoginTime",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "timeOfCreation",
+      "fieldType": "ZonedDateTime",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "lastTimeOfModification",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "userIdentifier",
+      "fieldType": "UUID",
+      "fieldValidateRules": ["required", "unique"]
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "ApplicationUser",
+  "pagination": "infinite-scroll",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityField": "applicationIdentity",
+      "otherEntityName": "applicationUser",
+      "relationshipName": "createdBy",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityField": "applicationIdentity",
+      "otherEntityName": "applicationUser",
+      "relationshipName": "lastModifiedBy",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "id": false,
+      "otherEntityField": "login",
+      "otherEntityName": "user",
+      "otherEntityRelationshipName": "applicationUser",
+      "ownerSide": true,
+      "relationshipName": "systemIdentity",
+      "relationshipType": "one-to-one",
+      "relationshipValidateRules": ["required"]
+    }
+  ],
+  "service": "serviceImpl"
+}

@@ -21,6 +21,13 @@
   "name": "SalesReceiptProposal",
   "pagination": "pagination",
   "readOnly": false,
-  "relationships": [],
+  "relationships": [
+    {
+      "otherEntityField": "applicationIdentity",
+      "otherEntityName": "applicationUser",
+      "relationshipName": "proposedBy",
+      "relationshipType": "many-to-one"
+    }
+  ],
   "service": "serviceImpl"
 }

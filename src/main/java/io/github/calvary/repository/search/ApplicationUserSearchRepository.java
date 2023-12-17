@@ -2,8 +2,8 @@ package io.github.calvary.repository.search;
 
 import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
-import io.github.calvary.domain.SalesReceiptProposal;
-import io.github.calvary.repository.SalesReceiptProposalRepository;
+import io.github.calvary.domain.ApplicationUser;
+import io.github.calvary.repository.ApplicationUserRepository;
 import java.util.List;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,47 +26,44 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Spring Data Elasticsearch repository for the {@link SalesReceiptProposal} entity.
+ * Spring Data Elasticsearch repository for the {@link ApplicationUser} entity.
  */
-public interface SalesReceiptProposalSearchRepository
-    extends ElasticsearchRepository<SalesReceiptProposal, Long>, SalesReceiptProposalSearchRepositoryInternal {}
+public interface ApplicationUserSearchRepository
+    extends ElasticsearchRepository<ApplicationUser, Long>, ApplicationUserSearchRepositoryInternal {}
 
-interface SalesReceiptProposalSearchRepositoryInternal {
-    Page<SalesReceiptProposal> search(String query, Pageable pageable);
+interface ApplicationUserSearchRepositoryInternal {
+    Page<ApplicationUser> search(String query, Pageable pageable);
 
-    Page<SalesReceiptProposal> search(Query query);
+    Page<ApplicationUser> search(Query query);
 
-    void index(SalesReceiptProposal entity);
+    void index(ApplicationUser entity);
 }
 
-class SalesReceiptProposalSearchRepositoryInternalImpl implements SalesReceiptProposalSearchRepositoryInternal {
+class ApplicationUserSearchRepositoryInternalImpl implements ApplicationUserSearchRepositoryInternal {
 
     private final ElasticsearchRestTemplate elasticsearchTemplate;
-    private final SalesReceiptProposalRepository repository;
+    private final ApplicationUserRepository repository;
 
-    SalesReceiptProposalSearchRepositoryInternalImpl(
-        ElasticsearchRestTemplate elasticsearchTemplate,
-        SalesReceiptProposalRepository repository
-    ) {
+    ApplicationUserSearchRepositoryInternalImpl(ElasticsearchRestTemplate elasticsearchTemplate, ApplicationUserRepository repository) {
         this.elasticsearchTemplate = elasticsearchTemplate;
         this.repository = repository;
     }
 
     @Override
-    public Page<SalesReceiptProposal> search(String query, Pageable pageable) {
+    public Page<ApplicationUser> search(String query, Pageable pageable) {
         NativeSearchQuery nativeSearchQuery = new NativeSearchQuery(queryStringQuery(query));
         return search(nativeSearchQuery.setPageable(pageable));
     }
 
     @Override
-    public Page<SalesReceiptProposal> search(Query query) {
-        SearchHits<SalesReceiptProposal> searchHits = elasticsearchTemplate.search(query, SalesReceiptProposal.class);
-        List<SalesReceiptProposal> hits = searchHits.map(SearchHit::getContent).stream().collect(Collectors.toList());
+    public Page<ApplicationUser> search(Query query) {
+        SearchHits<ApplicationUser> searchHits = elasticsearchTemplate.search(query, ApplicationUser.class);
+        List<ApplicationUser> hits = searchHits.map(SearchHit::getContent).stream().collect(Collectors.toList());
         return new PageImpl<>(hits, query.getPageable(), searchHits.getTotalHits());
     }
 
     @Override
-    public void index(SalesReceiptProposal entity) {
+    public void index(ApplicationUser entity) {
         repository.findOneWithEagerRelationships(entity.getId()).ifPresent(elasticsearchTemplate::save);
     }
 }
