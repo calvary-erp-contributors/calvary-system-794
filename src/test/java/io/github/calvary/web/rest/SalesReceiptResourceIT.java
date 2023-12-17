@@ -125,16 +125,6 @@ class SalesReceiptResourceIT {
         }
         salesReceipt.setDealer(dealer);
         // Add required entity
-        TransactionItemEntry transactionItemEntry;
-        if (TestUtil.findAll(em, TransactionItemEntry.class).isEmpty()) {
-            transactionItemEntry = TransactionItemEntryResourceIT.createEntity(em);
-            em.persist(transactionItemEntry);
-            em.flush();
-        } else {
-            transactionItemEntry = TestUtil.findAll(em, TransactionItemEntry.class).get(0);
-        }
-        salesReceipt.getTransactionItemEntries().add(transactionItemEntry);
-        // Add required entity
         SalesReceiptTitle salesReceiptTitle;
         if (TestUtil.findAll(em, SalesReceiptTitle.class).isEmpty()) {
             salesReceiptTitle = SalesReceiptTitleResourceIT.createEntity(em);
@@ -170,16 +160,6 @@ class SalesReceiptResourceIT {
             dealer = TestUtil.findAll(em, Dealer.class).get(0);
         }
         salesReceipt.setDealer(dealer);
-        // Add required entity
-        TransactionItemEntry transactionItemEntry;
-        if (TestUtil.findAll(em, TransactionItemEntry.class).isEmpty()) {
-            transactionItemEntry = TransactionItemEntryResourceIT.createUpdatedEntity(em);
-            em.persist(transactionItemEntry);
-            em.flush();
-        } else {
-            transactionItemEntry = TestUtil.findAll(em, TransactionItemEntry.class).get(0);
-        }
-        salesReceipt.getTransactionItemEntries().add(transactionItemEntry);
         // Add required entity
         SalesReceiptTitle salesReceiptTitle;
         if (TestUtil.findAll(em, SalesReceiptTitle.class).isEmpty()) {
@@ -675,29 +655,6 @@ class SalesReceiptResourceIT {
 
     @Test
     @Transactional
-    void getAllSalesReceiptsByTransactionItemEntryIsEqualToSomething() throws Exception {
-        TransactionItemEntry transactionItemEntry;
-        if (TestUtil.findAll(em, TransactionItemEntry.class).isEmpty()) {
-            salesReceiptRepository.saveAndFlush(salesReceipt);
-            transactionItemEntry = TransactionItemEntryResourceIT.createEntity(em);
-        } else {
-            transactionItemEntry = TestUtil.findAll(em, TransactionItemEntry.class).get(0);
-        }
-        em.persist(transactionItemEntry);
-        em.flush();
-        salesReceipt.addTransactionItemEntry(transactionItemEntry);
-        salesReceiptRepository.saveAndFlush(salesReceipt);
-        Long transactionItemEntryId = transactionItemEntry.getId();
-
-        // Get all the salesReceiptList where transactionItemEntry equals to transactionItemEntryId
-        defaultSalesReceiptShouldBeFound("transactionItemEntryId.equals=" + transactionItemEntryId);
-
-        // Get all the salesReceiptList where transactionItemEntry equals to (transactionItemEntryId + 1)
-        defaultSalesReceiptShouldNotBeFound("transactionItemEntryId.equals=" + (transactionItemEntryId + 1));
-    }
-
-    @Test
-    @Transactional
     void getAllSalesReceiptsBySalesReceiptTitleIsEqualToSomething() throws Exception {
         SalesReceiptTitle salesReceiptTitle;
         if (TestUtil.findAll(em, SalesReceiptTitle.class).isEmpty()) {
@@ -717,6 +674,29 @@ class SalesReceiptResourceIT {
 
         // Get all the salesReceiptList where salesReceiptTitle equals to (salesReceiptTitleId + 1)
         defaultSalesReceiptShouldNotBeFound("salesReceiptTitleId.equals=" + (salesReceiptTitleId + 1));
+    }
+
+    @Test
+    @Transactional
+    void getAllSalesReceiptsByTransactionItemEntryIsEqualToSomething() throws Exception {
+        TransactionItemEntry transactionItemEntry;
+        if (TestUtil.findAll(em, TransactionItemEntry.class).isEmpty()) {
+            salesReceiptRepository.saveAndFlush(salesReceipt);
+            transactionItemEntry = TransactionItemEntryResourceIT.createEntity(em);
+        } else {
+            transactionItemEntry = TestUtil.findAll(em, TransactionItemEntry.class).get(0);
+        }
+        em.persist(transactionItemEntry);
+        em.flush();
+        salesReceipt.addTransactionItemEntry(transactionItemEntry);
+        salesReceiptRepository.saveAndFlush(salesReceipt);
+        Long transactionItemEntryId = transactionItemEntry.getId();
+
+        // Get all the salesReceiptList where transactionItemEntry equals to transactionItemEntryId
+        defaultSalesReceiptShouldBeFound("transactionItemEntryId.equals=" + transactionItemEntryId);
+
+        // Get all the salesReceiptList where transactionItemEntry equals to (transactionItemEntryId + 1)
+        defaultSalesReceiptShouldNotBeFound("transactionItemEntryId.equals=" + (transactionItemEntryId + 1));
     }
 
     /**

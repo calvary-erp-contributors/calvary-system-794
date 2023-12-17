@@ -52,20 +52,15 @@ public class SalesReceipt implements Serializable {
     @JsonIgnoreProperties(value = { "dealerType" }, allowSetters = true)
     private Dealer dealer;
 
-    @ManyToMany
-    @NotNull
-    @JoinTable(
-        name = "rel_sales_receipt__transaction_item_entry",
-        joinColumns = @JoinColumn(name = "sales_receipt_id"),
-        inverseJoinColumns = @JoinColumn(name = "transaction_item_entry_id")
-    )
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "transactionItem" }, allowSetters = true)
-    private Set<TransactionItemEntry> transactionItemEntries = new HashSet<>();
-
     @ManyToOne(optional = false)
     @NotNull
     private SalesReceiptTitle salesReceiptTitle;
+
+    @OneToMany(mappedBy = "salesReceipt")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @org.springframework.data.annotation.Transient
+    @JsonIgnoreProperties(value = { "transactionItem", "salesReceipt" }, allowSetters = true)
+    private Set<TransactionItemEntry> transactionItemEntries = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -173,29 +168,6 @@ public class SalesReceipt implements Serializable {
         return this;
     }
 
-    public Set<TransactionItemEntry> getTransactionItemEntries() {
-        return this.transactionItemEntries;
-    }
-
-    public void setTransactionItemEntries(Set<TransactionItemEntry> transactionItemEntries) {
-        this.transactionItemEntries = transactionItemEntries;
-    }
-
-    public SalesReceipt transactionItemEntries(Set<TransactionItemEntry> transactionItemEntries) {
-        this.setTransactionItemEntries(transactionItemEntries);
-        return this;
-    }
-
-    public SalesReceipt addTransactionItemEntry(TransactionItemEntry transactionItemEntry) {
-        this.transactionItemEntries.add(transactionItemEntry);
-        return this;
-    }
-
-    public SalesReceipt removeTransactionItemEntry(TransactionItemEntry transactionItemEntry) {
-        this.transactionItemEntries.remove(transactionItemEntry);
-        return this;
-    }
-
     public SalesReceiptTitle getSalesReceiptTitle() {
         return this.salesReceiptTitle;
     }
@@ -206,6 +178,37 @@ public class SalesReceipt implements Serializable {
 
     public SalesReceipt salesReceiptTitle(SalesReceiptTitle salesReceiptTitle) {
         this.setSalesReceiptTitle(salesReceiptTitle);
+        return this;
+    }
+
+    public Set<TransactionItemEntry> getTransactionItemEntries() {
+        return this.transactionItemEntries;
+    }
+
+    public void setTransactionItemEntries(Set<TransactionItemEntry> transactionItemEntries) {
+        if (this.transactionItemEntries != null) {
+            this.transactionItemEntries.forEach(i -> i.setSalesReceipt(null));
+        }
+        if (transactionItemEntries != null) {
+            transactionItemEntries.forEach(i -> i.setSalesReceipt(this));
+        }
+        this.transactionItemEntries = transactionItemEntries;
+    }
+
+    public SalesReceipt transactionItemEntries(Set<TransactionItemEntry> transactionItemEntries) {
+        this.setTransactionItemEntries(transactionItemEntries);
+        return this;
+    }
+
+    public SalesReceipt addTransactionItemEntry(TransactionItemEntry transactionItemEntry) {
+        this.transactionItemEntries.add(transactionItemEntry);
+        transactionItemEntry.setSalesReceipt(this);
+        return this;
+    }
+
+    public SalesReceipt removeTransactionItemEntry(TransactionItemEntry transactionItemEntry) {
+        this.transactionItemEntries.remove(transactionItemEntry);
+        transactionItemEntry.setSalesReceipt(null);
         return this;
     }
 

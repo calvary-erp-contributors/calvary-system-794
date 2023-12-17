@@ -1,0 +1,20 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet author="edwin.njeru@scroll" id="1702804357141-11">
+        <addColumn tableName="transaction_item_entry">
+            <column name="sales_receipt_id" type="int8"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="edwin.njeru@scroll" id="1702804357141-12">
+        <addForeignKeyConstraint baseColumnNames="sales_receipt_id" baseTableName="transaction_item_entry" constraintName="FKavmk9yblk7xajc6rxwh3nnuu7" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="sales_receipt" validate="true"/>
+    </changeSet>
+    <changeSet author="edwin.njeru@scroll" id="1702804357141-13">
+        <dropForeignKeyConstraint baseTableName="rel_sales_receipt__transaction_item_entry" constraintName="FKdmmgbwevs3yiq0oigwebn2yr5"/>
+    </changeSet>
+    <changeSet author="edwin.njeru@scroll" id="1702804357141-14">
+        <dropForeignKeyConstraint baseTableName="rel_sales_receipt__transaction_item_entry" constraintName="FKfqfpqcw1wtjh50odjurekngxt"/>
+    </changeSet>
+    <changeSet author="edwin.njeru@scroll" id="1702804357141-15">
+        <dropTable tableName="rel_sales_receipt__transaction_item_entry"/>
+    </changeSet>
+</databaseChangeLog>

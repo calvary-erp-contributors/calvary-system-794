@@ -37,9 +37,9 @@ public class SalesReceiptCriteria implements Serializable, Criteria {
 
     private LongFilter dealerId;
 
-    private LongFilter transactionItemEntryId;
-
     private LongFilter salesReceiptTitleId;
+
+    private LongFilter transactionItemEntryId;
 
     private Boolean distinct;
 
@@ -54,8 +54,8 @@ public class SalesReceiptCriteria implements Serializable, Criteria {
         this.shouldBeEmailed = other.shouldBeEmailed == null ? null : other.shouldBeEmailed.copy();
         this.transactionClassId = other.transactionClassId == null ? null : other.transactionClassId.copy();
         this.dealerId = other.dealerId == null ? null : other.dealerId.copy();
-        this.transactionItemEntryId = other.transactionItemEntryId == null ? null : other.transactionItemEntryId.copy();
         this.salesReceiptTitleId = other.salesReceiptTitleId == null ? null : other.salesReceiptTitleId.copy();
+        this.transactionItemEntryId = other.transactionItemEntryId == null ? null : other.transactionItemEntryId.copy();
         this.distinct = other.distinct;
     }
 
@@ -184,21 +184,6 @@ public class SalesReceiptCriteria implements Serializable, Criteria {
         this.dealerId = dealerId;
     }
 
-    public LongFilter getTransactionItemEntryId() {
-        return transactionItemEntryId;
-    }
-
-    public LongFilter transactionItemEntryId() {
-        if (transactionItemEntryId == null) {
-            transactionItemEntryId = new LongFilter();
-        }
-        return transactionItemEntryId;
-    }
-
-    public void setTransactionItemEntryId(LongFilter transactionItemEntryId) {
-        this.transactionItemEntryId = transactionItemEntryId;
-    }
-
     public LongFilter getSalesReceiptTitleId() {
         return salesReceiptTitleId;
     }
@@ -212,6 +197,21 @@ public class SalesReceiptCriteria implements Serializable, Criteria {
 
     public void setSalesReceiptTitleId(LongFilter salesReceiptTitleId) {
         this.salesReceiptTitleId = salesReceiptTitleId;
+    }
+
+    public LongFilter getTransactionItemEntryId() {
+        return transactionItemEntryId;
+    }
+
+    public LongFilter transactionItemEntryId() {
+        if (transactionItemEntryId == null) {
+            transactionItemEntryId = new LongFilter();
+        }
+        return transactionItemEntryId;
+    }
+
+    public void setTransactionItemEntryId(LongFilter transactionItemEntryId) {
+        this.transactionItemEntryId = transactionItemEntryId;
     }
 
     public Boolean getDistinct() {
@@ -240,8 +240,8 @@ public class SalesReceiptCriteria implements Serializable, Criteria {
             Objects.equals(shouldBeEmailed, that.shouldBeEmailed) &&
             Objects.equals(transactionClassId, that.transactionClassId) &&
             Objects.equals(dealerId, that.dealerId) &&
-            Objects.equals(transactionItemEntryId, that.transactionItemEntryId) &&
             Objects.equals(salesReceiptTitleId, that.salesReceiptTitleId) &&
+            Objects.equals(transactionItemEntryId, that.transactionItemEntryId) &&
             Objects.equals(distinct, that.distinct)
         );
     }
@@ -257,8 +257,8 @@ public class SalesReceiptCriteria implements Serializable, Criteria {
             shouldBeEmailed,
             transactionClassId,
             dealerId,
-            transactionItemEntryId,
             salesReceiptTitleId,
+            transactionItemEntryId,
             distinct
         );
     }
@@ -275,8 +275,8 @@ public class SalesReceiptCriteria implements Serializable, Criteria {
             (shouldBeEmailed != null ? "shouldBeEmailed=" + shouldBeEmailed + ", " : "") +
             (transactionClassId != null ? "transactionClassId=" + transactionClassId + ", " : "") +
             (dealerId != null ? "dealerId=" + dealerId + ", " : "") +
-            (transactionItemEntryId != null ? "transactionItemEntryId=" + transactionItemEntryId + ", " : "") +
             (salesReceiptTitleId != null ? "salesReceiptTitleId=" + salesReceiptTitleId + ", " : "") +
+            (transactionItemEntryId != null ? "transactionItemEntryId=" + transactionItemEntryId + ", " : "") +
             (distinct != null ? "distinct=" + distinct + ", " : "") +
             "}";
     }

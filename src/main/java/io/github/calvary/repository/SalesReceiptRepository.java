@@ -11,23 +11,19 @@ import org.springframework.stereotype.Repository;
 
 /**
  * Spring Data JPA repository for the SalesReceipt entity.
- *
- * When extending this class, extend SalesReceiptRepositoryWithBagRelationships too.
- * For more information refer to https://github.com/jhipster/generator-jhipster/issues/17990.
  */
 @Repository
-public interface SalesReceiptRepository
-    extends SalesReceiptRepositoryWithBagRelationships, JpaRepository<SalesReceipt, Long>, JpaSpecificationExecutor<SalesReceipt> {
+public interface SalesReceiptRepository extends JpaRepository<SalesReceipt, Long>, JpaSpecificationExecutor<SalesReceipt> {
     default Optional<SalesReceipt> findOneWithEagerRelationships(Long id) {
-        return this.fetchBagRelationships(this.findOneWithToOneRelationships(id));
+        return this.findOneWithToOneRelationships(id);
     }
 
     default List<SalesReceipt> findAllWithEagerRelationships() {
-        return this.fetchBagRelationships(this.findAllWithToOneRelationships());
+        return this.findAllWithToOneRelationships();
     }
 
     default Page<SalesReceipt> findAllWithEagerRelationships(Pageable pageable) {
-        return this.fetchBagRelationships(this.findAllWithToOneRelationships(pageable));
+        return this.findAllWithToOneRelationships(pageable);
     }
 
     @Query(

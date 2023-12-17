@@ -9,6 +9,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import io.github.calvary.IntegrationTest;
+import io.github.calvary.domain.SalesReceipt;
 import io.github.calvary.domain.TransactionItem;
 import io.github.calvary.domain.TransactionItemEntry;
 import io.github.calvary.repository.TransactionItemEntryRepository;
@@ -445,6 +446,29 @@ class TransactionItemEntryResourceIT {
 
         // Get all the transactionItemEntryList where transactionItem equals to (transactionItemId + 1)
         defaultTransactionItemEntryShouldNotBeFound("transactionItemId.equals=" + (transactionItemId + 1));
+    }
+
+    @Test
+    @Transactional
+    void getAllTransactionItemEntriesBySalesReceiptIsEqualToSomething() throws Exception {
+        SalesReceipt salesReceipt;
+        if (TestUtil.findAll(em, SalesReceipt.class).isEmpty()) {
+            transactionItemEntryRepository.saveAndFlush(transactionItemEntry);
+            salesReceipt = SalesReceiptResourceIT.createEntity(em);
+        } else {
+            salesReceipt = TestUtil.findAll(em, SalesReceipt.class).get(0);
+        }
+        em.persist(salesReceipt);
+        em.flush();
+        transactionItemEntry.setSalesReceipt(salesReceipt);
+        transactionItemEntryRepository.saveAndFlush(transactionItemEntry);
+        Long salesReceiptId = salesReceipt.getId();
+
+        // Get all the transactionItemEntryList where salesReceipt equals to salesReceiptId
+        defaultTransactionItemEntryShouldBeFound("salesReceiptId.equals=" + salesReceiptId);
+
+        // Get all the transactionItemEntryList where salesReceipt equals to (salesReceiptId + 1)
+        defaultTransactionItemEntryShouldNotBeFound("salesReceiptId.equals=" + (salesReceiptId + 1));
     }
 
     /**

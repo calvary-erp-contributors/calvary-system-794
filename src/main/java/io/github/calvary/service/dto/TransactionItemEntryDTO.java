@@ -19,6 +19,8 @@ public class TransactionItemEntryDTO implements Serializable {
 
     private TransactionItemDTO transactionItem;
 
+    private SalesReceiptDTO salesReceipt;
+
     public Long getId() {
         return id;
     }
@@ -51,6 +53,14 @@ public class TransactionItemEntryDTO implements Serializable {
         this.transactionItem = transactionItem;
     }
 
+    public SalesReceiptDTO getSalesReceipt() {
+        return salesReceipt;
+    }
+
+    public void setSalesReceipt(SalesReceiptDTO salesReceipt) {
+        this.salesReceipt = salesReceipt;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -80,6 +90,7 @@ public class TransactionItemEntryDTO implements Serializable {
             ", description='" + getDescription() + "'" +
             ", itemAmount=" + getItemAmount() +
             ", transactionItem=" + getTransactionItem() +
+            ", salesReceipt=" + getSalesReceipt() +
             "}";
     }
 }

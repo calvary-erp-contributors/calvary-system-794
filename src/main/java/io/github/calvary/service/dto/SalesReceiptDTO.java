@@ -2,9 +2,7 @@ package io.github.calvary.service.dto;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 import javax.validation.constraints.*;
 
 /**
@@ -29,8 +27,6 @@ public class SalesReceiptDTO implements Serializable {
     private TransactionClassDTO transactionClass;
 
     private DealerDTO dealer;
-
-    private Set<TransactionItemEntryDTO> transactionItemEntries = new HashSet<>();
 
     private SalesReceiptTitleDTO salesReceiptTitle;
 
@@ -98,14 +94,6 @@ public class SalesReceiptDTO implements Serializable {
         this.dealer = dealer;
     }
 
-    public Set<TransactionItemEntryDTO> getTransactionItemEntries() {
-        return transactionItemEntries;
-    }
-
-    public void setTransactionItemEntries(Set<TransactionItemEntryDTO> transactionItemEntries) {
-        this.transactionItemEntries = transactionItemEntries;
-    }
-
     public SalesReceiptTitleDTO getSalesReceiptTitle() {
         return salesReceiptTitle;
     }
@@ -147,7 +135,6 @@ public class SalesReceiptDTO implements Serializable {
             ", shouldBeEmailed='" + getShouldBeEmailed() + "'" +
             ", transactionClass=" + getTransactionClass() +
             ", dealer=" + getDealer() +
-            ", transactionItemEntries=" + getTransactionItemEntries() +
             ", salesReceiptTitle=" + getSalesReceiptTitle() +
             "}";
     }

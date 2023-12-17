@@ -37,6 +37,10 @@ public class TransactionItemEntry implements Serializable {
     @JsonIgnoreProperties(value = { "transactionClass", "transactionAccount" }, allowSetters = true)
     private TransactionItem transactionItem;
 
+    @ManyToOne
+    @JsonIgnoreProperties(value = { "transactionClass", "dealer", "salesReceiptTitle", "transactionItemEntries" }, allowSetters = true)
+    private SalesReceipt salesReceipt;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
     public Long getId() {
@@ -88,6 +92,19 @@ public class TransactionItemEntry implements Serializable {
 
     public TransactionItemEntry transactionItem(TransactionItem transactionItem) {
         this.setTransactionItem(transactionItem);
+        return this;
+    }
+
+    public SalesReceipt getSalesReceipt() {
+        return this.salesReceipt;
+    }
+
+    public void setSalesReceipt(SalesReceipt salesReceipt) {
+        this.salesReceipt = salesReceipt;
+    }
+
+    public TransactionItemEntry salesReceipt(SalesReceipt salesReceipt) {
+        this.setSalesReceipt(salesReceipt);
         return this;
     }
 

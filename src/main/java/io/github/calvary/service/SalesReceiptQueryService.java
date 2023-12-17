@@ -128,21 +128,21 @@ public class SalesReceiptQueryService extends QueryService<SalesReceipt> {
                         buildSpecification(criteria.getDealerId(), root -> root.join(SalesReceipt_.dealer, JoinType.LEFT).get(Dealer_.id))
                     );
             }
-            if (criteria.getTransactionItemEntryId() != null) {
-                specification =
-                    specification.and(
-                        buildSpecification(
-                            criteria.getTransactionItemEntryId(),
-                            root -> root.join(SalesReceipt_.transactionItemEntries, JoinType.LEFT).get(TransactionItemEntry_.id)
-                        )
-                    );
-            }
             if (criteria.getSalesReceiptTitleId() != null) {
                 specification =
                     specification.and(
                         buildSpecification(
                             criteria.getSalesReceiptTitleId(),
                             root -> root.join(SalesReceipt_.salesReceiptTitle, JoinType.LEFT).get(SalesReceiptTitle_.id)
+                        )
+                    );
+            }
+            if (criteria.getTransactionItemEntryId() != null) {
+                specification =
+                    specification.and(
+                        buildSpecification(
+                            criteria.getTransactionItemEntryId(),
+                            root -> root.join(SalesReceipt_.transactionItemEntries, JoinType.LEFT).get(TransactionItemEntry_.id)
                         )
                     );
             }

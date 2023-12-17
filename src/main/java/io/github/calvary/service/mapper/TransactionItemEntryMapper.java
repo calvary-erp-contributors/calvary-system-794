@@ -1,7 +1,9 @@
 package io.github.calvary.service.mapper;
 
+import io.github.calvary.domain.SalesReceipt;
 import io.github.calvary.domain.TransactionItem;
 import io.github.calvary.domain.TransactionItemEntry;
+import io.github.calvary.service.dto.SalesReceiptDTO;
 import io.github.calvary.service.dto.TransactionItemDTO;
 import io.github.calvary.service.dto.TransactionItemEntryDTO;
 import org.mapstruct.*;
@@ -12,6 +14,7 @@ import org.mapstruct.*;
 @Mapper(componentModel = "spring")
 public interface TransactionItemEntryMapper extends EntityMapper<TransactionItemEntryDTO, TransactionItemEntry> {
     @Mapping(target = "transactionItem", source = "transactionItem", qualifiedByName = "transactionItemItemName")
+    @Mapping(target = "salesReceipt", source = "salesReceipt", qualifiedByName = "salesReceiptId")
     TransactionItemEntryDTO toDto(TransactionItemEntry s);
 
     @Named("transactionItemItemName")
@@ -19,4 +22,9 @@ public interface TransactionItemEntryMapper extends EntityMapper<TransactionItem
     @Mapping(target = "id", source = "id")
     @Mapping(target = "itemName", source = "itemName")
     TransactionItemDTO toDtoTransactionItemItemName(TransactionItem transactionItem);
+
+    @Named("salesReceiptId")
+    @BeanMapping(ignoreByDefault = true)
+    @Mapping(target = "id", source = "id")
+    SalesReceiptDTO toDtoSalesReceiptId(SalesReceipt salesReceipt);
 }
