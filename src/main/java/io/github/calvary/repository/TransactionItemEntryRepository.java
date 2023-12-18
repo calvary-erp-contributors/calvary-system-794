@@ -1,6 +1,7 @@
 package io.github.calvary.repository;
 
 import io.github.calvary.domain.TransactionItemEntry;
+import io.github.calvary.domain.TransferItemEntry;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
@@ -42,4 +43,6 @@ public interface TransactionItemEntryRepository
         "select transactionItemEntry from TransactionItemEntry transactionItemEntry left join fetch transactionItemEntry.transactionItem where transactionItemEntry.id =:id"
     )
     Optional<TransactionItemEntry> findOneWithToOneRelationships(@Param("id") Long id);
+
+    List<TransactionItemEntry> findAllBySalesReceiptId(Long salesReceiptId);
 }

@@ -39,4 +39,6 @@ public interface TransferItemEntryRepository extends JpaRepository<TransferItemE
         "select transferItemEntry from TransferItemEntry transferItemEntry left join fetch transferItemEntry.transactionItem where transferItemEntry.id =:id"
     )
     Optional<TransferItemEntry> findOneWithToOneRelationships(@Param("id") Long id);
+
+    List<TransferItemEntry> findAllBySalesReceiptId(Long salesReceiptId);
 }
