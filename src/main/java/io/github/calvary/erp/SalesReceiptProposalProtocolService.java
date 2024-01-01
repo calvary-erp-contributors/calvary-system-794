@@ -2,6 +2,7 @@ package io.github.calvary.erp;
 
 import io.github.calvary.domain.TransactionItemEntry;
 import io.github.calvary.domain.TransferItemEntry;
+import io.github.calvary.erp.repository.InternalTransactionItemEntryRepository;
 import io.github.calvary.repository.TransactionItemEntryRepository;
 import io.github.calvary.repository.TransferItemEntryRepository;
 import io.github.calvary.service.SalesReceiptService;
@@ -16,17 +17,18 @@ public class SalesReceiptProposalProtocolService {
 
     private final SalesReceiptService salesReceiptService;
 
-    private final TransactionItemEntryRepository transactionItemEntryRepository;
     private final TransferItemEntryRepository transferItemEntryRepository;
+
+    private final InternalTransactionItemEntryRepository internalTransactionItemEntryRepository;
 
     public SalesReceiptProposalProtocolService(
         SalesReceiptService salesReceiptService,
-        TransactionItemEntryRepository transactionItemEntryRepository,
-        TransferItemEntryRepository transferItemEntryRepository
+        TransferItemEntryRepository transferItemEntryRepository,
+        InternalTransactionItemEntryRepository internalTransactionItemEntryRepository
     ) {
         this.salesReceiptService = salesReceiptService;
-        this.transactionItemEntryRepository = transactionItemEntryRepository;
         this.transferItemEntryRepository = transferItemEntryRepository;
+        this.internalTransactionItemEntryRepository = internalTransactionItemEntryRepository;
     }
 
     public long salesReceiptPosting(SalesReceiptProposalDTO salesReceiptProposal) {
@@ -41,7 +43,7 @@ public class SalesReceiptProposalProtocolService {
                     .map(TransferItemEntry::getItemAmount)
                     .reduce(BigDecimal::add);
 
-                Optional<BigDecimal> transactionAmount = transactionItemEntryRepository
+                Optional<BigDecimal> transactionAmount = internalTransactionItemEntryRepository
                     .findAllBySalesReceiptId(unfilteredReceipt.getId())
                     .stream()
                     .map(TransactionItemEntry::getItemAmount)

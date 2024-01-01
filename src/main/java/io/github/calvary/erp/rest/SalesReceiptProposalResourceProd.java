@@ -79,7 +79,7 @@ public class SalesReceiptProposalResourceProd {
         }
         SalesReceiptProposalDTO result = salesReceiptProposalService.save(salesReceiptProposalDTO);
 
-        proposeReceipts(result);
+        // proposeReceipts(result);
 
         return ResponseEntity
             .created(new URI("/api/sales-receipt-proposals/" + result.getId()))

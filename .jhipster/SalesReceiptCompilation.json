@@ -1,0 +1,31 @@
+{
+  "changelogDate": "20240101175535",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "timeOfCompilation",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "compilationIdentifier",
+      "fieldType": "UUID"
+    },
+    {
+      "fieldName": "receiptsCompiled",
+      "fieldType": "Integer"
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "SalesReceiptCompilation",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityField": "applicationIdentity",
+      "otherEntityName": "applicationUser",
+      "relationshipName": "compiledBy",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "serviceImpl"
+}
