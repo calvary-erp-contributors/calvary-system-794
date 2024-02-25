@@ -22,6 +22,8 @@ public class SalesReceiptProposalDTO implements Serializable {
 
     private Integer numberOfReceiptsPosted;
 
+    private ApplicationUserDTO proposedBy;
+
     public Long getId() {
         return id;
     }
@@ -54,6 +56,14 @@ public class SalesReceiptProposalDTO implements Serializable {
         this.numberOfReceiptsPosted = numberOfReceiptsPosted;
     }
 
+    public ApplicationUserDTO getProposedBy() {
+        return proposedBy;
+    }
+
+    public void setProposedBy(ApplicationUserDTO proposedBy) {
+        this.proposedBy = proposedBy;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -83,6 +93,7 @@ public class SalesReceiptProposalDTO implements Serializable {
             ", timeOfPosting='" + getTimeOfPosting() + "'" +
             ", postingIdentifier='" + getPostingIdentifier() + "'" +
             ", numberOfReceiptsPosted=" + getNumberOfReceiptsPosted() +
+            ", proposedBy=" + getProposedBy() +
             "}";
     }
 }

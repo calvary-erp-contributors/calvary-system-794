@@ -23,6 +23,9 @@
             <column name="number_of_receipts_posted" type="integer">
                 <constraints nullable="true" />
             </column>
+            <column name="proposed_by_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
         <dropDefaultValue tableName="sales_receipt_proposal" columnName="time_of_posting" columnDataType="${datetimeType}"/>

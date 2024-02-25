@@ -739,7 +739,7 @@ class ApplicationUserResourceIT {
         defaultApplicationUserShouldNotBeFound("userIdentifier.specified=false");
     }
 
-    // @Test
+    @Test
     @Transactional
     void getAllApplicationUsersByCreatedByIsEqualToSomething() throws Exception {
         ApplicationUser createdBy;

@@ -9,9 +9,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import io.github.calvary.IntegrationTest;
+import io.github.calvary.domain.ApplicationUser;
 import io.github.calvary.domain.SalesReceiptProposal;
 import io.github.calvary.repository.SalesReceiptProposalRepository;
 import io.github.calvary.repository.search.SalesReceiptProposalSearchRepository;
+import io.github.calvary.service.SalesReceiptProposalService;
 import io.github.calvary.service.criteria.SalesReceiptProposalCriteria;
 import io.github.calvary.service.dto.SalesReceiptProposalDTO;
 import io.github.calvary.service.mapper.SalesReceiptProposalMapper;
@@ -19,6 +21,7 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
@@ -31,6 +34,9 @@ import org.assertj.core.util.IterableUtil;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.data.domain.PageImpl;
@@ -45,6 +51,7 @@ import org.springframework.transaction.annotation.Transactional;
  * Integration tests for the {@link SalesReceiptProposalResource} REST controller.
  */
 @IntegrationTest
+@ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
 @WithMockUser
 class SalesReceiptProposalResourceIT {
@@ -70,8 +77,14 @@ class SalesReceiptProposalResourceIT {
     @Autowired
     private SalesReceiptProposalRepository salesReceiptProposalRepository;
 
+    @Mock
+    private SalesReceiptProposalRepository salesReceiptProposalRepositoryMock;
+
     @Autowired
     private SalesReceiptProposalMapper salesReceiptProposalMapper;
+
+    @Mock
+    private SalesReceiptProposalService salesReceiptProposalServiceMock;
 
     @Autowired
     private SalesReceiptProposalSearchRepository salesReceiptProposalSearchRepository;
@@ -244,6 +257,23 @@ class SalesReceiptProposalResourceIT {
             .andExpect(jsonPath("$.[*].timeOfPosting").value(hasItem(sameInstant(DEFAULT_TIME_OF_POSTING))))
             .andExpect(jsonPath("$.[*].postingIdentifier").value(hasItem(DEFAULT_POSTING_IDENTIFIER.toString())))
             .andExpect(jsonPath("$.[*].numberOfReceiptsPosted").value(hasItem(DEFAULT_NUMBER_OF_RECEIPTS_POSTED)));
+    }
+
+    @SuppressWarnings({ "unchecked" })
+    void getAllSalesReceiptProposalsWithEagerRelationshipsIsEnabled() throws Exception {
+        when(salesReceiptProposalServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+
+        restSalesReceiptProposalMockMvc.perform(get(ENTITY_API_URL + "?eagerload=true")).andExpect(status().isOk());
+
+        verify(salesReceiptProposalServiceMock, times(1)).findAllWithEagerRelationships(any());
+    }
+
+    @SuppressWarnings({ "unchecked" })
+    void getAllSalesReceiptProposalsWithEagerRelationshipsIsNotEnabled() throws Exception {
+        when(salesReceiptProposalServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+
+        restSalesReceiptProposalMockMvc.perform(get(ENTITY_API_URL + "?eagerload=false")).andExpect(status().isOk());
+        verify(salesReceiptProposalRepositoryMock, times(1)).findAll(any(Pageable.class));
     }
 
     @Test
@@ -502,6 +532,29 @@ class SalesReceiptProposalResourceIT {
 
         // Get all the salesReceiptProposalList where numberOfReceiptsPosted is greater than SMALLER_NUMBER_OF_RECEIPTS_POSTED
         defaultSalesReceiptProposalShouldBeFound("numberOfReceiptsPosted.greaterThan=" + SMALLER_NUMBER_OF_RECEIPTS_POSTED);
+    }
+
+    @Test
+    @Transactional
+    void getAllSalesReceiptProposalsByProposedByIsEqualToSomething() throws Exception {
+        ApplicationUser proposedBy;
+        if (TestUtil.findAll(em, ApplicationUser.class).isEmpty()) {
+            salesReceiptProposalRepository.saveAndFlush(salesReceiptProposal);
+            proposedBy = ApplicationUserResourceIT.createEntity(em);
+        } else {
+            proposedBy = TestUtil.findAll(em, ApplicationUser.class).get(0);
+        }
+        em.persist(proposedBy);
+        em.flush();
+        salesReceiptProposal.setProposedBy(proposedBy);
+        salesReceiptProposalRepository.saveAndFlush(salesReceiptProposal);
+        Long proposedById = proposedBy.getId();
+
+        // Get all the salesReceiptProposalList where proposedBy equals to proposedById
+        defaultSalesReceiptProposalShouldBeFound("proposedById.equals=" + proposedById);
+
+        // Get all the salesReceiptProposalList where proposedBy equals to (proposedById + 1)
+        defaultSalesReceiptProposalShouldNotBeFound("proposedById.equals=" + (proposedById + 1));
     }
 
     /**
