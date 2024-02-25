@@ -13,6 +13,7 @@
 
 @echo off
 git checkout HEAD~1 src/main/resources/config/liquibase/changelog/
+git checkout HEAD~1 src/test/java/io/github/calvary/web/rest/ApplicationUserResourceIT.java
 git checkout HEAD~1 src/test/java/io/github/calvary/web/rest/TransactionAccountResourceIT.java
 git checkout HEAD~1 src/test/java/io/github/calvary/web/rest/BalanceSheetItemTypeResourceIT.java
 @REM TODO mvn clean compile liquibase:diff
