@@ -3,8 +3,7 @@ package io.github.calvary.erp;
 import io.github.calvary.domain.TransactionItemEntry;
 import io.github.calvary.domain.TransferItemEntry;
 import io.github.calvary.erp.repository.InternalTransactionItemEntryRepository;
-import io.github.calvary.repository.TransactionItemEntryRepository;
-import io.github.calvary.repository.TransferItemEntryRepository;
+import io.github.calvary.repository.InternalTransferItemEntryRepository;
 import io.github.calvary.service.SalesReceiptService;
 import io.github.calvary.service.dto.SalesReceiptProposalDTO;
 import java.math.BigDecimal;
@@ -17,13 +16,13 @@ public class SalesReceiptProposalProtocolService {
 
     private final SalesReceiptService salesReceiptService;
 
-    private final TransferItemEntryRepository transferItemEntryRepository;
+    private final InternalTransferItemEntryRepository transferItemEntryRepository;
 
     private final InternalTransactionItemEntryRepository internalTransactionItemEntryRepository;
 
     public SalesReceiptProposalProtocolService(
         SalesReceiptService salesReceiptService,
-        TransferItemEntryRepository transferItemEntryRepository,
+        InternalTransferItemEntryRepository transferItemEntryRepository,
         InternalTransactionItemEntryRepository internalTransactionItemEntryRepository
     ) {
         this.salesReceiptService = salesReceiptService;

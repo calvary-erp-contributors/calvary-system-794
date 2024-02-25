@@ -112,15 +112,6 @@ public class SalesReceiptProposalQueryService extends QueryService<SalesReceiptP
                         buildRangeSpecification(criteria.getNumberOfReceiptsPosted(), SalesReceiptProposal_.numberOfReceiptsPosted)
                     );
             }
-            if (criteria.getProposedById() != null) {
-                specification =
-                    specification.and(
-                        buildSpecification(
-                            criteria.getProposedById(),
-                            root -> root.join(SalesReceiptProposal_.proposedBy, JoinType.LEFT).get(ApplicationUser_.id)
-                        )
-                    );
-            }
         }
         return specification;
     }

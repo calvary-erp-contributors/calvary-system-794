@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.*;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
@@ -13,7 +15,8 @@ import org.springframework.stereotype.Repository;
  * Spring Data JPA repository for the TransferItemEntry entity.
  */
 @Repository
-public interface TransferItemEntryRepository extends JpaRepository<TransferItemEntry, Long>, JpaSpecificationExecutor<TransferItemEntry> {
+public interface InternalTransferItemEntryRepository
+    extends JpaRepository<TransferItemEntry, Long>, JpaSpecificationExecutor<TransferItemEntry> {
     default Optional<TransferItemEntry> findOneWithEagerRelationships(Long id) {
         return this.findOneWithToOneRelationships(id);
     }
@@ -39,4 +42,6 @@ public interface TransferItemEntryRepository extends JpaRepository<TransferItemE
         "select transferItemEntry from TransferItemEntry transferItemEntry left join fetch transferItemEntry.transactionItem where transferItemEntry.id =:id"
     )
     Optional<TransferItemEntry> findOneWithToOneRelationships(@Param("id") Long id);
+
+    List<TransferItemEntry> findAllBySalesReceiptId(Long salesReceiptId);
 }

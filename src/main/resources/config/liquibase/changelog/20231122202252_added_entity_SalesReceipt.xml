@@ -42,20 +42,6 @@
         </createTable>
     </changeSet>
 
-    <changeSet id="20231122202252-1-relations" author="jhipster">
-
-        <createTable tableName="rel_sales_receipt__transaction_item_entry">
-            <column name="transaction_item_entry_id" type="bigint">
-                <constraints nullable="false"/>
-            </column>
-            <column name="sales_receipt_id" type="bigint">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-
-        <addPrimaryKey columnNames="sales_receipt_id, transaction_item_entry_id" tableName="rel_sales_receipt__transaction_item_entry"/>
-    </changeSet>
-
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
 
     <!--

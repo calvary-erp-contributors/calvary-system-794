@@ -29,8 +29,6 @@ public class SalesReceiptProposalCriteria implements Serializable, Criteria {
 
     private IntegerFilter numberOfReceiptsPosted;
 
-    private LongFilter proposedById;
-
     private Boolean distinct;
 
     public SalesReceiptProposalCriteria() {}
@@ -40,7 +38,6 @@ public class SalesReceiptProposalCriteria implements Serializable, Criteria {
         this.timeOfPosting = other.timeOfPosting == null ? null : other.timeOfPosting.copy();
         this.postingIdentifier = other.postingIdentifier == null ? null : other.postingIdentifier.copy();
         this.numberOfReceiptsPosted = other.numberOfReceiptsPosted == null ? null : other.numberOfReceiptsPosted.copy();
-        this.proposedById = other.proposedById == null ? null : other.proposedById.copy();
         this.distinct = other.distinct;
     }
 
@@ -109,21 +106,6 @@ public class SalesReceiptProposalCriteria implements Serializable, Criteria {
         this.numberOfReceiptsPosted = numberOfReceiptsPosted;
     }
 
-    public LongFilter getProposedById() {
-        return proposedById;
-    }
-
-    public LongFilter proposedById() {
-        if (proposedById == null) {
-            proposedById = new LongFilter();
-        }
-        return proposedById;
-    }
-
-    public void setProposedById(LongFilter proposedById) {
-        this.proposedById = proposedById;
-    }
-
     public Boolean getDistinct() {
         return distinct;
     }
@@ -146,14 +128,13 @@ public class SalesReceiptProposalCriteria implements Serializable, Criteria {
             Objects.equals(timeOfPosting, that.timeOfPosting) &&
             Objects.equals(postingIdentifier, that.postingIdentifier) &&
             Objects.equals(numberOfReceiptsPosted, that.numberOfReceiptsPosted) &&
-            Objects.equals(proposedById, that.proposedById) &&
             Objects.equals(distinct, that.distinct)
         );
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, timeOfPosting, postingIdentifier, numberOfReceiptsPosted, proposedById, distinct);
+        return Objects.hash(id, timeOfPosting, postingIdentifier, numberOfReceiptsPosted, distinct);
     }
 
     // prettier-ignore
@@ -164,7 +145,6 @@ public class SalesReceiptProposalCriteria implements Serializable, Criteria {
             (timeOfPosting != null ? "timeOfPosting=" + timeOfPosting + ", " : "") +
             (postingIdentifier != null ? "postingIdentifier=" + postingIdentifier + ", " : "") +
             (numberOfReceiptsPosted != null ? "numberOfReceiptsPosted=" + numberOfReceiptsPosted + ", " : "") +
-            (proposedById != null ? "proposedById=" + proposedById + ", " : "") +
             (distinct != null ? "distinct=" + distinct + ", " : "") +
             "}";
     }

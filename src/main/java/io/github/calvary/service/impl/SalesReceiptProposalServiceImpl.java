@@ -88,15 +88,11 @@ public class SalesReceiptProposalServiceImpl implements SalesReceiptProposalServ
         return salesReceiptProposalRepository.findAll(pageable).map(salesReceiptProposalMapper::toDto);
     }
 
-    public Page<SalesReceiptProposalDTO> findAllWithEagerRelationships(Pageable pageable) {
-        return salesReceiptProposalRepository.findAllWithEagerRelationships(pageable).map(salesReceiptProposalMapper::toDto);
-    }
-
     @Override
     @Transactional(readOnly = true)
     public Optional<SalesReceiptProposalDTO> findOne(Long id) {
         log.debug("Request to get SalesReceiptProposal : {}", id);
-        return salesReceiptProposalRepository.findOneWithEagerRelationships(id).map(salesReceiptProposalMapper::toDto);
+        return salesReceiptProposalRepository.findById(id).map(salesReceiptProposalMapper::toDto);
     }
 
     @Override

@@ -1,11 +1,11 @@
-id;description;item_amount;transaction_item_id
-1;Adaptive Granite;8111;1
-2;Hat;91372;2
-3;Alabama Unbranded distributed;28614;3
-4;Borders Industrial;72237;4
-5;bluetooth Towels back-end;62878;5
-6;indexing;75897;6
-7;Washington Sleek United;25448;7
-8;matrix Maine compressing;68280;8
-9;Wooden;43832;9
-10;Home;70567;10
+id;description;item_amount
+1;Adaptive Granite;8111
+2;Hat;91372
+3;Alabama Unbranded distributed;28614
+4;Borders Industrial;72237
+5;bluetooth Towels back-end;62878
+6;indexing;75897
+7;Washington Sleek United;25448
+8;matrix Maine compressing;68280
+9;Wooden;43832
+10;Home;70567

@@ -100,16 +100,6 @@ class TransactionItemEntryResourceIT {
         TransactionItemEntry transactionItemEntry = new TransactionItemEntry()
             .description(DEFAULT_DESCRIPTION)
             .itemAmount(DEFAULT_ITEM_AMOUNT);
-        // Add required entity
-        TransactionItem transactionItem;
-        if (TestUtil.findAll(em, TransactionItem.class).isEmpty()) {
-            transactionItem = TransactionItemResourceIT.createEntity(em);
-            em.persist(transactionItem);
-            em.flush();
-        } else {
-            transactionItem = TestUtil.findAll(em, TransactionItem.class).get(0);
-        }
-        transactionItemEntry.setTransactionItem(transactionItem);
         return transactionItemEntry;
     }
 
@@ -123,16 +113,6 @@ class TransactionItemEntryResourceIT {
         TransactionItemEntry transactionItemEntry = new TransactionItemEntry()
             .description(UPDATED_DESCRIPTION)
             .itemAmount(UPDATED_ITEM_AMOUNT);
-        // Add required entity
-        TransactionItem transactionItem;
-        if (TestUtil.findAll(em, TransactionItem.class).isEmpty()) {
-            transactionItem = TransactionItemResourceIT.createUpdatedEntity(em);
-            em.persist(transactionItem);
-            em.flush();
-        } else {
-            transactionItem = TestUtil.findAll(em, TransactionItem.class).get(0);
-        }
-        transactionItemEntry.setTransactionItem(transactionItem);
         return transactionItemEntry;
     }
 

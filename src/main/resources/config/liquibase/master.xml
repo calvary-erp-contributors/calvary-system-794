@@ -43,18 +43,10 @@
     <include file="config/liquibase/changelog/20231122202252_added_entity_constraints_SalesReceipt.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20231122202831_added_entity_constraints_TransactionItemAmount.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20231126135457_added_entity_constraints_TransactionItemEntry.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20231126155734_changelog.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20231126173213_changelog.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20231126180900_changelog.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20231126192814_changelog.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20231126210643_changelog.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20231217091211_changelog.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20231217121834_added_entity_constraints_TransferItemEntry.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20231217163755_added_entity_constraints_ApplicationUser.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20231217154147_added_entity_constraints_SalesReceiptProposal.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20231218182453_changelog.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20240218195207_changelog.xml" relativeToChangelogFile="false"/>
-<!--    <include file="config/liquibase/changelog/20231217165659_changelog.xml" relativeToChangelogFile="false"/>-->
+    <include file="config/liquibase/changelog/20240225091827_changelog.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20240225100325_changelog.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20240101175535_added_entity_constraints_SalesReceiptCompilation.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
     <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->

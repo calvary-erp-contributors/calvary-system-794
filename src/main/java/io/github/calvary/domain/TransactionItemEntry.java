@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import javax.persistence.*;
-import javax.validation.constraints.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -32,8 +31,7 @@ public class TransactionItemEntry implements Serializable {
     @Column(name = "item_amount", precision = 21, scale = 2)
     private BigDecimal itemAmount;
 
-    @ManyToOne(optional = false)
-    @NotNull
+    @ManyToOne
     @JsonIgnoreProperties(value = { "transactionClass", "transactionAccount" }, allowSetters = true)
     private TransactionItem transactionItem;
 

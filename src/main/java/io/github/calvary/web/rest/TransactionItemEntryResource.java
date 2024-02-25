@@ -14,8 +14,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.StreamSupport;
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -67,9 +65,8 @@ public class TransactionItemEntryResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/transaction-item-entries")
-    public ResponseEntity<TransactionItemEntryDTO> createTransactionItemEntry(
-        @Valid @RequestBody TransactionItemEntryDTO transactionItemEntryDTO
-    ) throws URISyntaxException {
+    public ResponseEntity<TransactionItemEntryDTO> createTransactionItemEntry(@RequestBody TransactionItemEntryDTO transactionItemEntryDTO)
+        throws URISyntaxException {
         log.debug("REST request to save TransactionItemEntry : {}", transactionItemEntryDTO);
         if (transactionItemEntryDTO.getId() != null) {
             throw new BadRequestAlertException("A new transactionItemEntry cannot already have an ID", ENTITY_NAME, "idexists");
@@ -94,7 +91,7 @@ public class TransactionItemEntryResource {
     @PutMapping("/transaction-item-entries/{id}")
     public ResponseEntity<TransactionItemEntryDTO> updateTransactionItemEntry(
         @PathVariable(value = "id", required = false) final Long id,
-        @Valid @RequestBody TransactionItemEntryDTO transactionItemEntryDTO
+        @RequestBody TransactionItemEntryDTO transactionItemEntryDTO
     ) throws URISyntaxException {
         log.debug("REST request to update TransactionItemEntry : {}, {}", id, transactionItemEntryDTO);
         if (transactionItemEntryDTO.getId() == null) {
@@ -129,7 +126,7 @@ public class TransactionItemEntryResource {
     @PatchMapping(value = "/transaction-item-entries/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<TransactionItemEntryDTO> partialUpdateTransactionItemEntry(
         @PathVariable(value = "id", required = false) final Long id,
-        @NotNull @RequestBody TransactionItemEntryDTO transactionItemEntryDTO
+        @RequestBody TransactionItemEntryDTO transactionItemEntryDTO
     ) throws URISyntaxException {
         log.debug("REST request to partial update TransactionItemEntry partially : {}, {}", id, transactionItemEntryDTO);
         if (transactionItemEntryDTO.getId() == null) {

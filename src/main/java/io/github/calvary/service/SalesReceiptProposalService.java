@@ -42,14 +42,6 @@ public interface SalesReceiptProposalService {
     Page<SalesReceiptProposalDTO> findAll(Pageable pageable);
 
     /**
-     * Get all the salesReceiptProposals with eager load of many-to-many relationships.
-     *
-     * @param pageable the pagination information.
-     * @return the list of entities.
-     */
-    Page<SalesReceiptProposalDTO> findAllWithEagerRelationships(Pageable pageable);
-
-    /**
      * Get the "id" salesReceiptProposal.
      *
      * @param id the id of the entity.

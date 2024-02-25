@@ -1,6 +1,5 @@
 package io.github.calvary.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.UUID;
@@ -37,10 +36,6 @@ public class SalesReceiptProposal implements Serializable {
 
     @Column(name = "number_of_receipts_posted")
     private Integer numberOfReceiptsPosted;
-
-    @ManyToOne
-    @JsonIgnoreProperties(value = { "createdBy", "lastModifiedBy", "systemIdentity" }, allowSetters = true)
-    private ApplicationUser proposedBy;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -94,19 +89,6 @@ public class SalesReceiptProposal implements Serializable {
 
     public void setNumberOfReceiptsPosted(Integer numberOfReceiptsPosted) {
         this.numberOfReceiptsPosted = numberOfReceiptsPosted;
-    }
-
-    public ApplicationUser getProposedBy() {
-        return this.proposedBy;
-    }
-
-    public void setProposedBy(ApplicationUser applicationUser) {
-        this.proposedBy = applicationUser;
-    }
-
-    public SalesReceiptProposal proposedBy(ApplicationUser applicationUser) {
-        this.setProposedBy(applicationUser);
-        return this;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

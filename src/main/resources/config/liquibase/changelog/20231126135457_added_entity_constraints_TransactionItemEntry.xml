@@ -13,5 +13,11 @@
                                  constraintName="fk_transaction_item_entry__transaction_item_id"
                                  referencedColumnNames="id"
                                  referencedTableName="transaction_item"/>
+
+        <addForeignKeyConstraint baseColumnNames="sales_receipt_id"
+                                 baseTableName="transaction_item_entry"
+                                 constraintName="fk_transaction_item_entry__sales_receipt_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="sales_receipt"/>
     </changeSet>
 </databaseChangeLog>

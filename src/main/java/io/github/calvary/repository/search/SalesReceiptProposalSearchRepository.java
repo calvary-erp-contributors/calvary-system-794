@@ -67,6 +67,6 @@ class SalesReceiptProposalSearchRepositoryInternalImpl implements SalesReceiptPr
 
     @Override
     public void index(SalesReceiptProposal entity) {
-        repository.findOneWithEagerRelationships(entity.getId()).ifPresent(elasticsearchTemplate::save);
+        repository.findById(entity.getId()).ifPresent(elasticsearchTemplate::save);
     }
 }
