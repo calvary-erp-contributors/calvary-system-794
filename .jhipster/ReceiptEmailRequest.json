@@ -1,0 +1,32 @@
+{
+  "changelogDate": "20240303152614",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "timeOfRequisition",
+      "fieldType": "ZonedDateTime",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "uploadComplete",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "numberOfUpdates",
+      "fieldType": "Integer"
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "ReceiptEmailRequest",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityField": "applicationIdentity",
+      "otherEntityName": "applicationUser",
+      "relationshipName": "requestedBy",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "serviceImpl"
+}
