@@ -1,0 +1,35 @@
+{
+  "changelogDate": "20240303094817",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "itemName",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "unique"]
+    },
+    {
+      "fieldName": "description",
+      "fieldType": "String"
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "TransferItem",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityField": "className",
+      "otherEntityName": "transactionClass",
+      "relationshipName": "transactionClass",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityField": "accountName",
+      "otherEntityName": "transactionAccount",
+      "relationshipName": "transactionAccount",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": ["required"]
+    }
+  ],
+  "service": "serviceImpl"
+}

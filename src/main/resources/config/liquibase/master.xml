@@ -32,6 +32,7 @@
     <include file="config/liquibase/changelog/20231217154147_added_entity_SalesReceiptProposal.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20231217163755_added_entity_ApplicationUser.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20240101175535_added_entity_SalesReceiptCompilation.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20240303094817_added_entity_TransferItem.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20230718095043_added_entity_constraints_TransactionAccount.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20230718134338_added_entity_constraints_TransactionEntry.xml" relativeToChangelogFile="false"/>
@@ -50,6 +51,7 @@
     <include file="config/liquibase/changelog/20240101175535_added_entity_constraints_SalesReceiptCompilation.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20231217154147_added_entity_constraints_SalesReceiptProposal.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20240225120935_changelog.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20240303094817_added_entity_constraints_TransferItem.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
     <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
 </databaseChangeLog>
