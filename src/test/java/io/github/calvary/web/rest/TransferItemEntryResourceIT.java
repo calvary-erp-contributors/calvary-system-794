@@ -10,7 +10,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import io.github.calvary.IntegrationTest;
 import io.github.calvary.domain.SalesReceipt;
-import io.github.calvary.domain.TransactionItem;
+import io.github.calvary.domain.TransferItem;
 import io.github.calvary.domain.TransferItemEntry;
 import io.github.calvary.repository.TransferItemEntryRepository;
 import io.github.calvary.repository.search.TransferItemEntrySearchRepository;
@@ -99,16 +99,6 @@ class TransferItemEntryResourceIT {
     public static TransferItemEntry createEntity(EntityManager em) {
         TransferItemEntry transferItemEntry = new TransferItemEntry().description(DEFAULT_DESCRIPTION).itemAmount(DEFAULT_ITEM_AMOUNT);
         // Add required entity
-        TransactionItem transactionItem;
-        if (TestUtil.findAll(em, TransactionItem.class).isEmpty()) {
-            transactionItem = TransactionItemResourceIT.createEntity(em);
-            em.persist(transactionItem);
-            em.flush();
-        } else {
-            transactionItem = TestUtil.findAll(em, TransactionItem.class).get(0);
-        }
-        transferItemEntry.setTransactionItem(transactionItem);
-        // Add required entity
         SalesReceipt salesReceipt;
         if (TestUtil.findAll(em, SalesReceipt.class).isEmpty()) {
             salesReceipt = SalesReceiptResourceIT.createEntity(em);
@@ -118,6 +108,16 @@ class TransferItemEntryResourceIT {
             salesReceipt = TestUtil.findAll(em, SalesReceipt.class).get(0);
         }
         transferItemEntry.setSalesReceipt(salesReceipt);
+        // Add required entity
+        TransferItem transferItem;
+        if (TestUtil.findAll(em, TransferItem.class).isEmpty()) {
+            transferItem = TransferItemResourceIT.createEntity(em);
+            em.persist(transferItem);
+            em.flush();
+        } else {
+            transferItem = TestUtil.findAll(em, TransferItem.class).get(0);
+        }
+        transferItemEntry.setTransferItem(transferItem);
         return transferItemEntry;
     }
 
@@ -130,16 +130,6 @@ class TransferItemEntryResourceIT {
     public static TransferItemEntry createUpdatedEntity(EntityManager em) {
         TransferItemEntry transferItemEntry = new TransferItemEntry().description(UPDATED_DESCRIPTION).itemAmount(UPDATED_ITEM_AMOUNT);
         // Add required entity
-        TransactionItem transactionItem;
-        if (TestUtil.findAll(em, TransactionItem.class).isEmpty()) {
-            transactionItem = TransactionItemResourceIT.createUpdatedEntity(em);
-            em.persist(transactionItem);
-            em.flush();
-        } else {
-            transactionItem = TestUtil.findAll(em, TransactionItem.class).get(0);
-        }
-        transferItemEntry.setTransactionItem(transactionItem);
-        // Add required entity
         SalesReceipt salesReceipt;
         if (TestUtil.findAll(em, SalesReceipt.class).isEmpty()) {
             salesReceipt = SalesReceiptResourceIT.createUpdatedEntity(em);
@@ -149,6 +139,16 @@ class TransferItemEntryResourceIT {
             salesReceipt = TestUtil.findAll(em, SalesReceipt.class).get(0);
         }
         transferItemEntry.setSalesReceipt(salesReceipt);
+        // Add required entity
+        TransferItem transferItem;
+        if (TestUtil.findAll(em, TransferItem.class).isEmpty()) {
+            transferItem = TransferItemResourceIT.createUpdatedEntity(em);
+            em.persist(transferItem);
+            em.flush();
+        } else {
+            transferItem = TestUtil.findAll(em, TransferItem.class).get(0);
+        }
+        transferItemEntry.setTransferItem(transferItem);
         return transferItemEntry;
     }
 
@@ -468,29 +468,6 @@ class TransferItemEntryResourceIT {
 
     @Test
     @Transactional
-    void getAllTransferItemEntriesByTransactionItemIsEqualToSomething() throws Exception {
-        TransactionItem transactionItem;
-        if (TestUtil.findAll(em, TransactionItem.class).isEmpty()) {
-            transferItemEntryRepository.saveAndFlush(transferItemEntry);
-            transactionItem = TransactionItemResourceIT.createEntity(em);
-        } else {
-            transactionItem = TestUtil.findAll(em, TransactionItem.class).get(0);
-        }
-        em.persist(transactionItem);
-        em.flush();
-        transferItemEntry.setTransactionItem(transactionItem);
-        transferItemEntryRepository.saveAndFlush(transferItemEntry);
-        Long transactionItemId = transactionItem.getId();
-
-        // Get all the transferItemEntryList where transactionItem equals to transactionItemId
-        defaultTransferItemEntryShouldBeFound("transactionItemId.equals=" + transactionItemId);
-
-        // Get all the transferItemEntryList where transactionItem equals to (transactionItemId + 1)
-        defaultTransferItemEntryShouldNotBeFound("transactionItemId.equals=" + (transactionItemId + 1));
-    }
-
-    @Test
-    @Transactional
     void getAllTransferItemEntriesBySalesReceiptIsEqualToSomething() throws Exception {
         SalesReceipt salesReceipt;
         if (TestUtil.findAll(em, SalesReceipt.class).isEmpty()) {
@@ -510,6 +487,29 @@ class TransferItemEntryResourceIT {
 
         // Get all the transferItemEntryList where salesReceipt equals to (salesReceiptId + 1)
         defaultTransferItemEntryShouldNotBeFound("salesReceiptId.equals=" + (salesReceiptId + 1));
+    }
+
+    @Test
+    @Transactional
+    void getAllTransferItemEntriesByTransferItemIsEqualToSomething() throws Exception {
+        TransferItem transferItem;
+        if (TestUtil.findAll(em, TransferItem.class).isEmpty()) {
+            transferItemEntryRepository.saveAndFlush(transferItemEntry);
+            transferItem = TransferItemResourceIT.createEntity(em);
+        } else {
+            transferItem = TestUtil.findAll(em, TransferItem.class).get(0);
+        }
+        em.persist(transferItem);
+        em.flush();
+        transferItemEntry.setTransferItem(transferItem);
+        transferItemEntryRepository.saveAndFlush(transferItemEntry);
+        Long transferItemId = transferItem.getId();
+
+        // Get all the transferItemEntryList where transferItem equals to transferItemId
+        defaultTransferItemEntryShouldBeFound("transferItemId.equals=" + transferItemId);
+
+        // Get all the transferItemEntryList where transferItem equals to (transferItemId + 1)
+        defaultTransferItemEntryShouldNotBeFound("transferItemId.equals=" + (transferItemId + 1));
     }
 
     /**

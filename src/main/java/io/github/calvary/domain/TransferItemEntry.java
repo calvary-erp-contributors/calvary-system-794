@@ -36,7 +36,7 @@ public class TransferItemEntry implements Serializable {
     @ManyToOne(optional = false)
     @NotNull
     @JsonIgnoreProperties(value = { "transactionClass", "transactionAccount" }, allowSetters = true)
-    private TransactionItem transactionItem;
+    private TransferItem transferItem;
 
     @ManyToOne(optional = false)
     @NotNull
@@ -87,19 +87,6 @@ public class TransferItemEntry implements Serializable {
         this.itemAmount = itemAmount;
     }
 
-    public TransactionItem getTransactionItem() {
-        return this.transactionItem;
-    }
-
-    public void setTransactionItem(TransactionItem transactionItem) {
-        this.transactionItem = transactionItem;
-    }
-
-    public TransferItemEntry transactionItem(TransactionItem transactionItem) {
-        this.setTransactionItem(transactionItem);
-        return this;
-    }
-
     public SalesReceipt getSalesReceipt() {
         return this.salesReceipt;
     }
@@ -110,6 +97,19 @@ public class TransferItemEntry implements Serializable {
 
     public TransferItemEntry salesReceipt(SalesReceipt salesReceipt) {
         this.setSalesReceipt(salesReceipt);
+        return this;
+    }
+
+    public TransferItem getTransferItem() {
+        return this.transferItem;
+    }
+
+    public void setTransferItem(TransferItem transferItem) {
+        this.transferItem = transferItem;
+    }
+
+    public TransferItemEntry transferItem(TransferItem transferItem) {
+        this.setTransferItem(transferItem);
         return this;
     }
 

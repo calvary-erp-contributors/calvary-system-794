@@ -104,21 +104,21 @@ public class TransferItemEntryQueryService extends QueryService<TransferItemEntr
             if (criteria.getItemAmount() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getItemAmount(), TransferItemEntry_.itemAmount));
             }
-            if (criteria.getTransactionItemId() != null) {
-                specification =
-                    specification.and(
-                        buildSpecification(
-                            criteria.getTransactionItemId(),
-                            root -> root.join(TransferItemEntry_.transactionItem, JoinType.LEFT).get(TransactionItem_.id)
-                        )
-                    );
-            }
             if (criteria.getSalesReceiptId() != null) {
                 specification =
                     specification.and(
                         buildSpecification(
                             criteria.getSalesReceiptId(),
                             root -> root.join(TransferItemEntry_.salesReceipt, JoinType.LEFT).get(SalesReceipt_.id)
+                        )
+                    );
+            }
+            if (criteria.getTransferItemId() != null) {
+                specification =
+                    specification.and(
+                        buildSpecification(
+                            criteria.getTransferItemId(),
+                            root -> root.join(TransferItemEntry_.transferItem, JoinType.LEFT).get(TransferItem_.id)
                         )
                     );
             }

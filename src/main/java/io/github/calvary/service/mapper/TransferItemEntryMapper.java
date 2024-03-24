@@ -1,10 +1,10 @@
 package io.github.calvary.service.mapper;
 
 import io.github.calvary.domain.SalesReceipt;
-import io.github.calvary.domain.TransactionItem;
+import io.github.calvary.domain.TransferItem;
 import io.github.calvary.domain.TransferItemEntry;
 import io.github.calvary.service.dto.SalesReceiptDTO;
-import io.github.calvary.service.dto.TransactionItemDTO;
+import io.github.calvary.service.dto.TransferItemDTO;
 import io.github.calvary.service.dto.TransferItemEntryDTO;
 import org.mapstruct.*;
 
@@ -13,18 +13,18 @@ import org.mapstruct.*;
  */
 @Mapper(componentModel = "spring")
 public interface TransferItemEntryMapper extends EntityMapper<TransferItemEntryDTO, TransferItemEntry> {
-    @Mapping(target = "transactionItem", source = "transactionItem", qualifiedByName = "transactionItemItemName")
     @Mapping(target = "salesReceipt", source = "salesReceipt", qualifiedByName = "salesReceiptId")
+    @Mapping(target = "transferItem", source = "transferItem", qualifiedByName = "transferItemItemName")
     TransferItemEntryDTO toDto(TransferItemEntry s);
-
-    @Named("transactionItemItemName")
-    @BeanMapping(ignoreByDefault = true)
-    @Mapping(target = "id", source = "id")
-    @Mapping(target = "itemName", source = "itemName")
-    TransactionItemDTO toDtoTransactionItemItemName(TransactionItem transactionItem);
 
     @Named("salesReceiptId")
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "id", source = "id")
     SalesReceiptDTO toDtoSalesReceiptId(SalesReceipt salesReceipt);
+
+    @Named("transferItemItemName")
+    @BeanMapping(ignoreByDefault = true)
+    @Mapping(target = "id", source = "id")
+    @Mapping(target = "itemName", source = "itemName")
+    TransferItemDTO toDtoTransferItemItemName(TransferItem transferItem);
 }

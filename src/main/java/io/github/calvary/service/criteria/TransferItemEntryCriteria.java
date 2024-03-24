@@ -27,9 +27,9 @@ public class TransferItemEntryCriteria implements Serializable, Criteria {
 
     private BigDecimalFilter itemAmount;
 
-    private LongFilter transactionItemId;
-
     private LongFilter salesReceiptId;
+
+    private LongFilter transferItemId;
 
     private Boolean distinct;
 
@@ -39,8 +39,8 @@ public class TransferItemEntryCriteria implements Serializable, Criteria {
         this.id = other.id == null ? null : other.id.copy();
         this.description = other.description == null ? null : other.description.copy();
         this.itemAmount = other.itemAmount == null ? null : other.itemAmount.copy();
-        this.transactionItemId = other.transactionItemId == null ? null : other.transactionItemId.copy();
         this.salesReceiptId = other.salesReceiptId == null ? null : other.salesReceiptId.copy();
+        this.transferItemId = other.transferItemId == null ? null : other.transferItemId.copy();
         this.distinct = other.distinct;
     }
 
@@ -94,21 +94,6 @@ public class TransferItemEntryCriteria implements Serializable, Criteria {
         this.itemAmount = itemAmount;
     }
 
-    public LongFilter getTransactionItemId() {
-        return transactionItemId;
-    }
-
-    public LongFilter transactionItemId() {
-        if (transactionItemId == null) {
-            transactionItemId = new LongFilter();
-        }
-        return transactionItemId;
-    }
-
-    public void setTransactionItemId(LongFilter transactionItemId) {
-        this.transactionItemId = transactionItemId;
-    }
-
     public LongFilter getSalesReceiptId() {
         return salesReceiptId;
     }
@@ -122,6 +107,21 @@ public class TransferItemEntryCriteria implements Serializable, Criteria {
 
     public void setSalesReceiptId(LongFilter salesReceiptId) {
         this.salesReceiptId = salesReceiptId;
+    }
+
+    public LongFilter getTransferItemId() {
+        return transferItemId;
+    }
+
+    public LongFilter transferItemId() {
+        if (transferItemId == null) {
+            transferItemId = new LongFilter();
+        }
+        return transferItemId;
+    }
+
+    public void setTransferItemId(LongFilter transferItemId) {
+        this.transferItemId = transferItemId;
     }
 
     public Boolean getDistinct() {
@@ -145,15 +145,15 @@ public class TransferItemEntryCriteria implements Serializable, Criteria {
             Objects.equals(id, that.id) &&
             Objects.equals(description, that.description) &&
             Objects.equals(itemAmount, that.itemAmount) &&
-            Objects.equals(transactionItemId, that.transactionItemId) &&
             Objects.equals(salesReceiptId, that.salesReceiptId) &&
+            Objects.equals(transferItemId, that.transferItemId) &&
             Objects.equals(distinct, that.distinct)
         );
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, description, itemAmount, transactionItemId, salesReceiptId, distinct);
+        return Objects.hash(id, description, itemAmount, salesReceiptId, transferItemId, distinct);
     }
 
     // prettier-ignore
@@ -163,8 +163,8 @@ public class TransferItemEntryCriteria implements Serializable, Criteria {
             (id != null ? "id=" + id + ", " : "") +
             (description != null ? "description=" + description + ", " : "") +
             (itemAmount != null ? "itemAmount=" + itemAmount + ", " : "") +
-            (transactionItemId != null ? "transactionItemId=" + transactionItemId + ", " : "") +
             (salesReceiptId != null ? "salesReceiptId=" + salesReceiptId + ", " : "") +
+            (transferItemId != null ? "transferItemId=" + transferItemId + ", " : "") +
             (distinct != null ? "distinct=" + distinct + ", " : "") +
             "}";
     }

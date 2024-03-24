@@ -1,4 +1,4 @@
-id;description;item_amount;transaction_item_id;sales_receipt_id
+id;description;item_amount;sales_receipt_id;transfer_item_id
 1;best-of-breed;77545;1;1
 2;green;89193;2;2
 3;B2B Loan;86220;3;3

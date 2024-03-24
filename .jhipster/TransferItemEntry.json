@@ -18,16 +18,16 @@
   "readOnly": false,
   "relationships": [
     {
-      "otherEntityField": "itemName",
-      "otherEntityName": "transactionItem",
-      "relationshipName": "transactionItem",
+      "otherEntityField": "id",
+      "otherEntityName": "salesReceipt",
+      "relationshipName": "salesReceipt",
       "relationshipType": "many-to-one",
       "relationshipValidateRules": ["required"]
     },
     {
-      "otherEntityField": "id",
-      "otherEntityName": "salesReceipt",
-      "relationshipName": "salesReceipt",
+      "otherEntityField": "itemName",
+      "otherEntityName": "transferItem",
+      "relationshipName": "transferItem",
       "relationshipType": "many-to-one",
       "relationshipValidateRules": ["required"]
     }

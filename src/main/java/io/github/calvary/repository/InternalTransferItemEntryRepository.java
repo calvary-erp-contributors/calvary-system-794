@@ -30,16 +30,27 @@ public interface InternalTransferItemEntryRepository
     }
 
     @Query(
-        value = "select distinct transferItemEntry from TransferItemEntry transferItemEntry left join fetch transferItemEntry.transactionItem",
-        countQuery = "select count(distinct transferItemEntry) from TransferItemEntry transferItemEntry"
+        value = "" +
+        "select distinct transferItemEntry " +
+        "from TransferItemEntry transferItemEntry " +
+        "left join fetch transferItemEntry.transferItem",
+        countQuery = "" + "select count(distinct transferItemEntry) " + "from TransferItemEntry transferItemEntry"
     )
     Page<TransferItemEntry> findAllWithToOneRelationships(Pageable pageable);
 
-    @Query("select distinct transferItemEntry from TransferItemEntry transferItemEntry left join fetch transferItemEntry.transactionItem")
+    @Query(
+        "" +
+        "select distinct transferItemEntry " +
+        "from TransferItemEntry transferItemEntry " +
+        "left join fetch transferItemEntry.transferItem"
+    )
     List<TransferItemEntry> findAllWithToOneRelationships();
 
     @Query(
-        "select transferItemEntry from TransferItemEntry transferItemEntry left join fetch transferItemEntry.transactionItem where transferItemEntry.id =:id"
+        "select transferItemEntry " +
+        "from TransferItemEntry transferItemEntry " +
+        "left join fetch transferItemEntry.transferItem " +
+        "where transferItemEntry.id =:id"
     )
     Optional<TransferItemEntry> findOneWithToOneRelationships(@Param("id") Long id);
 

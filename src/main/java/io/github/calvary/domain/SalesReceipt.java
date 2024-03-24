@@ -65,7 +65,7 @@ public class SalesReceipt implements Serializable {
     @OneToMany(mappedBy = "salesReceipt")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @org.springframework.data.annotation.Transient
-    @JsonIgnoreProperties(value = { "transactionItem", "salesReceipt" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "salesReceipt", "transferItem" }, allowSetters = true)
     private Set<TransferItemEntry> transferItemEntries = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
