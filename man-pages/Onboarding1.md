@@ -87,7 +87,13 @@ Current project tasks are listed into 3 sub-categories:
  - Server tasks
  - Documentation tasks
 
-## 5. Next Steps
+## 5. Project Repositories
+
+ - [Main landing page](https://github.com/calvary-erp-contributors)
+ - [ReactJS Client](https://github.com/calvary-erp-contributors/calvary-erp-client)
+ - [Server](https://github.com/calvary-erp-contributors/calvary-system-794)
+
+## 6. Next Steps
 
 - Complete Todoist setup and familiarize yourself with the project tasks.
 - Review any existing documentation or resources provided.
