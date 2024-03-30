@@ -1,6 +1,6 @@
 # Contributing to JHipster
 
-Are you ready to contribute to JHipster? We'd love to have you on board, and we will help you as much as we can. Here are the guidelines we'd like you to follow so that we can be of more help:
+Are you ready to contribute to Calvary ERP? We'd love to have you on board, and we will help you as much as we can. Here are the guidelines we'd like you to follow so that we can be of more help:
 
 - [Questions and help](#question)
 - [Issues and Bugs](#issue)
@@ -11,17 +11,17 @@ Are you ready to contribute to JHipster? We'd love to have you on board, and we 
 - [Coding Rules](#rules)
 - [Git Commit Guidelines](#commit)
 
-And don't forget, we also accept [financial contributions to the project](https://www.jhipster.tech/sponsors/) using Open Collective.
+[comment]: <> (And don't forget, we also accept [financial contributions to the project]&#40;https://www.jhipster.tech/sponsors/&#41; using Open Collective.)
 
 ## <a name="question"></a> Questions and help
 
-This is the JHipster bug tracker, and it is used for [Issues and Bugs](#issue) and for [Feature Requests](#feature). It is **not** a help desk or a support forum.
+This is the Calvary ERP bug tracker, and it is used for [Issues and Bugs](#issue) and for [Feature Requests](#feature). It is **not** a help desk or a support forum.
 
-If you have a question on using JHipster, or if you need help with your JHipster project, please [read our help page](https://www.jhipster.tech/help/) and use the [JHipster tag on StackOverflow](http://stackoverflow.com/tags/jhipster) or join our [Gitter.im chat room](https://gitter.im/jhipster/generator-jhipster).
+[comment]: <> (If you have a question on using JHipster, or if you need help with your JHipster project, please [read our help page]&#40;https://www.jhipster.tech/help/&#41; and use the [JHipster tag on StackOverflow]&#40;http://stackoverflow.com/tags/jhipster&#41; or join our [Gitter.im chat room]&#40;https://gitter.im/jhipster/generator-jhipster&#41;.)
 
 ## <a name="issue"></a> Issues and Bugs
 
-If you find a bug in the source code or a mistake in the documentation, you can help us by [submitting a ticket](https://opensource.guide/how-to-contribute/#opening-an-issue) to our [GitHub issues](https://github.com/jhipster/generator-jhipster/issues). Even better, you can submit a Pull Request to our [JHipster generator project](https://github.com/jhipster/generator-jhipster) or to our [Documentation project](https://github.com/jhipster/jhipster.github.io).
+If you find a bug in the source code or a mistake in the documentation, you can help us by [submitting a ticket](https://opensource.guide/how-to-contribute/#opening-an-issue) to our [GitHub issues](https://github.com/calvary-erp-contributors/calvary-erp-794/issues). Even better, you can submit a Pull Request to our [JHipster generator project](https://github.com/jhipster/generator-jhipster) or to our [Documentation project](https://github.com/jhipster/jhipster.github.io).
 
 **Please see the Submission Guidelines below**.
 
@@ -55,7 +55,7 @@ To submit an RFC follow those steps:
 6. Build consensus and integrate feedback from the reviewers
 7. The Pull Request is either accepted (merged), rejected (closed) or postponed (given an "on hold" status)
 
-Note: The JHipster RFC process is inspired by [Rust RFCs](https://rust-lang.github.io/rfcs/).
+Note: The Calvary ERP RFC process is inspired by [Rust RFCs](https://rust-lang.github.io/rfcs/).
 
 ## <a name="submit"></a> Submission Guidelines
 
@@ -75,8 +75,8 @@ chances of your issue being dealt with quickly:
 - **Related issues** - has a similar issue been reported before?
 - **Suggest a Fix** - if you can't fix the bug yourself, perhaps you can point to what might be
   causing the problem (line of code or commit)
-- **JHipster Version(s)** - is it a regression?
-- **JHipster configuration, a `.yo-rc.json` file generated in the root folder** - this will help us to replicate the scenario, you can remove the rememberMe key.
+- **ERP Version(s)** - is it a regression?
+- **ERP configuration, a `.yo-rc.json` file generated in the root folder** - this will help us to replicate the scenario, you can remove the rememberMe key.
 - **Entity configuration(s) `entityName.json` files generated in the `.jhipster` directory** - if the error is during an entity creation or associated with a specific entity
 - **Browsers and Operating System** - is this a problem with all browsers or only IE8?
 
@@ -94,9 +94,8 @@ Before you submit your pull request consider the following guidelines:
 
 - Search [GitHub](https://github.com/jhipster/generator-jhipster/pulls?utf8=%E2%9C%93&q=is%3Apr) for an open or closed Pull Request
   that relates to your submission.
-- If you want to modify the JHipster generator, read our [Development Guide](DEVELOPMENT.md)
 - Follow our [Coding Rules](#rules).
-- In GitHub, send a pull request to `jhipster/generator-jhipster:main`.
+- In GitHub, send a pull request to `calvary-erp-contributors/calvary-erp-794:master`.
 - **Every CI tests must pass**.
 
 That's it! Thank you for your contribution!
@@ -107,7 +106,6 @@ To ensure consistency throughout the source code, keep these rules in mind as yo
 
 - All features or bug fixes **must be tested** by one or more tests.
 - Most files formatting are checked by prettier and eslint.
-- EJS files use a two-space indentation for template logic and follow the generated file rules for the templating parts.
 
 Please ensure to run `npm run lint` and `npm test` on the project root before submitting a pull request. You can also run `npm run lint-fix` to fix some of the lint issues automatically.
 
