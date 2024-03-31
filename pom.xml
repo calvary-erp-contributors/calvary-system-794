@@ -86,6 +86,8 @@
         <lifecycle-mapping.version>1.0.0</lifecycle-mapping.version>
         <properties-maven-plugin.version>1.1.0</properties-maven-plugin.version>
         <sonar-maven-plugin.version>3.9.1.2184</sonar-maven-plugin.version>
+        <sonar.organization>calvary-erp-contributors</sonar.organization>
+        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
         <awaitility.version>4.2.0</awaitility.version>
         <lombok.version>1.18.28</lombok.version>
         <!-- jhipster-needle-maven-property -->
