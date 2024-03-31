@@ -15,20 +15,20 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: 11
-#      - name: Run backend test
-#        run: |
-#          chmod +x mvnw
-#          npm run ci:backend:test
-      - uses: actions/cache@v3 # Cache SonarCloud packages
-        with:
-          path: ~/.sonar/cache
-          key: ${{ runner.os }}-sonar
-          restore-keys: ${{ runner.os }}-sonar
-      - uses: actions/cache@v3 # Cache Maven packages
-        with:
-          path: ~/.m2
-          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-          restore-keys: ${{ runner.os }}-m2
+      - name: Run backend test
+        run: |
+          chmod +x mvnw
+          npm run ci:backend:test
+#      - uses: actions/cache@v3 # Cache SonarCloud packages
+#        with:
+#          path: ~/.sonar/cache
+#          key: ${{ runner.os }}-sonar
+#          restore-keys: ${{ runner.os }}-sonar
+#      - uses: actions/cache@v3 # Cache Maven packages
+#        with:
+#          path: ~/.m2
+#          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+#          restore-keys: ${{ runner.os }}-m2
       - name: Analyze code with SonarQube
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
