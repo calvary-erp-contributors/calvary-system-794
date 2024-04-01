@@ -18,7 +18,8 @@ jobs:
       - name: Run backend test
         run: |
           chmod +x mvnw
-          npm run ci:backend:test
+          ./mvnw verify
+#          npm run ci:backend:test
 #      - uses: actions/cache@v3 # Cache SonarCloud packages
 #        with:
 #          path: ~/.sonar/cache
