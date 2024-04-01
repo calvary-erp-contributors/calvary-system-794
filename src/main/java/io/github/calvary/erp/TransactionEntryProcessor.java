@@ -9,8 +9,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+/**
+ * This service responds to processing events on the requested entity
+ */
 @Service("transactionEntryProcessor")
-public class TransactionEntryProcessor implements PostingProcessorService<TransactionEntryDTO>{
+public class TransactionEntryProcessor implements PostingProcessorService<TransactionEntryDTO> {
 
     private static final Logger log = LoggerFactory.getLogger(TransactionEntryProcessor.class);
 
@@ -47,6 +50,4 @@ public class TransactionEntryProcessor implements PostingProcessorService<Transa
 
         return dto;
     }
-
-
 }

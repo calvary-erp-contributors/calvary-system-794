@@ -1,7 +1,7 @@
 package io.github.calvary.erp;
 
-import io.github.calvary.erp.errors.AccountCurrenciesDontMatchException;
 import io.github.calvary.domain.enumeration.TransactionEntryTypes;
+import io.github.calvary.erp.errors.AccountCurrenciesDontMatchException;
 import io.github.calvary.erp.errors.TransactionHasNotBeenProposedException;
 import io.github.calvary.erp.errors.TransactionIsAlreadyDeletedException;
 import io.github.calvary.service.AccountTransactionService;
@@ -13,14 +13,12 @@ import io.github.calvary.service.criteria.TransactionEntryCriteria;
 import io.github.calvary.service.dto.AccountTransactionDTO;
 import io.github.calvary.service.dto.TransactionCurrencyDTO;
 import io.github.calvary.service.dto.TransactionEntryDTO;
-
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-import tech.jhipster.service.filter.LongFilter;
-
 import java.math.BigDecimal;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+import tech.jhipster.service.filter.LongFilter;
 
 @Service
 public class AccountTransactionPostingProcessor implements PostingProcessorService<AccountTransactionDTO> {
@@ -36,16 +34,17 @@ public class AccountTransactionPostingProcessor implements PostingProcessorServi
     private static final String ENTITY_NAME = "accountTransaction";
 
     @Value("${jhipster.clientApp.name}")
-    private String applicationName;    
+    private String applicationName;
 
     public AccountTransactionPostingProcessor(
-        TransactionAccountService transactionAccountService, 
-        TransactionCurrencyService transactionCurrencyService, 
-        TransactionEntryService transactionEntryService, 
-        TransactionEntryQueryService transactionEntryQueryService, 
-        AccountTransactionService accountTransactionService, 
-        PostingProcessorService<TransactionEntryDTO> transactionEntryPostingService, 
-        UserNotificationService userNotificationService) {
+        TransactionAccountService transactionAccountService,
+        TransactionCurrencyService transactionCurrencyService,
+        TransactionEntryService transactionEntryService,
+        TransactionEntryQueryService transactionEntryQueryService,
+        AccountTransactionService accountTransactionService,
+        PostingProcessorService<TransactionEntryDTO> transactionEntryPostingService,
+        UserNotificationService userNotificationService
+    ) {
         this.transactionAccountService = transactionAccountService;
         this.transactionCurrencyService = transactionCurrencyService;
         this.transactionEntryService = transactionEntryService;
@@ -55,8 +54,13 @@ public class AccountTransactionPostingProcessor implements PostingProcessorServi
         this.userNotificationService = userNotificationService;
     }
 
+    /**
+     * Post account transaction
+     *
+     * @param accountTransaction
+     * @return
+     */
     public AccountTransactionDTO post(AccountTransactionDTO accountTransaction) {
-
         if (!currenciesDoMatch(accountTransaction)) {
             throw new AccountCurrenciesDontMatchException("Account currency mismatch", ENTITY_NAME, "account.crn.mismatched");
         }
@@ -70,12 +74,12 @@ public class AccountTransactionPostingProcessor implements PostingProcessorServi
         }
 
         if (accountTransaction.getWasPosted()) {
-
             return accountTransaction;
         }
 
         if (transactionBalanced(accountTransaction)) {
-            transactionEntryQueryService.findByCriteria(getTransactionEntryCriteria(accountTransaction))
+            transactionEntryQueryService
+                .findByCriteria(getTransactionEntryCriteria(accountTransaction))
                 .stream()
                 .peek(transactionEntryPostingService::post)
                 .peek(entry -> entry.setWasPosted(Boolean.TRUE))
@@ -89,29 +93,44 @@ public class AccountTransactionPostingProcessor implements PostingProcessorServi
         return accountTransactionService.save(accountTransaction);
     }
 
+    /**
+     * Check if currencies match
+     *
+     * @param accountTransaction
+     * @return
+     */
     private boolean currenciesDoMatch(AccountTransactionDTO accountTransaction) {
-
-        return transactionEntryQueryService.findByCriteria(getTransactionEntryCriteria(accountTransaction))
-            .stream()
-            .map(entry -> entry.getTransactionAccount().getId())
-            .map(transactionAccountService::findOne)
-            .flatMap(Optional::stream)
-            .map(account -> account.getTransactionCurrency().getId())
-            .map(transactionCurrencyService::findOne)
-            .flatMap(Optional::stream)
-            .map(TransactionCurrencyDTO::getCode)
-            .distinct()
-            .count() <= 1;
+        return (
+            transactionEntryQueryService
+                .findByCriteria(getTransactionEntryCriteria(accountTransaction))
+                .stream()
+                .map(entry -> entry.getTransactionAccount().getId())
+                .map(transactionAccountService::findOne)
+                .flatMap(Optional::stream)
+                .map(account -> account.getTransactionCurrency().getId())
+                .map(transactionCurrencyService::findOne)
+                .flatMap(Optional::stream)
+                .map(TransactionCurrencyDTO::getCode)
+                .distinct()
+                .count() <=
+            1
+        );
     }
 
+    /**
+     * Check if transaction is balanced
+     *
+     * @param accountTransaction
+     * @return
+     */
     private boolean transactionBalanced(AccountTransactionDTO accountTransaction) {
-
         AtomicBoolean state = new AtomicBoolean(false);
 
-        transactionEntryQueryService.findByCriteria(getTransactionEntryCriteria(accountTransaction))
+        transactionEntryQueryService
+            .findByCriteria(getTransactionEntryCriteria(accountTransaction))
             .stream()
             .map(entry -> {
-                if(entry.getTransactionEntryType() == TransactionEntryTypes.DEBIT) {
+                if (entry.getTransactionEntryType() == TransactionEntryTypes.DEBIT) {
                     return entry.getEntryAmount();
                 } else {
                     return entry.getEntryAmount().negate();
@@ -123,6 +142,12 @@ public class AccountTransactionPostingProcessor implements PostingProcessorServi
         return state.get();
     }
 
+    /**
+     * Extract transaction-entry-criteria
+     *
+     * @param accountTransaction
+     * @return
+     */
     private TransactionEntryCriteria getTransactionEntryCriteria(AccountTransactionDTO accountTransaction) {
         // TODO Criteria
         TransactionEntryCriteria criteria = new TransactionEntryCriteria();
