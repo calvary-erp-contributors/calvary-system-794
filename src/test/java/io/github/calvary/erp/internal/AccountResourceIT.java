@@ -1,8 +1,8 @@
-package io.github.calvary.web.rest;
+package io.github.calvary.erp.internal;
 
-import static io.github.calvary.web.rest.AccountResourceIT.TEST_USER_LOGIN;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import io.github.calvary.IntegrationTest;
@@ -14,11 +14,15 @@ import io.github.calvary.security.AuthoritiesConstants;
 import io.github.calvary.service.UserService;
 import io.github.calvary.service.dto.AdminUserDTO;
 import io.github.calvary.service.dto.PasswordChangeDTO;
-import io.github.calvary.service.dto.UserDTO;
+import io.github.calvary.web.rest.AccountResource;
+import io.github.calvary.web.rest.WithUnauthenticatedMockUser;
 import io.github.calvary.web.rest.vm.KeyAndPasswordVM;
 import io.github.calvary.web.rest.vm.ManagedUserVM;
 import java.time.Instant;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +37,7 @@ import org.springframework.transaction.annotation.Transactional;
  * Integration tests for the {@link AccountResource} REST controller.
  */
 @AutoConfigureMockMvc
-@WithMockUser(value = TEST_USER_LOGIN)
+@WithMockUser(value = AccountResourceIT.TEST_USER_LOGIN)
 @IntegrationTest
 class AccountResourceIT {
 
@@ -78,40 +82,40 @@ class AccountResourceIT {
             .andExpect(content().string(TEST_USER_LOGIN));
     }
 
-    //    @Test
-    //    void testGetExistingAccount() throws Exception {
-    //        Set<String> authorities = new HashSet<>();
-    //        authorities.add(AuthoritiesConstants.ADMIN);
-    //
-    //        AdminUserDTO user = new AdminUserDTO();
-    //        user.setLogin(TEST_USER_LOGIN);
-    //        user.setFirstName("john");
-    //        user.setLastName("doe");
-    //        user.setEmail("john.doe@jhipster.com");
-    //        user.setImageUrl("http://placehold.it/50x50");
-    //        user.setLangKey("en");
-    //        user.setAuthorities(authorities);
-    //        userService.createUser(user);
-    //
-    //        restAccountMockMvc
-    //            .perform(get("/api/account").accept(MediaType.APPLICATION_JSON))
-    //            .andExpect(status().isOk())
-    //            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-    //            .andExpect(jsonPath("$.login").value(TEST_USER_LOGIN))
-    //            .andExpect(jsonPath("$.firstName").value("john"))
-    //            .andExpect(jsonPath("$.lastName").value("doe"))
-    //            .andExpect(jsonPath("$.email").value("john.doe@jhipster.com"))
-    //            .andExpect(jsonPath("$.imageUrl").value("http://placehold.it/50x50"))
-    //            .andExpect(jsonPath("$.langKey").value("en"))
-    //            .andExpect(jsonPath("$.authorities").value(AuthoritiesConstants.ADMIN));
-    //    }
-    //
-    //    @Test
-    //    void testGetUnknownAccount() throws Exception {
-    //        restAccountMockMvc
-    //            .perform(get("/api/account").accept(MediaType.APPLICATION_PROBLEM_JSON))
-    //            .andExpect(status().isInternalServerError());
-    //    }
+    @Test
+    void testGetExistingAccount() throws Exception {
+        Set<String> authorities = new HashSet<>();
+        authorities.add(AuthoritiesConstants.ADMIN);
+
+        AdminUserDTO user = new AdminUserDTO();
+        user.setLogin(TEST_USER_LOGIN);
+        user.setFirstName("john");
+        user.setLastName("doe");
+        user.setEmail("john.doe@jhipster.com");
+        user.setImageUrl("http://placehold.it/50x50");
+        user.setLangKey("en");
+        user.setAuthorities(authorities);
+        userService.createUser(user);
+
+        restAccountMockMvc
+            .perform(get("/api/account").accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$.login").value(TEST_USER_LOGIN))
+            .andExpect(jsonPath("$.firstName").value("john"))
+            .andExpect(jsonPath("$.lastName").value("doe"))
+            .andExpect(jsonPath("$.email").value("john.doe@jhipster.com"))
+            .andExpect(jsonPath("$.imageUrl").value("http://placehold.it/50x50"))
+            .andExpect(jsonPath("$.langKey").value("en"))
+            .andExpect(jsonPath("$.authorities").value(AuthoritiesConstants.ADMIN));
+    }
+
+    @Test
+    void testGetUnknownAccount() throws Exception {
+        restAccountMockMvc
+            .perform(get("/api/account").accept(MediaType.APPLICATION_PROBLEM_JSON))
+            .andExpect(status().isInternalServerError());
+    }
 
     @Test
     @Transactional
