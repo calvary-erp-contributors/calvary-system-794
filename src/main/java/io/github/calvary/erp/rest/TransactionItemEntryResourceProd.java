@@ -1,5 +1,6 @@
 package io.github.calvary.erp.rest;
 
+import io.github.calvary.erp.internal.InternalTransactionItemEntryService;
 import io.github.calvary.repository.TransactionItemEntryRepository;
 import io.github.calvary.service.TransactionItemEntryQueryService;
 import io.github.calvary.service.TransactionItemEntryService;
@@ -38,14 +39,14 @@ public class TransactionItemEntryResourceProd {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
-    private final TransactionItemEntryService transactionItemEntryService;
+    private final InternalTransactionItemEntryService transactionItemEntryService;
 
     private final TransactionItemEntryRepository transactionItemEntryRepository;
 
     private final TransactionItemEntryQueryService transactionItemEntryQueryService;
 
     public TransactionItemEntryResourceProd(
-        TransactionItemEntryService transactionItemEntryService,
+        InternalTransactionItemEntryService transactionItemEntryService,
         TransactionItemEntryRepository transactionItemEntryRepository,
         TransactionItemEntryQueryService transactionItemEntryQueryService
     ) {

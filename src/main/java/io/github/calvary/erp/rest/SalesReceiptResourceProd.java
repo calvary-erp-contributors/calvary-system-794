@@ -1,5 +1,6 @@
 package io.github.calvary.erp.rest;
 
+import io.github.calvary.erp.internal.InternalSalesReceiptService;
 import io.github.calvary.repository.SalesReceiptRepository;
 import io.github.calvary.service.SalesReceiptQueryService;
 import io.github.calvary.service.SalesReceiptService;
@@ -40,14 +41,14 @@ public class SalesReceiptResourceProd {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
-    private final SalesReceiptService salesReceiptService;
+    private final InternalSalesReceiptService salesReceiptService;
 
     private final SalesReceiptRepository salesReceiptRepository;
 
     private final SalesReceiptQueryService salesReceiptQueryService;
 
     public SalesReceiptResourceProd(
-        SalesReceiptService salesReceiptService,
+        InternalSalesReceiptService salesReceiptService,
         SalesReceiptRepository salesReceiptRepository,
         SalesReceiptQueryService salesReceiptQueryService
     ) {

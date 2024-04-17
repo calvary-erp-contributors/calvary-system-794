@@ -1,5 +1,6 @@
 package io.github.calvary.erp.rest;
 
+import io.github.calvary.erp.internal.InternalTransferItemEntryService;
 import io.github.calvary.repository.TransferItemEntryRepository;
 import io.github.calvary.service.TransferItemEntryQueryService;
 import io.github.calvary.service.TransferItemEntryService;
@@ -40,14 +41,14 @@ public class TransferItemEntryResourceProd {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
-    private final TransferItemEntryService transferItemEntryService;
+    private final InternalTransferItemEntryService transferItemEntryService;
 
     private final TransferItemEntryRepository transferItemEntryRepository;
 
     private final TransferItemEntryQueryService transferItemEntryQueryService;
 
     public TransferItemEntryResourceProd(
-        TransferItemEntryService transferItemEntryService,
+        InternalTransferItemEntryService transferItemEntryService,
         TransferItemEntryRepository transferItemEntryRepository,
         TransferItemEntryQueryService transferItemEntryQueryService
     ) {

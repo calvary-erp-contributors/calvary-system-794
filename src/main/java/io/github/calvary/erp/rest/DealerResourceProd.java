@@ -1,5 +1,6 @@
 package io.github.calvary.erp.rest;
 
+import io.github.calvary.erp.internal.InternalDealerService;
 import io.github.calvary.repository.DealerRepository;
 import io.github.calvary.service.DealerQueryService;
 import io.github.calvary.service.DealerService;
@@ -40,13 +41,17 @@ public class DealerResourceProd {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
-    private final DealerService dealerService;
+    private final InternalDealerService dealerService;
 
     private final DealerRepository dealerRepository;
 
     private final DealerQueryService dealerQueryService;
 
-    public DealerResourceProd(DealerService dealerService, DealerRepository dealerRepository, DealerQueryService dealerQueryService) {
+    public DealerResourceProd(
+        InternalDealerService dealerService,
+        DealerRepository dealerRepository,
+        DealerQueryService dealerQueryService
+    ) {
         this.dealerService = dealerService;
         this.dealerRepository = dealerRepository;
         this.dealerQueryService = dealerQueryService;

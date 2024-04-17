@@ -1,5 +1,6 @@
 package io.github.calvary.erp.rest;
 
+import io.github.calvary.erp.internal.InternalApplicationUserService;
 import io.github.calvary.repository.ApplicationUserRepository;
 import io.github.calvary.service.ApplicationUserQueryService;
 import io.github.calvary.service.ApplicationUserService;
@@ -40,14 +41,14 @@ public class ApplicationUserResourceProd {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
-    private final ApplicationUserService applicationUserService;
+    private final InternalApplicationUserService applicationUserService;
 
     private final ApplicationUserRepository applicationUserRepository;
 
     private final ApplicationUserQueryService applicationUserQueryService;
 
     public ApplicationUserResourceProd(
-        ApplicationUserService applicationUserService,
+        InternalApplicationUserService applicationUserService,
         ApplicationUserRepository applicationUserRepository,
         ApplicationUserQueryService applicationUserQueryService
     ) {
