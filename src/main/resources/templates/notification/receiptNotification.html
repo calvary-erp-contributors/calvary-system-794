@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:lang="${#locale.language}" lang="en">
+  <head>
+    <title th:text="#{receipt.notification.title}">Treasury@Calvary: Contribution Notice</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="icon" th:href="@{|${baseUrl}/favicon.ico|}" />
+  </head>
+  <body>
+    <p th:text="#{receipt.notification.greeting(${recipient.greeting}, ${recipient.greetingTag})}">Dear</p>
+    <p th:text="#{receipt.notification.text1}">Thank you for your support</p>
+
+    <p>
+      <span th:text="#{receipt.notification.signature}">Regards, </span>
+      <br />
+      <em th:text="#{receipt.notification.signature.tag}">Calvary Treasury Team (Systems Division)</em>
+    </p>
+  </body>
+</html>

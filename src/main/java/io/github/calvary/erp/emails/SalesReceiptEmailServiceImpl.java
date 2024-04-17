@@ -20,14 +20,18 @@ public class SalesReceiptEmailServiceImpl implements SalesReceiptEmailService {
     private final InternalTransactionItemEntryService internalTransactionItemEntryService;
     private final InternalTransferItemEntryService internalTransferItemEntryService;
 
+    private final MailNotification mailNotification;
+
     public SalesReceiptEmailServiceImpl(
         InternalDealerService internalDealerService,
         InternalTransactionItemEntryService internalTransactionItemEntryService,
-        InternalTransferItemEntryService internalTransferItemEntryService
+        InternalTransferItemEntryService internalTransferItemEntryService,
+        MailNotification mailNotification
     ) {
         this.internalDealerService = internalDealerService;
         this.internalTransactionItemEntryService = internalTransactionItemEntryService;
         this.internalTransferItemEntryService = internalTransferItemEntryService;
+        this.mailNotification = mailNotification;
     }
 
     @Override
@@ -41,6 +45,13 @@ public class SalesReceiptEmailServiceImpl implements SalesReceiptEmailService {
         Optional<List<TransferItemEntryDTO>> transferItemEntries = internalTransferItemEntryService.findItemsRelatedToSalesReceipt(
             salesReceipt
         );
-        // TODO Compile emaills
+
+        dealer.ifPresent(recipient -> {
+            transactionItemEntries.ifPresent(transactionItems -> {
+                transferItemEntries.ifPresent(transferItems -> {
+                    mailNotification.sendEmailSalesReceiptNotification(recipient, transactionItems, transferItems);
+                });
+            });
+        });
     }
 }
