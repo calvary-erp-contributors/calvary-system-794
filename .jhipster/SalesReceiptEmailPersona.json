@@ -1,0 +1,119 @@
+{
+  "changelogDate": "20240417173211",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "emailIdentifier",
+      "fieldType": "UUID",
+      "fieldValidateRules": ["required", "unique"]
+    },
+    {
+      "fieldName": "mainEmail",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "clearCopyEmail",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "blindCopyEmail",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "languageKeyCode",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "pattern"],
+      "fieldValidateRulesPattern": "(^[a-z][a-z]*$)"
+    },
+    {
+      "fieldName": "preferredGreeting",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "preferredGreetingDesignation",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "preferredPrefix",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "preferredSuffix",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "timeBasedGreetings",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "sloganBasedGreeting",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "addPrefix",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "addSuffix",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "preferredSignature",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "preferredSignatureDesignation",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "includeServiceDetails",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "includeMessageOfTheDay",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "includeTreasuryQuote",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "createdAt",
+      "fieldType": "ZonedDateTime",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "lastModifedAt",
+      "fieldType": "ZonedDateTime"
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "SalesReceiptEmailPersona",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityField": "applicationIdentity",
+      "otherEntityName": "applicationUser",
+      "relationshipName": "createdBy",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityField": "applicationIdentity",
+      "otherEntityName": "applicationUser",
+      "relationshipName": "lastModifiedBy",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityField": "name",
+      "otherEntityName": "dealer",
+      "relationshipName": "contributor",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "serviceImpl"
+}

@@ -35,16 +35,16 @@ public class TransferItemEntry implements Serializable {
 
     @ManyToOne(optional = false)
     @NotNull
-    @JsonIgnoreProperties(value = { "transactionClass", "transactionAccount" }, allowSetters = true)
-    private TransferItem transferItem;
-
-    @ManyToOne(optional = false)
-    @NotNull
     @JsonIgnoreProperties(
         value = { "transactionClass", "dealer", "salesReceiptTitle", "transactionItemEntries", "transferItemEntries" },
         allowSetters = true
     )
     private SalesReceipt salesReceipt;
+
+    @ManyToOne(optional = false)
+    @NotNull
+    @JsonIgnoreProperties(value = { "transactionClass", "transactionAccount" }, allowSetters = true)
+    private TransferItem transferItem;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 

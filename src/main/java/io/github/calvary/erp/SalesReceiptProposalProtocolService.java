@@ -39,13 +39,15 @@ public class SalesReceiptProposalProtocolService {
                 Optional<BigDecimal> transferAmount = transferItemEntryRepository
                     .findAllBySalesReceiptId(unfilteredReceipt.getId())
                     .stream()
-                    .map(TransferItemEntry::getItemAmount)
+                    .map(entries -> entries.stream().map(TransferItemEntry::getItemAmount).reduce(BigDecimal::add))
+                    .map(Optional::get)
                     .reduce(BigDecimal::add);
 
                 Optional<BigDecimal> transactionAmount = internalTransactionItemEntryRepository
                     .findAllBySalesReceiptId(unfilteredReceipt.getId())
                     .stream()
-                    .map(TransactionItemEntry::getItemAmount)
+                    .map(entries -> entries.stream().map(TransactionItemEntry::getItemAmount).reduce(BigDecimal::add))
+                    .map(Optional::get)
                     .reduce(BigDecimal::add);
 
                 if (transactionAmount.isPresent() && transferAmount.isPresent()) {

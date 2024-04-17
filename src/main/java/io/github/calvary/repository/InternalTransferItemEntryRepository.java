@@ -54,5 +54,5 @@ public interface InternalTransferItemEntryRepository
     )
     Optional<TransferItemEntry> findOneWithToOneRelationships(@Param("id") Long id);
 
-    List<TransferItemEntry> findAllBySalesReceiptId(Long salesReceiptId);
+    Optional<List<TransferItemEntry>> findAllBySalesReceiptId(Long salesReceiptId);
 }
