@@ -1,0 +1,48 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet author="edwin.njeru" id="1713428624548-16">
+        <createTable tableName="rel_dealer__sales_receipt_email_persona">
+            <column name="dealer_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="rel_dealer__sales_receipt_email_personaPK"/>
+            </column>
+            <column name="sales_receipt_email_persona_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="rel_dealer__sales_receipt_email_personaPK"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="edwin.njeru" id="1713428624548-17">
+        <addColumn tableName="dealer">
+            <column name="dealer_reference" type="uuid"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="edwin.njeru" id="1713428624548-18">
+        <addForeignKeyConstraint baseColumnNames="dealer_id" baseTableName="rel_dealer__sales_receipt_email_persona" constraintName="FK26ryc6ut1ae5gqhuphk838c4f" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="dealer" validate="true"/>
+    </changeSet>
+    <changeSet author="edwin.njeru" id="1713428624548-19">
+        <addForeignKeyConstraint baseColumnNames="sales_receipt_email_persona_id" baseTableName="rel_dealer__sales_receipt_email_persona" constraintName="FKea22iqcqydfp6bn5k81nasx0" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="sales_receipt_email_persona" validate="true"/>
+    </changeSet>
+    <changeSet author="edwin.njeru" id="1713428624548-2">
+        <dropUniqueConstraint constraintName="UC_APPLICATION_USERAPPLICATION_IDENTITY_COL" tableName="application_user"/>
+    </changeSet>
+    <changeSet author="edwin.njeru" id="1713428624548-3">
+        <addUniqueConstraint columnNames="application_identity" constraintName="UC_APPLICATION_USERAPPLICATION_IDENTITY_COL" tableName="application_user"/>
+    </changeSet>
+    <changeSet author="edwin.njeru" id="1713428624548-4">
+        <dropUniqueConstraint constraintName="UC_APPLICATION_USERUSER_IDENTIFIER_COL" tableName="application_user"/>
+    </changeSet>
+    <changeSet author="edwin.njeru" id="1713428624548-5">
+        <addUniqueConstraint columnNames="user_identifier" constraintName="UC_APPLICATION_USERUSER_IDENTIFIER_COL" tableName="application_user"/>
+    </changeSet>
+    <changeSet author="edwin.njeru" id="1713428624548-10">
+        <dropUniqueConstraint constraintName="UC_JHI_USERLOGIN_COL" tableName="jhi_user"/>
+    </changeSet>
+    <changeSet author="edwin.njeru" id="1713428624548-11">
+        <addUniqueConstraint columnNames="login" constraintName="UC_JHI_USERLOGIN_COL" tableName="jhi_user"/>
+    </changeSet>
+    <changeSet author="edwin.njeru" id="1713428624548-14">
+        <dropUniqueConstraint constraintName="UC_TRANSACTION_CURRENCYNAME_COL" tableName="transaction_currency"/>
+    </changeSet>
+    <changeSet author="edwin.njeru" id="1713428624548-15">
+        <addUniqueConstraint columnNames="name" constraintName="UC_TRANSACTION_CURRENCYNAME_COL" tableName="transaction_currency"/>
+    </changeSet>
+</databaseChangeLog>

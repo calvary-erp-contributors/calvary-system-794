@@ -1,7 +1,10 @@
 package io.github.calvary.service.dto;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
+import java.util.UUID;
 import javax.validation.constraints.*;
 
 /**
@@ -17,7 +20,11 @@ public class DealerDTO implements Serializable {
 
     private String mainEmail;
 
+    private UUID dealerReference;
+
     private DealerTypeDTO dealerType;
+
+    private Set<SalesReceiptEmailPersonaDTO> salesReceiptEmailPersonas = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -43,12 +50,28 @@ public class DealerDTO implements Serializable {
         this.mainEmail = mainEmail;
     }
 
+    public UUID getDealerReference() {
+        return dealerReference;
+    }
+
+    public void setDealerReference(UUID dealerReference) {
+        this.dealerReference = dealerReference;
+    }
+
     public DealerTypeDTO getDealerType() {
         return dealerType;
     }
 
     public void setDealerType(DealerTypeDTO dealerType) {
         this.dealerType = dealerType;
+    }
+
+    public Set<SalesReceiptEmailPersonaDTO> getSalesReceiptEmailPersonas() {
+        return salesReceiptEmailPersonas;
+    }
+
+    public void setSalesReceiptEmailPersonas(Set<SalesReceiptEmailPersonaDTO> salesReceiptEmailPersonas) {
+        this.salesReceiptEmailPersonas = salesReceiptEmailPersonas;
     }
 
     @Override
@@ -79,7 +102,9 @@ public class DealerDTO implements Serializable {
             "id=" + getId() +
             ", name='" + getName() + "'" +
             ", mainEmail='" + getMainEmail() + "'" +
+            ", dealerReference='" + getDealerReference() + "'" +
             ", dealerType=" + getDealerType() +
+            ", salesReceiptEmailPersonas=" + getSalesReceiptEmailPersonas() +
             "}";
     }
 }

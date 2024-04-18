@@ -1,45 +1,45 @@
 <?xml version="1.1" encoding="UTF-8" standalone="no"?>
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
-    <changeSet author="Hp (generated)" id="1708286002364-1">
+    <changeSet author="edwin.njeru@scroll" id="1708286002364-1">
         <dropUniqueConstraint constraintName="UC_APPLICATION_USERAPPLICATION_IDENTITY_COL" tableName="application_user"/>
     </changeSet>
-    <changeSet author="Hp (generated)" id="1708286002364-2">
+    <changeSet author="edwin.njeru@scroll" id="1708286002364-2">
         <addUniqueConstraint columnNames="application_identity" constraintName="UC_APPLICATION_USERAPPLICATION_IDENTITY_COL" tableName="application_user"/>
     </changeSet>
-    <changeSet author="Hp (generated)" id="1708286002364-3">
+    <changeSet author="edwin.njeru@scroll" id="1708286002364-3">
         <dropUniqueConstraint constraintName="UC_APPLICATION_USERUSER_IDENTIFIER_COL" tableName="application_user"/>
     </changeSet>
-    <changeSet author="Hp (generated)" id="1708286002364-4">
+    <changeSet author="edwin.njeru@scroll" id="1708286002364-4">
         <addUniqueConstraint columnNames="user_identifier" constraintName="UC_APPLICATION_USERUSER_IDENTIFIER_COL" tableName="application_user"/>
     </changeSet>
-    <changeSet author="Hp (generated)" id="1708286002364-5">
+    <changeSet author="edwin.njeru@scroll" id="1708286002364-5">
         <dropUniqueConstraint constraintName="UC_BALANCE_SHEET_ITEM_TYPEITEM_NUMBER_COL" tableName="balance_sheet_item_type"/>
     </changeSet>
-    <changeSet author="Hp (generated)" id="1708286002364-6">
+    <changeSet author="edwin.njeru@scroll" id="1708286002364-6">
         <addUniqueConstraint columnNames="item_number" constraintName="UC_BALANCE_SHEET_ITEM_TYPEITEM_NUMBER_COL" tableName="balance_sheet_item_type"/>
     </changeSet>
-    <changeSet author="Hp (generated)" id="1708286002364-7">
+    <changeSet author="edwin.njeru@scroll" id="1708286002364-7">
         <dropUniqueConstraint constraintName="UC_BALANCE_SHEET_ITEM_TYPEITEM_SEQUENCE_COL" tableName="balance_sheet_item_type"/>
     </changeSet>
-    <changeSet author="Hp (generated)" id="1708286002364-8">
+    <changeSet author="edwin.njeru@scroll" id="1708286002364-8">
         <addUniqueConstraint columnNames="item_sequence" constraintName="UC_BALANCE_SHEET_ITEM_TYPEITEM_SEQUENCE_COL" tableName="balance_sheet_item_type"/>
     </changeSet>
-    <changeSet author="Hp (generated)" id="1708286002364-9">
+    <changeSet author="edwin.njeru@scroll" id="1708286002364-9">
         <dropUniqueConstraint constraintName="UC_JHI_USERLOGIN_COL" tableName="jhi_user"/>
     </changeSet>
-    <changeSet author="Hp (generated)" id="1708286002364-10">
+    <changeSet author="edwin.njeru@scroll" id="1708286002364-10">
         <addUniqueConstraint columnNames="login" constraintName="UC_JHI_USERLOGIN_COL" tableName="jhi_user"/>
     </changeSet>
-    <changeSet author="Hp (generated)" id="1708286002364-11">
+    <changeSet author="edwin.njeru@scroll" id="1708286002364-11">
         <dropUniqueConstraint constraintName="UC_TRANSACTION_ACCOUNTACCOUNT_NUMBER_COL" tableName="transaction_account"/>
     </changeSet>
-    <changeSet author="Hp (generated)" id="1708286002364-12">
+    <changeSet author="edwin.njeru@scroll" id="1708286002364-12">
         <addUniqueConstraint columnNames="account_number" constraintName="UC_TRANSACTION_ACCOUNTACCOUNT_NUMBER_COL" tableName="transaction_account"/>
     </changeSet>
-    <changeSet author="Hp (generated)" id="1708286002364-13">
+    <changeSet author="edwin.njeru@scroll" id="1708286002364-13">
         <dropUniqueConstraint constraintName="UC_TRANSACTION_CURRENCYNAME_COL" tableName="transaction_currency"/>
     </changeSet>
-    <changeSet author="Hp (generated)" id="1708286002364-14">
+    <changeSet author="edwin.njeru@scroll" id="1708286002364-14">
         <addUniqueConstraint columnNames="name" constraintName="UC_TRANSACTION_CURRENCYNAME_COL" tableName="transaction_currency"/>
     </changeSet>
 </databaseChangeLog>

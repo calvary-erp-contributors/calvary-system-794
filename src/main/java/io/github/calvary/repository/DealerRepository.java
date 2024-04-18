@@ -11,19 +11,23 @@ import org.springframework.stereotype.Repository;
 
 /**
  * Spring Data JPA repository for the Dealer entity.
+ *
+ * When extending this class, extend DealerRepositoryWithBagRelationships too.
+ * For more information refer to https://github.com/jhipster/generator-jhipster/issues/17990.
  */
 @Repository
-public interface DealerRepository extends JpaRepository<Dealer, Long>, JpaSpecificationExecutor<Dealer> {
+public interface DealerRepository
+    extends DealerRepositoryWithBagRelationships, JpaRepository<Dealer, Long>, JpaSpecificationExecutor<Dealer> {
     default Optional<Dealer> findOneWithEagerRelationships(Long id) {
-        return this.findOneWithToOneRelationships(id);
+        return this.fetchBagRelationships(this.findOneWithToOneRelationships(id));
     }
 
     default List<Dealer> findAllWithEagerRelationships() {
-        return this.findAllWithToOneRelationships();
+        return this.fetchBagRelationships(this.findAllWithToOneRelationships());
     }
 
     default Page<Dealer> findAllWithEagerRelationships(Pageable pageable) {
-        return this.findAllWithToOneRelationships(pageable);
+        return this.fetchBagRelationships(this.findAllWithToOneRelationships(pageable));
     }
 
     @Query(

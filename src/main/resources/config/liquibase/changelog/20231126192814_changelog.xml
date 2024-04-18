@@ -1,16 +1,16 @@
 <?xml version="1.1" encoding="UTF-8" standalone="no"?>
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
-    <changeSet author="Hp (generated)" id="1701026919799-11">
+    <changeSet author="edwin.njeru@scroll" id="1701026919799-11">
         <addColumn tableName="sales_receipt">
             <column name="sales_receipt_title_id" type="int8">
                 <constraints nullable="false"/>
             </column>
         </addColumn>
     </changeSet>
-    <changeSet author="Hp (generated)" id="1701026919799-12">
+    <changeSet author="edwin.njeru@scroll" id="1701026919799-12">
         <addForeignKeyConstraint baseColumnNames="sales_receipt_title_id" baseTableName="sales_receipt" constraintName="FKrin9f5c3l9893p30d6dnnw1l1" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="sales_receipt_title" validate="true"/>
     </changeSet>
-    <changeSet author="Hp (generated)" id="1701026919799-13">
+    <changeSet author="edwin.njeru@scroll" id="1701026919799-13">
         <dropColumn columnName="sales_receipt_title" tableName="sales_receipt"/>
     </changeSet>
 </databaseChangeLog>

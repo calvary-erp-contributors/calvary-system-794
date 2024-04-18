@@ -49,7 +49,7 @@ public class SalesReceipt implements Serializable {
 
     @ManyToOne(optional = false)
     @NotNull
-    @JsonIgnoreProperties(value = { "dealerType" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "dealerType", "salesReceiptEmailPersonas" }, allowSetters = true)
     private Dealer dealer;
 
     @ManyToOne(optional = false)

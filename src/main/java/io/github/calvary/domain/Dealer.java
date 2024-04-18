@@ -1,6 +1,10 @@
 package io.github.calvary.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import org.hibernate.annotations.Cache;
@@ -31,9 +35,22 @@ public class Dealer implements Serializable {
     @Column(name = "main_email")
     private String mainEmail;
 
+    @Column(name = "dealer_reference")
+    private UUID dealerReference;
+
     @ManyToOne(optional = false)
     @NotNull
     private DealerType dealerType;
+
+    @ManyToMany
+    @JoinTable(
+        name = "rel_dealer__sales_receipt_email_persona",
+        joinColumns = @JoinColumn(name = "dealer_id"),
+        inverseJoinColumns = @JoinColumn(name = "sales_receipt_email_persona_id")
+    )
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnoreProperties(value = { "createdBy", "lastModifiedBy", "contributor" }, allowSetters = true)
+    private Set<SalesReceiptEmailPersona> salesReceiptEmailPersonas = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -76,6 +93,19 @@ public class Dealer implements Serializable {
         this.mainEmail = mainEmail;
     }
 
+    public UUID getDealerReference() {
+        return this.dealerReference;
+    }
+
+    public Dealer dealerReference(UUID dealerReference) {
+        this.setDealerReference(dealerReference);
+        return this;
+    }
+
+    public void setDealerReference(UUID dealerReference) {
+        this.dealerReference = dealerReference;
+    }
+
     public DealerType getDealerType() {
         return this.dealerType;
     }
@@ -86,6 +116,29 @@ public class Dealer implements Serializable {
 
     public Dealer dealerType(DealerType dealerType) {
         this.setDealerType(dealerType);
+        return this;
+    }
+
+    public Set<SalesReceiptEmailPersona> getSalesReceiptEmailPersonas() {
+        return this.salesReceiptEmailPersonas;
+    }
+
+    public void setSalesReceiptEmailPersonas(Set<SalesReceiptEmailPersona> salesReceiptEmailPersonas) {
+        this.salesReceiptEmailPersonas = salesReceiptEmailPersonas;
+    }
+
+    public Dealer salesReceiptEmailPersonas(Set<SalesReceiptEmailPersona> salesReceiptEmailPersonas) {
+        this.setSalesReceiptEmailPersonas(salesReceiptEmailPersonas);
+        return this;
+    }
+
+    public Dealer addSalesReceiptEmailPersona(SalesReceiptEmailPersona salesReceiptEmailPersona) {
+        this.salesReceiptEmailPersonas.add(salesReceiptEmailPersona);
+        return this;
+    }
+
+    public Dealer removeSalesReceiptEmailPersona(SalesReceiptEmailPersona salesReceiptEmailPersona) {
+        this.salesReceiptEmailPersonas.remove(salesReceiptEmailPersona);
         return this;
     }
 
@@ -115,6 +168,7 @@ public class Dealer implements Serializable {
             "id=" + getId() +
             ", name='" + getName() + "'" +
             ", mainEmail='" + getMainEmail() + "'" +
+            ", dealerReference='" + getDealerReference() + "'" +
             "}";
     }
 }

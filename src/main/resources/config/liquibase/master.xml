@@ -57,6 +57,7 @@
     <include file="config/liquibase/changelog/20240303152614_added_entity_constraints_ReceiptEmailRequest.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20240303163254_changelog.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20240417173211_added_entity_constraints_SalesReceiptEmailPersona.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20240418082312_added_dealer_email_persona.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
     <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
 </databaseChangeLog>

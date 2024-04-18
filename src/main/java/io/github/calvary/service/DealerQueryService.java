@@ -100,12 +100,24 @@ public class DealerQueryService extends QueryService<Dealer> {
             if (criteria.getMainEmail() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getMainEmail(), Dealer_.mainEmail));
             }
+            if (criteria.getDealerReference() != null) {
+                specification = specification.and(buildSpecification(criteria.getDealerReference(), Dealer_.dealerReference));
+            }
             if (criteria.getDealerTypeId() != null) {
                 specification =
                     specification.and(
                         buildSpecification(
                             criteria.getDealerTypeId(),
                             root -> root.join(Dealer_.dealerType, JoinType.LEFT).get(DealerType_.id)
+                        )
+                    );
+            }
+            if (criteria.getSalesReceiptEmailPersonaId() != null) {
+                specification =
+                    specification.and(
+                        buildSpecification(
+                            criteria.getSalesReceiptEmailPersonaId(),
+                            root -> root.join(Dealer_.salesReceiptEmailPersonas, JoinType.LEFT).get(SalesReceiptEmailPersona_.id)
                         )
                     );
             }

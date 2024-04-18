@@ -27,7 +27,11 @@ public class DealerCriteria implements Serializable, Criteria {
 
     private StringFilter mainEmail;
 
+    private UUIDFilter dealerReference;
+
     private LongFilter dealerTypeId;
+
+    private LongFilter salesReceiptEmailPersonaId;
 
     private Boolean distinct;
 
@@ -37,7 +41,9 @@ public class DealerCriteria implements Serializable, Criteria {
         this.id = other.id == null ? null : other.id.copy();
         this.name = other.name == null ? null : other.name.copy();
         this.mainEmail = other.mainEmail == null ? null : other.mainEmail.copy();
+        this.dealerReference = other.dealerReference == null ? null : other.dealerReference.copy();
         this.dealerTypeId = other.dealerTypeId == null ? null : other.dealerTypeId.copy();
+        this.salesReceiptEmailPersonaId = other.salesReceiptEmailPersonaId == null ? null : other.salesReceiptEmailPersonaId.copy();
         this.distinct = other.distinct;
     }
 
@@ -91,6 +97,21 @@ public class DealerCriteria implements Serializable, Criteria {
         this.mainEmail = mainEmail;
     }
 
+    public UUIDFilter getDealerReference() {
+        return dealerReference;
+    }
+
+    public UUIDFilter dealerReference() {
+        if (dealerReference == null) {
+            dealerReference = new UUIDFilter();
+        }
+        return dealerReference;
+    }
+
+    public void setDealerReference(UUIDFilter dealerReference) {
+        this.dealerReference = dealerReference;
+    }
+
     public LongFilter getDealerTypeId() {
         return dealerTypeId;
     }
@@ -104,6 +125,21 @@ public class DealerCriteria implements Serializable, Criteria {
 
     public void setDealerTypeId(LongFilter dealerTypeId) {
         this.dealerTypeId = dealerTypeId;
+    }
+
+    public LongFilter getSalesReceiptEmailPersonaId() {
+        return salesReceiptEmailPersonaId;
+    }
+
+    public LongFilter salesReceiptEmailPersonaId() {
+        if (salesReceiptEmailPersonaId == null) {
+            salesReceiptEmailPersonaId = new LongFilter();
+        }
+        return salesReceiptEmailPersonaId;
+    }
+
+    public void setSalesReceiptEmailPersonaId(LongFilter salesReceiptEmailPersonaId) {
+        this.salesReceiptEmailPersonaId = salesReceiptEmailPersonaId;
     }
 
     public Boolean getDistinct() {
@@ -127,14 +163,16 @@ public class DealerCriteria implements Serializable, Criteria {
             Objects.equals(id, that.id) &&
             Objects.equals(name, that.name) &&
             Objects.equals(mainEmail, that.mainEmail) &&
+            Objects.equals(dealerReference, that.dealerReference) &&
             Objects.equals(dealerTypeId, that.dealerTypeId) &&
+            Objects.equals(salesReceiptEmailPersonaId, that.salesReceiptEmailPersonaId) &&
             Objects.equals(distinct, that.distinct)
         );
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, mainEmail, dealerTypeId, distinct);
+        return Objects.hash(id, name, mainEmail, dealerReference, dealerTypeId, salesReceiptEmailPersonaId, distinct);
     }
 
     // prettier-ignore
@@ -144,7 +182,9 @@ public class DealerCriteria implements Serializable, Criteria {
             (id != null ? "id=" + id + ", " : "") +
             (name != null ? "name=" + name + ", " : "") +
             (mainEmail != null ? "mainEmail=" + mainEmail + ", " : "") +
+            (dealerReference != null ? "dealerReference=" + dealerReference + ", " : "") +
             (dealerTypeId != null ? "dealerTypeId=" + dealerTypeId + ", " : "") +
+            (salesReceiptEmailPersonaId != null ? "salesReceiptEmailPersonaId=" + salesReceiptEmailPersonaId + ", " : "") +
             (distinct != null ? "distinct=" + distinct + ", " : "") +
             "}";
     }

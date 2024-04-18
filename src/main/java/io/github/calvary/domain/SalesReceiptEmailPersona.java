@@ -104,7 +104,7 @@ public class SalesReceiptEmailPersona implements Serializable {
     private ApplicationUser lastModifiedBy;
 
     @ManyToOne
-    @JsonIgnoreProperties(value = { "dealerType" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "dealerType", "salesReceiptEmailPersonas" }, allowSetters = true)
     private Dealer contributor;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here

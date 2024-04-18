@@ -35,7 +35,7 @@ public class AccountingEvent implements Serializable {
 
     @ManyToOne(optional = false)
     @NotNull
-    @JsonIgnoreProperties(value = { "dealerType" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "dealerType", "salesReceiptEmailPersonas" }, allowSetters = true)
     private Dealer dealer;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
