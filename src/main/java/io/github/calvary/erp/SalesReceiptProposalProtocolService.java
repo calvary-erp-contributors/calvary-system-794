@@ -3,7 +3,7 @@ package io.github.calvary.erp;
 import io.github.calvary.domain.TransactionItemEntry;
 import io.github.calvary.domain.TransferItemEntry;
 import io.github.calvary.erp.repository.InternalTransactionItemEntryRepository;
-import io.github.calvary.repository.InternalTransferItemEntryRepository;
+import io.github.calvary.erp.repository.InternalTransferItemEntryRepository;
 import io.github.calvary.service.SalesReceiptService;
 import io.github.calvary.service.dto.SalesReceiptProposalDTO;
 import java.math.BigDecimal;

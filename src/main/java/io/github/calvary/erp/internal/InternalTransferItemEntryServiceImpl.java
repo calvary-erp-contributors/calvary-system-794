@@ -1,6 +1,5 @@
 package io.github.calvary.erp.internal;
 
-import io.github.calvary.domain.TransactionItemEntry;
 import io.github.calvary.domain.TransferItemEntry;
 import io.github.calvary.erp.repository.InternalTransferItemEntryRepository;
 import io.github.calvary.repository.search.TransferItemEntrySearchRepository;
@@ -21,9 +20,9 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Transactional
-public class TransferItemEntryServiceImpl implements InternalTransferItemEntryService {
+public class InternalTransferItemEntryServiceImpl implements InternalTransferItemEntryService {
 
-    private final Logger log = LoggerFactory.getLogger(TransferItemEntryServiceImpl.class);
+    private final Logger log = LoggerFactory.getLogger(InternalTransferItemEntryServiceImpl.class);
 
     private final InternalTransferItemEntryRepository transferItemEntryRepository;
 
@@ -31,7 +30,7 @@ public class TransferItemEntryServiceImpl implements InternalTransferItemEntrySe
 
     private final TransferItemEntrySearchRepository transferItemEntrySearchRepository;
 
-    public TransferItemEntryServiceImpl(
+    public InternalTransferItemEntryServiceImpl(
         InternalTransferItemEntryRepository transferItemEntryRepository,
         TransferItemEntryMapper transferItemEntryMapper,
         TransferItemEntrySearchRepository transferItemEntrySearchRepository

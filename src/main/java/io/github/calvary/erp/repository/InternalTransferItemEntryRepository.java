@@ -1,9 +1,7 @@
 package io.github.calvary.erp.repository;
 
-import io.github.calvary.domain.TransactionItemEntry;
 import io.github.calvary.domain.TransferItemEntry;
-import io.github.calvary.service.dto.SalesReceiptDTO;
-import io.github.calvary.service.dto.TransactionItemEntryDTO;
+import io.github.calvary.repository.TransferItemEntryRepository;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
