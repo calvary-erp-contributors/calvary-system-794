@@ -1,6 +1,11 @@
 <?xml version="1.1" encoding="UTF-8" standalone="no"?>
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
-    <changeSet author="edwin.njeru@scroll" id="1708852729504-14">
-        <addUniqueConstraint columnNames="name" constraintName="UC_TRANSACTION_CURRENCYNAME_COL" tableName="transaction_currency"/>
+    <changeSet author="edwin.njeru@the-scroll (generated)" id="1713715667101-16">
+        <addColumn tableName="sales_receipt_email_persona">
+            <column name="persona_name" type="varchar(255)"></column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="edwin.njeru@the-scroll (generated)" id="1713715667101-17">
+        <addUniqueConstraint columnNames="persona_name" constraintName="UC_SALES_RECEIPT_EMAIL_PERSONAPERSONA_NAME_COL" tableName="sales_receipt_email_persona"/>
     </changeSet>
 </databaseChangeLog>

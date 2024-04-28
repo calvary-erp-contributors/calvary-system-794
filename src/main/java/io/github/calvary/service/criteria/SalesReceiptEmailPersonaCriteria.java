@@ -63,6 +63,8 @@ public class SalesReceiptEmailPersonaCriteria implements Serializable, Criteria 
 
     private ZonedDateTimeFilter lastModifedAt;
 
+    private StringFilter personaName;
+
     private LongFilter createdById;
 
     private LongFilter lastModifiedById;
@@ -96,6 +98,7 @@ public class SalesReceiptEmailPersonaCriteria implements Serializable, Criteria 
         this.includeTreasuryQuote = other.includeTreasuryQuote == null ? null : other.includeTreasuryQuote.copy();
         this.createdAt = other.createdAt == null ? null : other.createdAt.copy();
         this.lastModifedAt = other.lastModifedAt == null ? null : other.lastModifedAt.copy();
+        this.personaName = other.personaName == null ? null : other.personaName.copy();
         this.createdById = other.createdById == null ? null : other.createdById.copy();
         this.lastModifiedById = other.lastModifiedById == null ? null : other.lastModifiedById.copy();
         this.contributorId = other.contributorId == null ? null : other.contributorId.copy();
@@ -422,6 +425,21 @@ public class SalesReceiptEmailPersonaCriteria implements Serializable, Criteria 
         this.lastModifedAt = lastModifedAt;
     }
 
+    public StringFilter getPersonaName() {
+        return personaName;
+    }
+
+    public StringFilter personaName() {
+        if (personaName == null) {
+            personaName = new StringFilter();
+        }
+        return personaName;
+    }
+
+    public void setPersonaName(StringFilter personaName) {
+        this.personaName = personaName;
+    }
+
     public LongFilter getCreatedById() {
         return createdById;
     }
@@ -506,6 +524,7 @@ public class SalesReceiptEmailPersonaCriteria implements Serializable, Criteria 
             Objects.equals(includeTreasuryQuote, that.includeTreasuryQuote) &&
             Objects.equals(createdAt, that.createdAt) &&
             Objects.equals(lastModifedAt, that.lastModifedAt) &&
+            Objects.equals(personaName, that.personaName) &&
             Objects.equals(createdById, that.createdById) &&
             Objects.equals(lastModifiedById, that.lastModifiedById) &&
             Objects.equals(contributorId, that.contributorId) &&
@@ -537,6 +556,7 @@ public class SalesReceiptEmailPersonaCriteria implements Serializable, Criteria 
             includeTreasuryQuote,
             createdAt,
             lastModifedAt,
+            personaName,
             createdById,
             lastModifiedById,
             contributorId,
@@ -569,6 +589,7 @@ public class SalesReceiptEmailPersonaCriteria implements Serializable, Criteria 
             (includeTreasuryQuote != null ? "includeTreasuryQuote=" + includeTreasuryQuote + ", " : "") +
             (createdAt != null ? "createdAt=" + createdAt + ", " : "") +
             (lastModifedAt != null ? "lastModifedAt=" + lastModifedAt + ", " : "") +
+            (personaName != null ? "personaName=" + personaName + ", " : "") +
             (createdById != null ? "createdById=" + createdById + ", " : "") +
             (lastModifiedById != null ? "lastModifiedById=" + lastModifiedById + ", " : "") +
             (contributorId != null ? "contributorId=" + contributorId + ", " : "") +

@@ -194,6 +194,10 @@ public class SalesReceiptEmailPersonaQueryService extends QueryService<SalesRece
                 specification =
                     specification.and(buildRangeSpecification(criteria.getLastModifedAt(), SalesReceiptEmailPersona_.lastModifedAt));
             }
+            if (criteria.getPersonaName() != null) {
+                specification =
+                    specification.and(buildStringSpecification(criteria.getPersonaName(), SalesReceiptEmailPersona_.personaName));
+            }
             if (criteria.getCreatedById() != null) {
                 specification =
                     specification.and(

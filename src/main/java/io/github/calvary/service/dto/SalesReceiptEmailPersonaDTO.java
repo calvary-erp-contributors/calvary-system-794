@@ -62,6 +62,9 @@ public class SalesReceiptEmailPersonaDTO implements Serializable {
 
     private ZonedDateTime lastModifedAt;
 
+    @NotNull
+    private String personaName;
+
     private ApplicationUserDTO createdBy;
 
     private ApplicationUserDTO lastModifiedBy;
@@ -236,6 +239,14 @@ public class SalesReceiptEmailPersonaDTO implements Serializable {
         this.lastModifedAt = lastModifedAt;
     }
 
+    public String getPersonaName() {
+        return personaName;
+    }
+
+    public void setPersonaName(String personaName) {
+        this.personaName = personaName;
+    }
+
     public ApplicationUserDTO getCreatedBy() {
         return createdBy;
     }
@@ -306,6 +317,7 @@ public class SalesReceiptEmailPersonaDTO implements Serializable {
             ", includeTreasuryQuote='" + getIncludeTreasuryQuote() + "'" +
             ", createdAt='" + getCreatedAt() + "'" +
             ", lastModifedAt='" + getLastModifedAt() + "'" +
+            ", personaName='" + getPersonaName() + "'" +
             ", createdBy=" + getCreatedBy() +
             ", lastModifiedBy=" + getLastModifiedBy() +
             ", contributor=" + getContributor() +

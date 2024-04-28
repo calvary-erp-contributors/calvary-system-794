@@ -95,6 +95,10 @@ public class SalesReceiptEmailPersona implements Serializable {
     @Column(name = "last_modifed_at")
     private ZonedDateTime lastModifedAt;
 
+    @NotNull
+    @Column(name = "persona_name", nullable = false, unique = true)
+    private String personaName;
+
     @ManyToOne
     @JsonIgnoreProperties(value = { "createdBy", "lastModifiedBy", "systemIdentity" }, allowSetters = true)
     private ApplicationUser createdBy;
@@ -382,6 +386,19 @@ public class SalesReceiptEmailPersona implements Serializable {
         this.lastModifedAt = lastModifedAt;
     }
 
+    public String getPersonaName() {
+        return this.personaName;
+    }
+
+    public SalesReceiptEmailPersona personaName(String personaName) {
+        this.setPersonaName(personaName);
+        return this;
+    }
+
+    public void setPersonaName(String personaName) {
+        this.personaName = personaName;
+    }
+
     public ApplicationUser getCreatedBy() {
         return this.createdBy;
     }
@@ -465,6 +482,7 @@ public class SalesReceiptEmailPersona implements Serializable {
             ", includeTreasuryQuote='" + getIncludeTreasuryQuote() + "'" +
             ", createdAt='" + getCreatedAt() + "'" +
             ", lastModifedAt='" + getLastModifedAt() + "'" +
+            ", personaName='" + getPersonaName() + "'" +
             "}";
     }
 }

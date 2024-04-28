@@ -48,16 +48,15 @@
     <include file="config/liquibase/changelog/20231126135457_added_entity_constraints_TransactionItemEntry.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20231217121834_added_entity_constraints_TransferItemEntry.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20231217163755_added_entity_constraints_ApplicationUser.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20240225091827_changelog.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20240225100325_changelog.xml" relativeToChangelogFile="false"/>
+    <!--<include file="config/liquibase/changelog/20240225100325_changelog.xml" relativeToChangelogFile="false"/>-->
     <include file="config/liquibase/changelog/20240101175535_added_entity_constraints_SalesReceiptCompilation.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20231217154147_added_entity_constraints_SalesReceiptProposal.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20240225120935_changelog.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20240303094817_added_entity_constraints_TransferItem.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20240303152614_added_entity_constraints_ReceiptEmailRequest.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20240303163254_changelog.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20240417173211_added_entity_constraints_SalesReceiptEmailPersona.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20240418082312_added_dealer_email_persona.xml" relativeToChangelogFile="false"/>
+    <!--<include file="config/liquibase/changelog/20240418082312_added_dealer_email_persona.xml" relativeToChangelogFile="false"/>-->
+    <include file="config/liquibase/changelog/20240421160623_add_persona_name_to_email_persona.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
     <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
 </databaseChangeLog>

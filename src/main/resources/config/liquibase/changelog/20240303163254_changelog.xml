@@ -1,18 +1,5 @@
 <?xml version="1.1" encoding="UTF-8" standalone="no"?>
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
-    <changeSet author="edwin.njeru@scroll" id="1709483589324-15">
-        <addColumn tableName="transfer_item_entry">
-            <column name="transfer_item_id" type="int8">
-                <!--<constraints nullable="false"/>-->
-            </column>
-        </addColumn>
-    </changeSet>
-    <changeSet author="edwin.njeru@scroll" id="1709483589324-16">
-        <addForeignKeyConstraint baseColumnNames="transfer_item_id" baseTableName="transfer_item_entry" constraintName="FKobtx21y5mqpxjcgeyf583k2bp" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="transfer_item" validate="true"/>
-    </changeSet>
-    <changeSet author="edwin.njeru@scroll" id="1709483589324-17">
-        <dropForeignKeyConstraint baseTableName="transfer_item_entry" constraintName="fk_transfer_item_entry__transaction_item_id"/>
-    </changeSet>
     <changeSet author="edwin.njeru@scroll" id="1709483589324-18">
         <dropColumn columnName="transaction_item_id" tableName="transfer_item_entry"/>
     </changeSet>

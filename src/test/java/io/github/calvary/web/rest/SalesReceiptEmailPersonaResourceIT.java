@@ -119,6 +119,9 @@ class SalesReceiptEmailPersonaResourceIT {
     private static final ZonedDateTime UPDATED_LAST_MODIFED_AT = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
     private static final ZonedDateTime SMALLER_LAST_MODIFED_AT = ZonedDateTime.ofInstant(Instant.ofEpochMilli(-1L), ZoneOffset.UTC);
 
+    private static final String DEFAULT_PERSONA_NAME = "AAAAAAAAAA";
+    private static final String UPDATED_PERSONA_NAME = "BBBBBBBBBB";
+
     private static final String ENTITY_API_URL = "/api/sales-receipt-email-personas";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
     private static final String ENTITY_SEARCH_API_URL = "/api/_search/sales-receipt-email-personas";
@@ -176,7 +179,8 @@ class SalesReceiptEmailPersonaResourceIT {
             .includeMessageOfTheDay(DEFAULT_INCLUDE_MESSAGE_OF_THE_DAY)
             .includeTreasuryQuote(DEFAULT_INCLUDE_TREASURY_QUOTE)
             .createdAt(DEFAULT_CREATED_AT)
-            .lastModifedAt(DEFAULT_LAST_MODIFED_AT);
+            .lastModifedAt(DEFAULT_LAST_MODIFED_AT)
+            .personaName(DEFAULT_PERSONA_NAME);
         return salesReceiptEmailPersona;
     }
 
@@ -207,7 +211,8 @@ class SalesReceiptEmailPersonaResourceIT {
             .includeMessageOfTheDay(UPDATED_INCLUDE_MESSAGE_OF_THE_DAY)
             .includeTreasuryQuote(UPDATED_INCLUDE_TREASURY_QUOTE)
             .createdAt(UPDATED_CREATED_AT)
-            .lastModifedAt(UPDATED_LAST_MODIFED_AT);
+            .lastModifedAt(UPDATED_LAST_MODIFED_AT)
+            .personaName(UPDATED_PERSONA_NAME);
         return salesReceiptEmailPersona;
     }
 
@@ -267,6 +272,7 @@ class SalesReceiptEmailPersonaResourceIT {
         assertThat(testSalesReceiptEmailPersona.getIncludeTreasuryQuote()).isEqualTo(DEFAULT_INCLUDE_TREASURY_QUOTE);
         assertThat(testSalesReceiptEmailPersona.getCreatedAt()).isEqualTo(DEFAULT_CREATED_AT);
         assertThat(testSalesReceiptEmailPersona.getLastModifedAt()).isEqualTo(DEFAULT_LAST_MODIFED_AT);
+        assertThat(testSalesReceiptEmailPersona.getPersonaName()).isEqualTo(DEFAULT_PERSONA_NAME);
     }
 
     @Test
@@ -472,6 +478,31 @@ class SalesReceiptEmailPersonaResourceIT {
 
     @Test
     @Transactional
+    void checkPersonaNameIsRequired() throws Exception {
+        int databaseSizeBeforeTest = salesReceiptEmailPersonaRepository.findAll().size();
+        int searchDatabaseSizeBefore = IterableUtil.sizeOf(salesReceiptEmailPersonaSearchRepository.findAll());
+        // set the field null
+        salesReceiptEmailPersona.setPersonaName(null);
+
+        // Create the SalesReceiptEmailPersona, which fails.
+        SalesReceiptEmailPersonaDTO salesReceiptEmailPersonaDTO = salesReceiptEmailPersonaMapper.toDto(salesReceiptEmailPersona);
+
+        restSalesReceiptEmailPersonaMockMvc
+            .perform(
+                post(ENTITY_API_URL)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(salesReceiptEmailPersonaDTO))
+            )
+            .andExpect(status().isBadRequest());
+
+        List<SalesReceiptEmailPersona> salesReceiptEmailPersonaList = salesReceiptEmailPersonaRepository.findAll();
+        assertThat(salesReceiptEmailPersonaList).hasSize(databaseSizeBeforeTest);
+        int searchDatabaseSizeAfter = IterableUtil.sizeOf(salesReceiptEmailPersonaSearchRepository.findAll());
+        assertThat(searchDatabaseSizeAfter).isEqualTo(searchDatabaseSizeBefore);
+    }
+
+    @Test
+    @Transactional
     void getAllSalesReceiptEmailPersonas() throws Exception {
         // Initialize the database
         salesReceiptEmailPersonaRepository.saveAndFlush(salesReceiptEmailPersona);
@@ -501,7 +532,8 @@ class SalesReceiptEmailPersonaResourceIT {
             .andExpect(jsonPath("$.[*].includeMessageOfTheDay").value(hasItem(DEFAULT_INCLUDE_MESSAGE_OF_THE_DAY.booleanValue())))
             .andExpect(jsonPath("$.[*].includeTreasuryQuote").value(hasItem(DEFAULT_INCLUDE_TREASURY_QUOTE.booleanValue())))
             .andExpect(jsonPath("$.[*].createdAt").value(hasItem(sameInstant(DEFAULT_CREATED_AT))))
-            .andExpect(jsonPath("$.[*].lastModifedAt").value(hasItem(sameInstant(DEFAULT_LAST_MODIFED_AT))));
+            .andExpect(jsonPath("$.[*].lastModifedAt").value(hasItem(sameInstant(DEFAULT_LAST_MODIFED_AT))))
+            .andExpect(jsonPath("$.[*].personaName").value(hasItem(DEFAULT_PERSONA_NAME)));
     }
 
     @SuppressWarnings({ "unchecked" })
@@ -552,7 +584,8 @@ class SalesReceiptEmailPersonaResourceIT {
             .andExpect(jsonPath("$.includeMessageOfTheDay").value(DEFAULT_INCLUDE_MESSAGE_OF_THE_DAY.booleanValue()))
             .andExpect(jsonPath("$.includeTreasuryQuote").value(DEFAULT_INCLUDE_TREASURY_QUOTE.booleanValue()))
             .andExpect(jsonPath("$.createdAt").value(sameInstant(DEFAULT_CREATED_AT)))
-            .andExpect(jsonPath("$.lastModifedAt").value(sameInstant(DEFAULT_LAST_MODIFED_AT)));
+            .andExpect(jsonPath("$.lastModifedAt").value(sameInstant(DEFAULT_LAST_MODIFED_AT)))
+            .andExpect(jsonPath("$.personaName").value(DEFAULT_PERSONA_NAME));
     }
 
     @Test
@@ -1695,6 +1728,71 @@ class SalesReceiptEmailPersonaResourceIT {
 
     @Test
     @Transactional
+    void getAllSalesReceiptEmailPersonasByPersonaNameIsEqualToSomething() throws Exception {
+        // Initialize the database
+        salesReceiptEmailPersonaRepository.saveAndFlush(salesReceiptEmailPersona);
+
+        // Get all the salesReceiptEmailPersonaList where personaName equals to DEFAULT_PERSONA_NAME
+        defaultSalesReceiptEmailPersonaShouldBeFound("personaName.equals=" + DEFAULT_PERSONA_NAME);
+
+        // Get all the salesReceiptEmailPersonaList where personaName equals to UPDATED_PERSONA_NAME
+        defaultSalesReceiptEmailPersonaShouldNotBeFound("personaName.equals=" + UPDATED_PERSONA_NAME);
+    }
+
+    @Test
+    @Transactional
+    void getAllSalesReceiptEmailPersonasByPersonaNameIsInShouldWork() throws Exception {
+        // Initialize the database
+        salesReceiptEmailPersonaRepository.saveAndFlush(salesReceiptEmailPersona);
+
+        // Get all the salesReceiptEmailPersonaList where personaName in DEFAULT_PERSONA_NAME or UPDATED_PERSONA_NAME
+        defaultSalesReceiptEmailPersonaShouldBeFound("personaName.in=" + DEFAULT_PERSONA_NAME + "," + UPDATED_PERSONA_NAME);
+
+        // Get all the salesReceiptEmailPersonaList where personaName equals to UPDATED_PERSONA_NAME
+        defaultSalesReceiptEmailPersonaShouldNotBeFound("personaName.in=" + UPDATED_PERSONA_NAME);
+    }
+
+    @Test
+    @Transactional
+    void getAllSalesReceiptEmailPersonasByPersonaNameIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        salesReceiptEmailPersonaRepository.saveAndFlush(salesReceiptEmailPersona);
+
+        // Get all the salesReceiptEmailPersonaList where personaName is not null
+        defaultSalesReceiptEmailPersonaShouldBeFound("personaName.specified=true");
+
+        // Get all the salesReceiptEmailPersonaList where personaName is null
+        defaultSalesReceiptEmailPersonaShouldNotBeFound("personaName.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllSalesReceiptEmailPersonasByPersonaNameContainsSomething() throws Exception {
+        // Initialize the database
+        salesReceiptEmailPersonaRepository.saveAndFlush(salesReceiptEmailPersona);
+
+        // Get all the salesReceiptEmailPersonaList where personaName contains DEFAULT_PERSONA_NAME
+        defaultSalesReceiptEmailPersonaShouldBeFound("personaName.contains=" + DEFAULT_PERSONA_NAME);
+
+        // Get all the salesReceiptEmailPersonaList where personaName contains UPDATED_PERSONA_NAME
+        defaultSalesReceiptEmailPersonaShouldNotBeFound("personaName.contains=" + UPDATED_PERSONA_NAME);
+    }
+
+    @Test
+    @Transactional
+    void getAllSalesReceiptEmailPersonasByPersonaNameNotContainsSomething() throws Exception {
+        // Initialize the database
+        salesReceiptEmailPersonaRepository.saveAndFlush(salesReceiptEmailPersona);
+
+        // Get all the salesReceiptEmailPersonaList where personaName does not contain DEFAULT_PERSONA_NAME
+        defaultSalesReceiptEmailPersonaShouldNotBeFound("personaName.doesNotContain=" + DEFAULT_PERSONA_NAME);
+
+        // Get all the salesReceiptEmailPersonaList where personaName does not contain UPDATED_PERSONA_NAME
+        defaultSalesReceiptEmailPersonaShouldBeFound("personaName.doesNotContain=" + UPDATED_PERSONA_NAME);
+    }
+
+    @Test
+    @Transactional
     void getAllSalesReceiptEmailPersonasByCreatedByIsEqualToSomething() throws Exception {
         ApplicationUser createdBy;
         if (TestUtil.findAll(em, ApplicationUser.class).isEmpty()) {
@@ -1790,7 +1888,8 @@ class SalesReceiptEmailPersonaResourceIT {
             .andExpect(jsonPath("$.[*].includeMessageOfTheDay").value(hasItem(DEFAULT_INCLUDE_MESSAGE_OF_THE_DAY.booleanValue())))
             .andExpect(jsonPath("$.[*].includeTreasuryQuote").value(hasItem(DEFAULT_INCLUDE_TREASURY_QUOTE.booleanValue())))
             .andExpect(jsonPath("$.[*].createdAt").value(hasItem(sameInstant(DEFAULT_CREATED_AT))))
-            .andExpect(jsonPath("$.[*].lastModifedAt").value(hasItem(sameInstant(DEFAULT_LAST_MODIFED_AT))));
+            .andExpect(jsonPath("$.[*].lastModifedAt").value(hasItem(sameInstant(DEFAULT_LAST_MODIFED_AT))))
+            .andExpect(jsonPath("$.[*].personaName").value(hasItem(DEFAULT_PERSONA_NAME)));
 
         // Check, that the count call also returns 1
         restSalesReceiptEmailPersonaMockMvc
@@ -1862,7 +1961,8 @@ class SalesReceiptEmailPersonaResourceIT {
             .includeMessageOfTheDay(UPDATED_INCLUDE_MESSAGE_OF_THE_DAY)
             .includeTreasuryQuote(UPDATED_INCLUDE_TREASURY_QUOTE)
             .createdAt(UPDATED_CREATED_AT)
-            .lastModifedAt(UPDATED_LAST_MODIFED_AT);
+            .lastModifedAt(UPDATED_LAST_MODIFED_AT)
+            .personaName(UPDATED_PERSONA_NAME);
         SalesReceiptEmailPersonaDTO salesReceiptEmailPersonaDTO = salesReceiptEmailPersonaMapper.toDto(updatedSalesReceiptEmailPersona);
 
         restSalesReceiptEmailPersonaMockMvc
@@ -1897,6 +1997,7 @@ class SalesReceiptEmailPersonaResourceIT {
         assertThat(testSalesReceiptEmailPersona.getIncludeTreasuryQuote()).isEqualTo(UPDATED_INCLUDE_TREASURY_QUOTE);
         assertThat(testSalesReceiptEmailPersona.getCreatedAt()).isEqualTo(UPDATED_CREATED_AT);
         assertThat(testSalesReceiptEmailPersona.getLastModifedAt()).isEqualTo(UPDATED_LAST_MODIFED_AT);
+        assertThat(testSalesReceiptEmailPersona.getPersonaName()).isEqualTo(UPDATED_PERSONA_NAME);
         await()
             .atMost(5, TimeUnit.SECONDS)
             .untilAsserted(() -> {
@@ -1930,6 +2031,7 @@ class SalesReceiptEmailPersonaResourceIT {
                 assertThat(testSalesReceiptEmailPersonaSearch.getIncludeTreasuryQuote()).isEqualTo(UPDATED_INCLUDE_TREASURY_QUOTE);
                 assertThat(testSalesReceiptEmailPersonaSearch.getCreatedAt()).isEqualTo(UPDATED_CREATED_AT);
                 assertThat(testSalesReceiptEmailPersonaSearch.getLastModifedAt()).isEqualTo(UPDATED_LAST_MODIFED_AT);
+                assertThat(testSalesReceiptEmailPersonaSearch.getPersonaName()).isEqualTo(UPDATED_PERSONA_NAME);
             });
     }
 
@@ -2032,7 +2134,8 @@ class SalesReceiptEmailPersonaResourceIT {
             .addPrefix(UPDATED_ADD_PREFIX)
             .addSuffix(UPDATED_ADD_SUFFIX)
             .createdAt(UPDATED_CREATED_AT)
-            .lastModifedAt(UPDATED_LAST_MODIFED_AT);
+            .lastModifedAt(UPDATED_LAST_MODIFED_AT)
+            .personaName(UPDATED_PERSONA_NAME);
 
         restSalesReceiptEmailPersonaMockMvc
             .perform(
@@ -2066,6 +2169,7 @@ class SalesReceiptEmailPersonaResourceIT {
         assertThat(testSalesReceiptEmailPersona.getIncludeTreasuryQuote()).isEqualTo(DEFAULT_INCLUDE_TREASURY_QUOTE);
         assertThat(testSalesReceiptEmailPersona.getCreatedAt()).isEqualTo(UPDATED_CREATED_AT);
         assertThat(testSalesReceiptEmailPersona.getLastModifedAt()).isEqualTo(UPDATED_LAST_MODIFED_AT);
+        assertThat(testSalesReceiptEmailPersona.getPersonaName()).isEqualTo(UPDATED_PERSONA_NAME);
     }
 
     @Test
@@ -2100,7 +2204,8 @@ class SalesReceiptEmailPersonaResourceIT {
             .includeMessageOfTheDay(UPDATED_INCLUDE_MESSAGE_OF_THE_DAY)
             .includeTreasuryQuote(UPDATED_INCLUDE_TREASURY_QUOTE)
             .createdAt(UPDATED_CREATED_AT)
-            .lastModifedAt(UPDATED_LAST_MODIFED_AT);
+            .lastModifedAt(UPDATED_LAST_MODIFED_AT)
+            .personaName(UPDATED_PERSONA_NAME);
 
         restSalesReceiptEmailPersonaMockMvc
             .perform(
@@ -2134,6 +2239,7 @@ class SalesReceiptEmailPersonaResourceIT {
         assertThat(testSalesReceiptEmailPersona.getIncludeTreasuryQuote()).isEqualTo(UPDATED_INCLUDE_TREASURY_QUOTE);
         assertThat(testSalesReceiptEmailPersona.getCreatedAt()).isEqualTo(UPDATED_CREATED_AT);
         assertThat(testSalesReceiptEmailPersona.getLastModifedAt()).isEqualTo(UPDATED_LAST_MODIFED_AT);
+        assertThat(testSalesReceiptEmailPersona.getPersonaName()).isEqualTo(UPDATED_PERSONA_NAME);
     }
 
     @Test
@@ -2270,6 +2376,7 @@ class SalesReceiptEmailPersonaResourceIT {
             .andExpect(jsonPath("$.[*].includeMessageOfTheDay").value(hasItem(DEFAULT_INCLUDE_MESSAGE_OF_THE_DAY.booleanValue())))
             .andExpect(jsonPath("$.[*].includeTreasuryQuote").value(hasItem(DEFAULT_INCLUDE_TREASURY_QUOTE.booleanValue())))
             .andExpect(jsonPath("$.[*].createdAt").value(hasItem(sameInstant(DEFAULT_CREATED_AT))))
-            .andExpect(jsonPath("$.[*].lastModifedAt").value(hasItem(sameInstant(DEFAULT_LAST_MODIFED_AT))));
+            .andExpect(jsonPath("$.[*].lastModifedAt").value(hasItem(sameInstant(DEFAULT_LAST_MODIFED_AT))))
+            .andExpect(jsonPath("$.[*].personaName").value(hasItem(DEFAULT_PERSONA_NAME)));
     }
 }
