@@ -9,12 +9,37 @@
     <p th:text="#{receipt.notification.greeting(${recipient.preferredGreeting}, ${recipient.preferredGreetingDesignation})}">Dear Member</p>
     <p th:text="#{receipt.notification.text1}">Thank you for your support</p>
 
+    <table>
+      <tbody>
+        <tr th:each="item: ${transactionItems}">
+          <td th:text="${item.description}">Contribution Item</td>
+          <td th:text="${#numbers.formatDecimal(item.itemAmount, 1, 2)}">0.99</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p th:text="#{receipt.notification.text2}">Thank you for your support</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th>Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="item: ${transferItems}">
+          <td th:text="${item.description}">Contribution Item</td>
+          <td th:text="${#numbers.formatDecimal(item.itemAmount, 1, 2)}">0.99</td>
+        </tr>
+      </tbody>
+    </table>
+
     <p>
       <span th:text="#{receipt.notification.signature(${recipient.preferredSignature})}">Regards, </span>
       <br />
-      <em th:text="#{receipt.notification.signature.tag(${recipient.preferredSignatureDesignation})}"
-        >Calvary Treasury Team (Systems Division)</em
-      >
+      <em th:text="#{receipt.notification.signature.tag(${recipient.preferredSignatureDesignation})}">
+        Calvary Treasury Team (Systems Division)
+      </em>
     </p>
   </body>
 </html>

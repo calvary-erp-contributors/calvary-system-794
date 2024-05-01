@@ -53,6 +53,8 @@ public class MailNotificationImpl implements MailNotification {
 
     // Email variables
     private static final String RECIPIENT = "recipient";
+    private static final String TRANSACTION_ITEMS = "transactionItems";
+    private static final String TRANSFER_ITEMS = "transferItems";
     private static final String BASE_URL = "baseUrl";
 
     private final JHipsterProperties jHipsterProperties;
@@ -123,6 +125,8 @@ public class MailNotificationImpl implements MailNotification {
         Context context = new Context(locale);
 
         context.setVariable(RECIPIENT, persona);
+        context.setVariable(TRANSACTION_ITEMS, transactionItems);
+        context.setVariable(TRANSFER_ITEMS, transferItems);
 
         context.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
 
@@ -132,6 +136,7 @@ public class MailNotificationImpl implements MailNotification {
         sendEmail(persona.getMainEmail(), subject, content, false, true);
     }
 
+    @Async
     public void sendEmail(String to, String subject, String content, boolean isMultipart, boolean isHtml) {
         log.debug(
             "Send email[multipart '{}' and html '{}'] to '{}' with subject '{}' and content={}",
