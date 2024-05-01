@@ -16,92 +16,77 @@ package io.github.calvary.erp.internal;
  * limitations under the License.
  */
 
-import io.github.calvary.service.dto.SalesReceiptDTO;
-import java.util.List;
+import io.github.calvary.service.dto.ReceiptEmailRequestDTO;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 /**
- * Service Interface for managing {@link io.github.calvary.domain.SalesReceipt}.
+ * Service Interface for managing {@link io.github.calvary.domain.ReceiptEmailRequest}.
  */
-public interface InternalSalesReceiptService {
+public interface InternalReceiptEmailRequestService {
     /**
-     * Save a salesReceipt.
+     * Save a receiptEmailRequest.
      *
-     * @param salesReceiptDTO the entity to save.
+     * @param receiptEmailRequestDTO the entity to save.
      * @return the persisted entity.
      */
-    SalesReceiptDTO save(SalesReceiptDTO salesReceiptDTO);
+    ReceiptEmailRequestDTO save(ReceiptEmailRequestDTO receiptEmailRequestDTO);
 
     /**
-     * Updates a salesReceipt.
+     * Updates a receiptEmailRequest.
      *
-     * @param salesReceiptDTO the entity to update.
+     * @param receiptEmailRequestDTO the entity to update.
      * @return the persisted entity.
      */
-    SalesReceiptDTO update(SalesReceiptDTO salesReceiptDTO);
+    ReceiptEmailRequestDTO update(ReceiptEmailRequestDTO receiptEmailRequestDTO);
 
     /**
-     * Partially updates a salesReceipt.
+     * Partially updates a receiptEmailRequest.
      *
-     * @param salesReceiptDTO the entity to update partially.
+     * @param receiptEmailRequestDTO the entity to update partially.
      * @return the persisted entity.
      */
-    Optional<SalesReceiptDTO> partialUpdate(SalesReceiptDTO salesReceiptDTO);
+    Optional<ReceiptEmailRequestDTO> partialUpdate(ReceiptEmailRequestDTO receiptEmailRequestDTO);
 
     /**
-     * Get all the salesReceipts.
+     * Get all the receiptEmailRequests.
      *
      * @param pageable the pagination information.
      * @return the list of entities.
      */
-    Page<SalesReceiptDTO> findAll(Pageable pageable);
+    Page<ReceiptEmailRequestDTO> findAll(Pageable pageable);
 
     /**
-     * Get all the salesReceipts with eager load of many-to-many relationships.
+     * Get all the receiptEmailRequests with eager load of many-to-many relationships.
      *
      * @param pageable the pagination information.
      * @return the list of entities.
      */
-    Page<SalesReceiptDTO> findAllWithEagerRelationships(Pageable pageable);
+    Page<ReceiptEmailRequestDTO> findAllWithEagerRelationships(Pageable pageable);
 
     /**
-     * Get the "id" salesReceipt.
+     * Get the "id" receiptEmailRequest.
      *
      * @param id the id of the entity.
      * @return the entity.
      */
-    Optional<SalesReceiptDTO> findOne(Long id);
+    Optional<ReceiptEmailRequestDTO> findOne(Long id);
 
     /**
-     * Delete the "id" salesReceipt.
+     * Delete the "id" receiptEmailRequest.
      *
      * @param id the id of the entity.
      */
     void delete(Long id);
 
     /**
-     * Search for the salesReceipt corresponding to the query.
+     * Search for the receiptEmailRequest corresponding to the query.
      *
      * @param query the query of the search.
      *
      * @param pageable the pagination information.
      * @return the list of entities.
      */
-    Page<SalesReceiptDTO> search(String query, Pageable pageable);
-
-    /**
-     * Fetch receipts that are pending for notification
-     *
-     * @return List of notifiable sales-receipt items
-     */
-    Optional<List<SalesReceiptDTO>> findSalesReceiptsPendingEmailNotification();
-
-    /**
-     * Set the sales-receipt has having been notified
-     * @param salesReceiptDTO
-     * @return
-     */
-    SalesReceiptDTO hasBeenEmailed(SalesReceiptDTO salesReceiptDTO);
+    Page<ReceiptEmailRequestDTO> search(String query, Pageable pageable);
 }

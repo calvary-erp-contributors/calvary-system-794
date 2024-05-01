@@ -17,11 +17,13 @@ package io.github.calvary.erp.internal;
  */
 
 import io.github.calvary.domain.SalesReceipt;
+import io.github.calvary.erp.repository.InternalSalesReceiptRepository;
 import io.github.calvary.repository.SalesReceiptRepository;
 import io.github.calvary.repository.search.SalesReceiptSearchRepository;
 import io.github.calvary.service.SalesReceiptService;
 import io.github.calvary.service.dto.SalesReceiptDTO;
 import io.github.calvary.service.mapper.SalesReceiptMapper;
+import java.util.List;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,14 +41,14 @@ public class InternalSalesReceiptServiceImpl implements InternalSalesReceiptServ
 
     private final Logger log = LoggerFactory.getLogger(InternalSalesReceiptServiceImpl.class);
 
-    private final SalesReceiptRepository salesReceiptRepository;
+    private final InternalSalesReceiptRepository salesReceiptRepository;
 
     private final SalesReceiptMapper salesReceiptMapper;
 
     private final SalesReceiptSearchRepository salesReceiptSearchRepository;
 
     public InternalSalesReceiptServiceImpl(
-        SalesReceiptRepository salesReceiptRepository,
+        InternalSalesReceiptRepository salesReceiptRepository,
         SalesReceiptMapper salesReceiptMapper,
         SalesReceiptSearchRepository salesReceiptSearchRepository
     ) {
@@ -125,5 +127,27 @@ public class InternalSalesReceiptServiceImpl implements InternalSalesReceiptServ
     public Page<SalesReceiptDTO> search(String query, Pageable pageable) {
         log.debug("Request to search for a page of SalesReceipts for query {}", query);
         return salesReceiptSearchRepository.search(query, pageable).map(salesReceiptMapper::toDto);
+    }
+
+    /**
+     * Fetch receipts that are pending for notification
+     *
+     * @return List of notifiable sales-receipt items
+     */
+    @Override
+    public Optional<List<SalesReceiptDTO>> findSalesReceiptsPendingEmailNotification() {
+        return salesReceiptRepository.findSalesReceiptDueForNotification().map(salesReceiptMapper::toDto);
+    }
+
+    /**
+     * Set the sales-receipt has having been notified
+     *
+     * @param salesReceiptDTO
+     * @return
+     */
+    @Override
+    public SalesReceiptDTO hasBeenEmailed(SalesReceiptDTO salesReceiptDTO) {
+        salesReceiptDTO.setHasBeenEmailed(true);
+        return save(salesReceiptDTO);
     }
 }

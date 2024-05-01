@@ -16,7 +16,7 @@ package io.github.calvary.aop.email;
  * limitations under the License.
  */
 
-import io.github.calvary.aop.logging.LoggingAspect;
+import io.github.calvary.erp.emails.SalesReceiptEmailNotificationJob;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
@@ -28,9 +28,15 @@ import tech.jhipster.config.JHipsterConstants;
 @EnableAspectJAutoProxy
 public class EmailAspectConfiguration {
 
+    private final SalesReceiptEmailNotificationJob salesReceiptEmailNotificationJob;
+
+    public EmailAspectConfiguration(SalesReceiptEmailNotificationJob salesReceiptEmailNotificationJob) {
+        this.salesReceiptEmailNotificationJob = salesReceiptEmailNotificationJob;
+    }
+
     @Bean
     @Profile(JHipsterConstants.SPRING_PROFILE_DEVELOPMENT)
-    public LoggingAspect loggingAspect(Environment env) {
-        return new LoggingAspect(env);
+    public EmailAspect emailAspect(Environment env) {
+        return new EmailAspect(env, salesReceiptEmailNotificationJob);
     }
 }
