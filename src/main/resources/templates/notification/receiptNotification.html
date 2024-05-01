@@ -6,13 +6,15 @@
     <link rel="icon" th:href="@{|${baseUrl}/favicon.ico|}" />
   </head>
   <body>
-    <p th:text="#{receipt.notification.greeting(${recipient.greeting}, ${recipient.greetingTag})}">Dear</p>
+    <p th:text="#{receipt.notification.greeting(${recipient.preferredGreeting}, ${recipient.preferredGreetingDesignation})}">Dear Member</p>
     <p th:text="#{receipt.notification.text1}">Thank you for your support</p>
 
     <p>
-      <span th:text="#{receipt.notification.signature}">Regards, </span>
+      <span th:text="#{receipt.notification.signature(${recipient.preferredSignature})}">Regards, </span>
       <br />
-      <em th:text="#{receipt.notification.signature.tag}">Calvary Treasury Team (Systems Division)</em>
+      <em th:text="#{receipt.notification.signature.tag(${recipient.preferredSignatureDesignation})}"
+        >Calvary Treasury Team (Systems Division)</em
+      >
     </p>
   </body>
 </html>

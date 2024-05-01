@@ -63,17 +63,6 @@ public class UserNotificationService {
                 username = userDetails.getUsername();
                 // Other UserDetails-related operations...
             }
-            //            else {
-            //                // Case 2: The principal is a Jwt object
-            //                OAuth2ResourceServerProperties.Jwt jwt = (OAuth2ResourceServerProperties.Jwt) principal;
-            //                System.out.println("JWT Claims: " + jwt.getClaims());
-            //                jwt.getClaims()
-            //                    .forEach((k, v) -> {
-            //                        log.debug("JWT Claim: {} -> {}", k.strip(), v.toString());
-            //                    });
-            //
-            //                username = jwt.getClaimAsString("sub");
-            //            }
         } else {
             throw new UsernameNotFoundException("User with username: " + username);
         }

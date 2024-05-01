@@ -16,11 +16,13 @@ package io.github.calvary.erp.emails;
  * limitations under the License.
  */
 
-import io.github.calvary.domain.User;
+import io.github.calvary.erp.internal.InternalSalesReceiptEmailPersonaService;
 import io.github.calvary.service.dto.DealerDTO;
+import io.github.calvary.service.dto.SalesReceiptEmailPersonaDTO;
 import io.github.calvary.service.dto.TransactionItemEntryDTO;
 import io.github.calvary.service.dto.TransferItemEntryDTO;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import javax.mail.MessagingException;
@@ -33,11 +35,18 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import tech.jhipster.config.JHipsterProperties;
 
+/**
+ * Implements the notification for a single dealer with the sales receipt or bills details, this being
+ * the transaction and transfer entries. We extract the email-persona of the dealer and apply that
+ * for email details like the greeting, the address, sign-out signature and other banner details
+ */
 @Service
+@Transactional
 public class MailNotificationImpl implements MailNotification {
 
     private static final Logger log = LoggerFactory.getLogger(MailNotificationImpl.class);
@@ -54,16 +63,20 @@ public class MailNotificationImpl implements MailNotification {
 
     private final SpringTemplateEngine templateEngine;
 
+    private final InternalSalesReceiptEmailPersonaService internalSalesReceiptEmailPersonaService;
+
     public MailNotificationImpl(
         JHipsterProperties jHipsterProperties,
         JavaMailSender javaMailSender,
         MessageSource messageSource,
-        SpringTemplateEngine templateEngine
+        SpringTemplateEngine templateEngine,
+        InternalSalesReceiptEmailPersonaService internalSalesReceiptEmailPersonaService
     ) {
         this.jHipsterProperties = jHipsterProperties;
         this.javaMailSender = javaMailSender;
         this.messageSource = messageSource;
         this.templateEngine = templateEngine;
+        this.internalSalesReceiptEmailPersonaService = internalSalesReceiptEmailPersonaService;
     }
 
     @Override
@@ -71,36 +84,52 @@ public class MailNotificationImpl implements MailNotification {
         DealerDTO recipient,
         List<TransactionItemEntryDTO> transactionItems,
         List<TransferItemEntryDTO> transferItems
-    ) {}
+    ) {
+        // TODO Implement mail-notification via email service
+
+        List<SalesReceiptEmailPersonaDTO> personaList = new ArrayList<>();
+
+        recipient
+            .getSalesReceiptEmailPersonas()
+            .forEach(persona -> {
+                internalSalesReceiptEmailPersonaService.findOne(persona.getId()).ifPresent(personaList::add);
+            });
+
+        personaList.forEach(persona -> {
+            sendEmailFromTemplate(
+                persona,
+                transactionItems,
+                transferItems,
+                "notification/receiptNotification",
+                "receipt.notification.title"
+            );
+        });
+    }
 
     @Async
     public void sendEmailFromTemplate(
-        DealerDTO recipient,
+        SalesReceiptEmailPersonaDTO persona,
         List<TransactionItemEntryDTO> transactionItems,
         List<TransferItemEntryDTO> transferItems,
         String templateName,
         String titleKey
     ) {
-        // TODO set receipt email on the dealer
-        if (recipient.getMainEmail() == null) {
-            log.debug("Email doesn't exist for recipient '{}'", recipient.getName());
+        if (persona.getMainEmail() == null) {
+            log.debug("Email doesn't exist for persona name '{}'", persona.getPersonaName());
             return;
         }
-        // TODO set receipt lang-key on the dealer
-        Locale locale = Locale.forLanguageTag("en");
+
+        Locale locale = Locale.forLanguageTag(persona.getLanguageKeyCode());
         Context context = new Context(locale);
 
-        // TODO create greetingTag on the dealer entity
-        // TODO create preferredSignature on the dealer entity
-        // TODO create preferredSignatureTag on the dealer entity
-        context.setVariable(RECIPIENT, recipient);
+        context.setVariable(RECIPIENT, persona);
 
         context.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
 
         String content = templateEngine.process(templateName, context);
         String subject = messageSource.getMessage(titleKey, null, locale);
 
-        sendEmail(recipient.getMainEmail(), subject, content, false, true);
+        sendEmail(persona.getMainEmail(), subject, content, false, true);
     }
 
     public void sendEmail(String to, String subject, String content, boolean isMultipart, boolean isHtml) {
