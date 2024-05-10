@@ -25,6 +25,7 @@ import io.github.calvary.service.dto.TransactionItemEntryDTO;
 import io.github.calvary.service.dto.TransferItemEntryDTO;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,6 +52,7 @@ public class SalesReceiptEmailServiceImpl implements SalesReceiptEmailService {
     }
 
     @Override
+    @Async
     public void sendEmailNotification(SalesReceiptDTO salesReceipt) {
         Optional<DealerDTO> dealer = internalDealerService.findOne(salesReceipt.getDealer().getId());
 

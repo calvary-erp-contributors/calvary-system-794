@@ -74,7 +74,8 @@ public class PostingNotificationService {
         String titleKey = "email.transaction.posting.notice.title";
         String templateName = "mail/contributionNoticeEmail";
 
-        String subject = messageSource.getMessage(titleKey, null, Locale.forLanguageTag(user.getLangKey()));
+        String langTag = user.getLangKey() == null ? "en" : user.getLangKey();
+        String subject = messageSource.getMessage(titleKey, null, Locale.forLanguageTag(langTag));
         String content = contentProcessing(user, templateName, accountTransaction);
 
         mailService.sendEmail(user.getEmail(), subject, content, false, true);

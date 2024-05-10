@@ -22,6 +22,7 @@ import io.github.calvary.service.dto.ReceiptEmailRequestDTO;
 import io.github.calvary.service.dto.SalesReceiptDTO;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,21 +45,20 @@ public class SalesReceiptEmailNotificationJobImpl implements SalesReceiptEmailNo
     }
 
     @Override
-    public ReceiptEmailRequestDTO runNotificationJob(ReceiptEmailRequestDTO requisition) {
+    @Async
+    public void runNotificationJob(ReceiptEmailRequestDTO requisition) {
         Optional<List<SalesReceiptDTO>> notificationList = internalSalesReceiptService.findSalesReceiptsPendingEmailNotification();
 
         notificationList.ifPresent(salesReceiptList -> {
             salesReceiptList.forEach(salesReceiptEmailService::sendEmailNotification);
 
-            salesReceiptList.forEach(salesReceiptDTO -> {
-                internalSalesReceiptService.hasBeenEmailed(salesReceiptDTO);
-            });
+            salesReceiptList.forEach(internalSalesReceiptService::hasBeenEmailed);
 
             requisition.setNumberOfUpdates(salesReceiptList.size());
         });
 
         requisition.setUploadComplete(true);
 
-        return internalReceiptEmailRequestService.save(requisition);
+        internalReceiptEmailRequestService.save(requisition);
     }
 }

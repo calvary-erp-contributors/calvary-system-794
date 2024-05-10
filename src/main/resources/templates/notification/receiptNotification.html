@@ -10,6 +10,12 @@
     <p th:text="#{receipt.notification.text1}">Thank you for your support</p>
 
     <table>
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th>Amount</th>
+        </tr>
+      </thead>
       <tbody>
         <tr th:each="item: ${transactionItems}">
           <td th:text="${item.description}">Contribution Item</td>
@@ -20,12 +26,6 @@
 
     <p th:text="#{receipt.notification.text2}">Thank you for your support</p>
     <table>
-      <thead>
-        <tr>
-          <th>Item</th>
-          <th>Amount</th>
-        </tr>
-      </thead>
       <tbody>
         <tr th:each="item: ${transferItems}">
           <td th:text="${item.description}">Contribution Item</td>

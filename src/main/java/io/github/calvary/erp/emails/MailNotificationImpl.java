@@ -82,6 +82,7 @@ public class MailNotificationImpl implements MailNotification {
     }
 
     @Override
+    @Async
     public void sendEmailSalesReceiptNotification(
         DealerDTO recipient,
         List<TransactionItemEntryDTO> transactionItems,

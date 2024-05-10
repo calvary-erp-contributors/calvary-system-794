@@ -25,5 +25,5 @@ import org.springframework.transaction.annotation.Transactional;
  * populates such a list to send in a notification loop, using the SaleReceiptEmailService interface
  */
 public interface SalesReceiptEmailNotificationJob {
-    ReceiptEmailRequestDTO runNotificationJob(ReceiptEmailRequestDTO requisition);
+    void runNotificationJob(ReceiptEmailRequestDTO requisition);
 }
