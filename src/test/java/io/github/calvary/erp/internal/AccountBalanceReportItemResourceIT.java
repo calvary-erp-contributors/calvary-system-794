@@ -2,9 +2,8 @@ package io.github.calvary.erp.internal;
 
 import static io.github.calvary.web.rest.TestUtil.sameNumber;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.awaitility.Awaitility.await;
 import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /*-
@@ -27,18 +26,12 @@ import io.github.calvary.IntegrationTest;
 import io.github.calvary.domain.AccountBalanceReportItem;
 import io.github.calvary.repository.AccountBalanceReportItemRepository;
 import io.github.calvary.repository.search.AccountBalanceReportItemSearchRepository;
-import io.github.calvary.service.dto.AccountBalanceReportItemDTO;
 import io.github.calvary.service.mapper.AccountBalanceReportItemMapper;
 import io.github.calvary.web.rest.AccountBalanceReportItemResource;
-import io.github.calvary.web.rest.TestUtil;
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 import javax.persistence.EntityManager;
-import org.apache.commons.collections4.IterableUtils;
-import org.assertj.core.util.IterableUtil;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -98,10 +91,11 @@ class AccountBalanceReportItemResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static AccountBalanceReportItem createEntity(EntityManager em) {
-        return new AccountBalanceReportItem()
+        AccountBalanceReportItem accountBalanceReportItem = new AccountBalanceReportItem()
             .accountNumber(DEFAULT_ACCOUNT_NUMBER)
             .accountName(DEFAULT_ACCOUNT_NAME)
             .accountBalance(DEFAULT_ACCOUNT_BALANCE);
+        return accountBalanceReportItem;
     }
 
     /**
@@ -127,62 +121,6 @@ class AccountBalanceReportItemResourceIT {
     @BeforeEach
     public void initTest() {
         accountBalanceReportItem = createEntity(em);
-    }
-
-    @Test
-    @Transactional
-    void createAccountBalanceReportItem() throws Exception {
-        int databaseSizeBeforeCreate = accountBalanceReportItemRepository.findAll().size();
-        int searchDatabaseSizeBefore = IterableUtil.sizeOf(accountBalanceReportItemSearchRepository.findAll());
-        // Create the AccountBalanceReportItem
-        AccountBalanceReportItemDTO accountBalanceReportItemDTO = accountBalanceReportItemMapper.toDto(accountBalanceReportItem);
-        restAccountBalanceReportItemMockMvc
-            .perform(
-                post(ENTITY_API_URL)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(io.github.calvary.web.rest.TestUtil.convertObjectToJsonBytes(accountBalanceReportItemDTO))
-            )
-            .andExpect(status().isCreated());
-
-        // Validate the AccountBalanceReportItem in the database
-        List<AccountBalanceReportItem> accountBalanceReportItemList = accountBalanceReportItemRepository.findAll();
-        assertThat(accountBalanceReportItemList).hasSize(databaseSizeBeforeCreate + 1);
-        await()
-            .atMost(5, TimeUnit.SECONDS)
-            .untilAsserted(() -> {
-                int searchDatabaseSizeAfter = IterableUtil.sizeOf(accountBalanceReportItemSearchRepository.findAll());
-                assertThat(searchDatabaseSizeAfter).isEqualTo(searchDatabaseSizeBefore + 1);
-            });
-        AccountBalanceReportItem testAccountBalanceReportItem = accountBalanceReportItemList.get(accountBalanceReportItemList.size() - 1);
-        assertThat(testAccountBalanceReportItem.getAccountNumber()).isEqualTo(DEFAULT_ACCOUNT_NUMBER);
-        assertThat(testAccountBalanceReportItem.getAccountName()).isEqualTo(DEFAULT_ACCOUNT_NAME);
-        assertThat(testAccountBalanceReportItem.getAccountBalance()).isEqualByComparingTo(DEFAULT_ACCOUNT_BALANCE);
-    }
-
-    @Test
-    @Transactional
-    void createAccountBalanceReportItemWithExistingId() throws Exception {
-        // Create the AccountBalanceReportItem with an existing ID
-        accountBalanceReportItem.setId(1L);
-        AccountBalanceReportItemDTO accountBalanceReportItemDTO = accountBalanceReportItemMapper.toDto(accountBalanceReportItem);
-
-        int databaseSizeBeforeCreate = accountBalanceReportItemRepository.findAll().size();
-        int searchDatabaseSizeBefore = IterableUtil.sizeOf(accountBalanceReportItemSearchRepository.findAll());
-
-        // An entity with an existing ID cannot be created, so this API call must fail
-        restAccountBalanceReportItemMockMvc
-            .perform(
-                post(ENTITY_API_URL)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(io.github.calvary.web.rest.TestUtil.convertObjectToJsonBytes(accountBalanceReportItemDTO))
-            )
-            .andExpect(status().isBadRequest());
-
-        // Validate the AccountBalanceReportItem in the database
-        List<AccountBalanceReportItem> accountBalanceReportItemList = accountBalanceReportItemRepository.findAll();
-        assertThat(accountBalanceReportItemList).hasSize(databaseSizeBeforeCreate);
-        int searchDatabaseSizeAfter = IterableUtil.sizeOf(accountBalanceReportItemSearchRepository.findAll());
-        assertThat(searchDatabaseSizeAfter).isEqualTo(searchDatabaseSizeBefore);
     }
 
     @Test
@@ -503,305 +441,6 @@ class AccountBalanceReportItemResourceIT {
     void getNonExistingAccountBalanceReportItem() throws Exception {
         // Get the accountBalanceReportItem
         restAccountBalanceReportItemMockMvc.perform(get(ENTITY_API_URL_ID, Long.MAX_VALUE)).andExpect(status().isNotFound());
-    }
-
-    @Test
-    @Transactional
-    void putExistingAccountBalanceReportItem() throws Exception {
-        // Initialize the database
-        accountBalanceReportItemRepository.saveAndFlush(accountBalanceReportItem);
-
-        int databaseSizeBeforeUpdate = accountBalanceReportItemRepository.findAll().size();
-        accountBalanceReportItemSearchRepository.save(accountBalanceReportItem);
-        int searchDatabaseSizeBefore = IterableUtil.sizeOf(accountBalanceReportItemSearchRepository.findAll());
-
-        // Update the accountBalanceReportItem
-        AccountBalanceReportItem updatedAccountBalanceReportItem = accountBalanceReportItemRepository
-            .findById(accountBalanceReportItem.getId())
-            .get();
-        // Disconnect from session so that the updates on updatedAccountBalanceReportItem are not directly saved in db
-        em.detach(updatedAccountBalanceReportItem);
-        updatedAccountBalanceReportItem
-            .accountNumber(UPDATED_ACCOUNT_NUMBER)
-            .accountName(UPDATED_ACCOUNT_NAME)
-            .accountBalance(UPDATED_ACCOUNT_BALANCE);
-        AccountBalanceReportItemDTO accountBalanceReportItemDTO = accountBalanceReportItemMapper.toDto(updatedAccountBalanceReportItem);
-
-        restAccountBalanceReportItemMockMvc
-            .perform(
-                put(ENTITY_API_URL_ID, accountBalanceReportItemDTO.getId())
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(io.github.calvary.web.rest.TestUtil.convertObjectToJsonBytes(accountBalanceReportItemDTO))
-            )
-            .andExpect(status().isOk());
-
-        // Validate the AccountBalanceReportItem in the database
-        List<AccountBalanceReportItem> accountBalanceReportItemList = accountBalanceReportItemRepository.findAll();
-        assertThat(accountBalanceReportItemList).hasSize(databaseSizeBeforeUpdate);
-        AccountBalanceReportItem testAccountBalanceReportItem = accountBalanceReportItemList.get(accountBalanceReportItemList.size() - 1);
-        assertThat(testAccountBalanceReportItem.getAccountNumber()).isEqualTo(UPDATED_ACCOUNT_NUMBER);
-        assertThat(testAccountBalanceReportItem.getAccountName()).isEqualTo(UPDATED_ACCOUNT_NAME);
-        assertThat(testAccountBalanceReportItem.getAccountBalance()).isEqualByComparingTo(UPDATED_ACCOUNT_BALANCE);
-        await()
-            .atMost(5, TimeUnit.SECONDS)
-            .untilAsserted(() -> {
-                int searchDatabaseSizeAfter = IterableUtil.sizeOf(accountBalanceReportItemSearchRepository.findAll());
-                assertThat(searchDatabaseSizeAfter).isEqualTo(searchDatabaseSizeBefore);
-                List<AccountBalanceReportItem> accountBalanceReportItemSearchList = IterableUtils.toList(
-                    accountBalanceReportItemSearchRepository.findAll()
-                );
-                AccountBalanceReportItem testAccountBalanceReportItemSearch = accountBalanceReportItemSearchList.get(
-                    searchDatabaseSizeAfter - 1
-                );
-                assertThat(testAccountBalanceReportItemSearch.getAccountNumber()).isEqualTo(UPDATED_ACCOUNT_NUMBER);
-                assertThat(testAccountBalanceReportItemSearch.getAccountName()).isEqualTo(UPDATED_ACCOUNT_NAME);
-                assertThat(testAccountBalanceReportItemSearch.getAccountBalance()).isEqualByComparingTo(UPDATED_ACCOUNT_BALANCE);
-            });
-    }
-
-    @Test
-    @Transactional
-    void putNonExistingAccountBalanceReportItem() throws Exception {
-        int databaseSizeBeforeUpdate = accountBalanceReportItemRepository.findAll().size();
-        int searchDatabaseSizeBefore = IterableUtil.sizeOf(accountBalanceReportItemSearchRepository.findAll());
-        accountBalanceReportItem.setId(count.incrementAndGet());
-
-        // Create the AccountBalanceReportItem
-        AccountBalanceReportItemDTO accountBalanceReportItemDTO = accountBalanceReportItemMapper.toDto(accountBalanceReportItem);
-
-        // If the entity doesn't have an ID, it will throw BadRequestAlertException
-        restAccountBalanceReportItemMockMvc
-            .perform(
-                put(ENTITY_API_URL_ID, accountBalanceReportItemDTO.getId())
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(io.github.calvary.web.rest.TestUtil.convertObjectToJsonBytes(accountBalanceReportItemDTO))
-            )
-            .andExpect(status().isBadRequest());
-
-        // Validate the AccountBalanceReportItem in the database
-        List<AccountBalanceReportItem> accountBalanceReportItemList = accountBalanceReportItemRepository.findAll();
-        assertThat(accountBalanceReportItemList).hasSize(databaseSizeBeforeUpdate);
-        int searchDatabaseSizeAfter = IterableUtil.sizeOf(accountBalanceReportItemSearchRepository.findAll());
-        assertThat(searchDatabaseSizeAfter).isEqualTo(searchDatabaseSizeBefore);
-    }
-
-    @Test
-    @Transactional
-    void putWithIdMismatchAccountBalanceReportItem() throws Exception {
-        int databaseSizeBeforeUpdate = accountBalanceReportItemRepository.findAll().size();
-        int searchDatabaseSizeBefore = IterableUtil.sizeOf(accountBalanceReportItemSearchRepository.findAll());
-        accountBalanceReportItem.setId(count.incrementAndGet());
-
-        // Create the AccountBalanceReportItem
-        AccountBalanceReportItemDTO accountBalanceReportItemDTO = accountBalanceReportItemMapper.toDto(accountBalanceReportItem);
-
-        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
-        restAccountBalanceReportItemMockMvc
-            .perform(
-                put(ENTITY_API_URL_ID, count.incrementAndGet())
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(io.github.calvary.web.rest.TestUtil.convertObjectToJsonBytes(accountBalanceReportItemDTO))
-            )
-            .andExpect(status().isBadRequest());
-
-        // Validate the AccountBalanceReportItem in the database
-        List<AccountBalanceReportItem> accountBalanceReportItemList = accountBalanceReportItemRepository.findAll();
-        assertThat(accountBalanceReportItemList).hasSize(databaseSizeBeforeUpdate);
-        int searchDatabaseSizeAfter = IterableUtil.sizeOf(accountBalanceReportItemSearchRepository.findAll());
-        assertThat(searchDatabaseSizeAfter).isEqualTo(searchDatabaseSizeBefore);
-    }
-
-    @Test
-    @Transactional
-    void putWithMissingIdPathParamAccountBalanceReportItem() throws Exception {
-        int databaseSizeBeforeUpdate = accountBalanceReportItemRepository.findAll().size();
-        int searchDatabaseSizeBefore = IterableUtil.sizeOf(accountBalanceReportItemSearchRepository.findAll());
-        accountBalanceReportItem.setId(count.incrementAndGet());
-
-        // Create the AccountBalanceReportItem
-        AccountBalanceReportItemDTO accountBalanceReportItemDTO = accountBalanceReportItemMapper.toDto(accountBalanceReportItem);
-
-        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
-        restAccountBalanceReportItemMockMvc
-            .perform(
-                put(ENTITY_API_URL)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(io.github.calvary.web.rest.TestUtil.convertObjectToJsonBytes(accountBalanceReportItemDTO))
-            )
-            .andExpect(status().isMethodNotAllowed());
-
-        // Validate the AccountBalanceReportItem in the database
-        List<AccountBalanceReportItem> accountBalanceReportItemList = accountBalanceReportItemRepository.findAll();
-        assertThat(accountBalanceReportItemList).hasSize(databaseSizeBeforeUpdate);
-        int searchDatabaseSizeAfter = IterableUtil.sizeOf(accountBalanceReportItemSearchRepository.findAll());
-        assertThat(searchDatabaseSizeAfter).isEqualTo(searchDatabaseSizeBefore);
-    }
-
-    @Test
-    @Transactional
-    void partialUpdateAccountBalanceReportItemWithPatch() throws Exception {
-        // Initialize the database
-        accountBalanceReportItemRepository.saveAndFlush(accountBalanceReportItem);
-
-        int databaseSizeBeforeUpdate = accountBalanceReportItemRepository.findAll().size();
-
-        // Update the accountBalanceReportItem using partial update
-        AccountBalanceReportItem partialUpdatedAccountBalanceReportItem = new AccountBalanceReportItem();
-        partialUpdatedAccountBalanceReportItem.setId(accountBalanceReportItem.getId());
-
-        partialUpdatedAccountBalanceReportItem.accountNumber(UPDATED_ACCOUNT_NUMBER);
-
-        restAccountBalanceReportItemMockMvc
-            .perform(
-                patch(ENTITY_API_URL_ID, partialUpdatedAccountBalanceReportItem.getId())
-                    .contentType("application/merge-patch+json")
-                    .content(io.github.calvary.web.rest.TestUtil.convertObjectToJsonBytes(partialUpdatedAccountBalanceReportItem))
-            )
-            .andExpect(status().isOk());
-
-        // Validate the AccountBalanceReportItem in the database
-        List<AccountBalanceReportItem> accountBalanceReportItemList = accountBalanceReportItemRepository.findAll();
-        assertThat(accountBalanceReportItemList).hasSize(databaseSizeBeforeUpdate);
-        AccountBalanceReportItem testAccountBalanceReportItem = accountBalanceReportItemList.get(accountBalanceReportItemList.size() - 1);
-        assertThat(testAccountBalanceReportItem.getAccountNumber()).isEqualTo(UPDATED_ACCOUNT_NUMBER);
-        assertThat(testAccountBalanceReportItem.getAccountName()).isEqualTo(DEFAULT_ACCOUNT_NAME);
-        assertThat(testAccountBalanceReportItem.getAccountBalance()).isEqualByComparingTo(DEFAULT_ACCOUNT_BALANCE);
-    }
-
-    @Test
-    @Transactional
-    void fullUpdateAccountBalanceReportItemWithPatch() throws Exception {
-        // Initialize the database
-        accountBalanceReportItemRepository.saveAndFlush(accountBalanceReportItem);
-
-        int databaseSizeBeforeUpdate = accountBalanceReportItemRepository.findAll().size();
-
-        // Update the accountBalanceReportItem using partial update
-        AccountBalanceReportItem partialUpdatedAccountBalanceReportItem = new AccountBalanceReportItem();
-        partialUpdatedAccountBalanceReportItem.setId(accountBalanceReportItem.getId());
-
-        partialUpdatedAccountBalanceReportItem
-            .accountNumber(UPDATED_ACCOUNT_NUMBER)
-            .accountName(UPDATED_ACCOUNT_NAME)
-            .accountBalance(UPDATED_ACCOUNT_BALANCE);
-
-        restAccountBalanceReportItemMockMvc
-            .perform(
-                patch(ENTITY_API_URL_ID, partialUpdatedAccountBalanceReportItem.getId())
-                    .contentType("application/merge-patch+json")
-                    .content(io.github.calvary.web.rest.TestUtil.convertObjectToJsonBytes(partialUpdatedAccountBalanceReportItem))
-            )
-            .andExpect(status().isOk());
-
-        // Validate the AccountBalanceReportItem in the database
-        List<AccountBalanceReportItem> accountBalanceReportItemList = accountBalanceReportItemRepository.findAll();
-        assertThat(accountBalanceReportItemList).hasSize(databaseSizeBeforeUpdate);
-        AccountBalanceReportItem testAccountBalanceReportItem = accountBalanceReportItemList.get(accountBalanceReportItemList.size() - 1);
-        assertThat(testAccountBalanceReportItem.getAccountNumber()).isEqualTo(UPDATED_ACCOUNT_NUMBER);
-        assertThat(testAccountBalanceReportItem.getAccountName()).isEqualTo(UPDATED_ACCOUNT_NAME);
-        assertThat(testAccountBalanceReportItem.getAccountBalance()).isEqualByComparingTo(UPDATED_ACCOUNT_BALANCE);
-    }
-
-    @Test
-    @Transactional
-    void patchNonExistingAccountBalanceReportItem() throws Exception {
-        int databaseSizeBeforeUpdate = accountBalanceReportItemRepository.findAll().size();
-        int searchDatabaseSizeBefore = IterableUtil.sizeOf(accountBalanceReportItemSearchRepository.findAll());
-        accountBalanceReportItem.setId(count.incrementAndGet());
-
-        // Create the AccountBalanceReportItem
-        AccountBalanceReportItemDTO accountBalanceReportItemDTO = accountBalanceReportItemMapper.toDto(accountBalanceReportItem);
-
-        // If the entity doesn't have an ID, it will throw BadRequestAlertException
-        restAccountBalanceReportItemMockMvc
-            .perform(
-                patch(ENTITY_API_URL_ID, accountBalanceReportItemDTO.getId())
-                    .contentType("application/merge-patch+json")
-                    .content(io.github.calvary.web.rest.TestUtil.convertObjectToJsonBytes(accountBalanceReportItemDTO))
-            )
-            .andExpect(status().isBadRequest());
-
-        // Validate the AccountBalanceReportItem in the database
-        List<AccountBalanceReportItem> accountBalanceReportItemList = accountBalanceReportItemRepository.findAll();
-        assertThat(accountBalanceReportItemList).hasSize(databaseSizeBeforeUpdate);
-        int searchDatabaseSizeAfter = IterableUtil.sizeOf(accountBalanceReportItemSearchRepository.findAll());
-        assertThat(searchDatabaseSizeAfter).isEqualTo(searchDatabaseSizeBefore);
-    }
-
-    @Test
-    @Transactional
-    void patchWithIdMismatchAccountBalanceReportItem() throws Exception {
-        int databaseSizeBeforeUpdate = accountBalanceReportItemRepository.findAll().size();
-        int searchDatabaseSizeBefore = IterableUtil.sizeOf(accountBalanceReportItemSearchRepository.findAll());
-        accountBalanceReportItem.setId(count.incrementAndGet());
-
-        // Create the AccountBalanceReportItem
-        AccountBalanceReportItemDTO accountBalanceReportItemDTO = accountBalanceReportItemMapper.toDto(accountBalanceReportItem);
-
-        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
-        restAccountBalanceReportItemMockMvc
-            .perform(
-                patch(ENTITY_API_URL_ID, count.incrementAndGet())
-                    .contentType("application/merge-patch+json")
-                    .content(io.github.calvary.web.rest.TestUtil.convertObjectToJsonBytes(accountBalanceReportItemDTO))
-            )
-            .andExpect(status().isBadRequest());
-
-        // Validate the AccountBalanceReportItem in the database
-        List<AccountBalanceReportItem> accountBalanceReportItemList = accountBalanceReportItemRepository.findAll();
-        assertThat(accountBalanceReportItemList).hasSize(databaseSizeBeforeUpdate);
-        int searchDatabaseSizeAfter = IterableUtil.sizeOf(accountBalanceReportItemSearchRepository.findAll());
-        assertThat(searchDatabaseSizeAfter).isEqualTo(searchDatabaseSizeBefore);
-    }
-
-    @Test
-    @Transactional
-    void patchWithMissingIdPathParamAccountBalanceReportItem() throws Exception {
-        int databaseSizeBeforeUpdate = accountBalanceReportItemRepository.findAll().size();
-        int searchDatabaseSizeBefore = IterableUtil.sizeOf(accountBalanceReportItemSearchRepository.findAll());
-        accountBalanceReportItem.setId(count.incrementAndGet());
-
-        // Create the AccountBalanceReportItem
-        AccountBalanceReportItemDTO accountBalanceReportItemDTO = accountBalanceReportItemMapper.toDto(accountBalanceReportItem);
-
-        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
-        restAccountBalanceReportItemMockMvc
-            .perform(
-                patch(ENTITY_API_URL)
-                    .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(accountBalanceReportItemDTO))
-            )
-            .andExpect(status().isMethodNotAllowed());
-
-        // Validate the AccountBalanceReportItem in the database
-        List<AccountBalanceReportItem> accountBalanceReportItemList = accountBalanceReportItemRepository.findAll();
-        assertThat(accountBalanceReportItemList).hasSize(databaseSizeBeforeUpdate);
-        int searchDatabaseSizeAfter = IterableUtil.sizeOf(accountBalanceReportItemSearchRepository.findAll());
-        assertThat(searchDatabaseSizeAfter).isEqualTo(searchDatabaseSizeBefore);
-    }
-
-    @Test
-    @Transactional
-    void deleteAccountBalanceReportItem() throws Exception {
-        // Initialize the database
-        accountBalanceReportItemRepository.saveAndFlush(accountBalanceReportItem);
-        accountBalanceReportItemRepository.save(accountBalanceReportItem);
-        accountBalanceReportItemSearchRepository.save(accountBalanceReportItem);
-
-        int databaseSizeBeforeDelete = accountBalanceReportItemRepository.findAll().size();
-        int searchDatabaseSizeBefore = IterableUtil.sizeOf(accountBalanceReportItemSearchRepository.findAll());
-        assertThat(searchDatabaseSizeBefore).isEqualTo(databaseSizeBeforeDelete);
-
-        // Delete the accountBalanceReportItem
-        restAccountBalanceReportItemMockMvc
-            .perform(delete(ENTITY_API_URL_ID, accountBalanceReportItem.getId()).accept(MediaType.APPLICATION_JSON))
-            .andExpect(status().isNoContent());
-
-        // Validate the database contains one less item
-        List<AccountBalanceReportItem> accountBalanceReportItemList = accountBalanceReportItemRepository.findAll();
-        assertThat(accountBalanceReportItemList).hasSize(databaseSizeBeforeDelete - 1);
-        int searchDatabaseSizeAfter = IterableUtil.sizeOf(accountBalanceReportItemSearchRepository.findAll());
-        assertThat(searchDatabaseSizeAfter).isEqualTo(searchDatabaseSizeBefore - 1);
     }
 
     @Test

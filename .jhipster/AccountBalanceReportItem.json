@@ -18,7 +18,7 @@
   "jpaMetamodelFiltering": true,
   "name": "AccountBalanceReportItem",
   "pagination": "infinite-scroll",
-  "readOnly": false,
+  "readOnly": true,
   "relationships": [],
   "service": "serviceImpl"
 }

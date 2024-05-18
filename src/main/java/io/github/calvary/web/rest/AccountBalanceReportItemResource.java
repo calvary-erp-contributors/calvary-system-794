@@ -52,11 +52,6 @@ public class AccountBalanceReportItemResource {
 
     private final Logger log = LoggerFactory.getLogger(AccountBalanceReportItemResource.class);
 
-    private static final String ENTITY_NAME = "accountBalanceReportItem";
-
-    @Value("${jhipster.clientApp.name}")
-    private String applicationName;
-
     private final AccountBalanceReportItemService accountBalanceReportItemService;
 
     private final AccountBalanceReportItemRepository accountBalanceReportItemRepository;
@@ -71,100 +66,6 @@ public class AccountBalanceReportItemResource {
         this.accountBalanceReportItemService = accountBalanceReportItemService;
         this.accountBalanceReportItemRepository = accountBalanceReportItemRepository;
         this.accountBalanceReportItemQueryService = accountBalanceReportItemQueryService;
-    }
-
-    /**
-     * {@code POST  /account-balance-report-items} : Create a new accountBalanceReportItem.
-     *
-     * @param accountBalanceReportItemDTO the accountBalanceReportItemDTO to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new accountBalanceReportItemDTO, or with status {@code 400 (Bad Request)} if the accountBalanceReportItem has already an ID.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
-     */
-    @PostMapping("/account-balance-report-items")
-    public ResponseEntity<AccountBalanceReportItemDTO> createAccountBalanceReportItem(
-        @RequestBody AccountBalanceReportItemDTO accountBalanceReportItemDTO
-    ) throws URISyntaxException {
-        log.debug("REST request to save AccountBalanceReportItem : {}", accountBalanceReportItemDTO);
-        if (accountBalanceReportItemDTO.getId() != null) {
-            throw new BadRequestAlertException("A new accountBalanceReportItem cannot already have an ID", ENTITY_NAME, "idexists");
-        }
-        AccountBalanceReportItemDTO result = accountBalanceReportItemService.save(accountBalanceReportItemDTO);
-        return ResponseEntity
-            .created(new URI("/api/account-balance-report-items/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
-            .body(result);
-    }
-
-    /**
-     * {@code PUT  /account-balance-report-items/:id} : Updates an existing accountBalanceReportItem.
-     *
-     * @param id the id of the accountBalanceReportItemDTO to save.
-     * @param accountBalanceReportItemDTO the accountBalanceReportItemDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated accountBalanceReportItemDTO,
-     * or with status {@code 400 (Bad Request)} if the accountBalanceReportItemDTO is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the accountBalanceReportItemDTO couldn't be updated.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
-     */
-    @PutMapping("/account-balance-report-items/{id}")
-    public ResponseEntity<AccountBalanceReportItemDTO> updateAccountBalanceReportItem(
-        @PathVariable(value = "id", required = false) final Long id,
-        @RequestBody AccountBalanceReportItemDTO accountBalanceReportItemDTO
-    ) throws URISyntaxException {
-        log.debug("REST request to update AccountBalanceReportItem : {}, {}", id, accountBalanceReportItemDTO);
-        if (accountBalanceReportItemDTO.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
-        }
-        if (!Objects.equals(id, accountBalanceReportItemDTO.getId())) {
-            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
-        }
-
-        if (!accountBalanceReportItemRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
-        }
-
-        AccountBalanceReportItemDTO result = accountBalanceReportItemService.update(accountBalanceReportItemDTO);
-        return ResponseEntity
-            .ok()
-            .headers(
-                HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, accountBalanceReportItemDTO.getId().toString())
-            )
-            .body(result);
-    }
-
-    /**
-     * {@code PATCH  /account-balance-report-items/:id} : Partial updates given fields of an existing accountBalanceReportItem, field will ignore if it is null
-     *
-     * @param id the id of the accountBalanceReportItemDTO to save.
-     * @param accountBalanceReportItemDTO the accountBalanceReportItemDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated accountBalanceReportItemDTO,
-     * or with status {@code 400 (Bad Request)} if the accountBalanceReportItemDTO is not valid,
-     * or with status {@code 404 (Not Found)} if the accountBalanceReportItemDTO is not found,
-     * or with status {@code 500 (Internal Server Error)} if the accountBalanceReportItemDTO couldn't be updated.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
-     */
-    @PatchMapping(value = "/account-balance-report-items/{id}", consumes = { "application/json", "application/merge-patch+json" })
-    public ResponseEntity<AccountBalanceReportItemDTO> partialUpdateAccountBalanceReportItem(
-        @PathVariable(value = "id", required = false) final Long id,
-        @RequestBody AccountBalanceReportItemDTO accountBalanceReportItemDTO
-    ) throws URISyntaxException {
-        log.debug("REST request to partial update AccountBalanceReportItem partially : {}, {}", id, accountBalanceReportItemDTO);
-        if (accountBalanceReportItemDTO.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
-        }
-        if (!Objects.equals(id, accountBalanceReportItemDTO.getId())) {
-            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
-        }
-
-        if (!accountBalanceReportItemRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
-        }
-
-        Optional<AccountBalanceReportItemDTO> result = accountBalanceReportItemService.partialUpdate(accountBalanceReportItemDTO);
-
-        return ResponseUtil.wrapOrNotFound(
-            result,
-            HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, accountBalanceReportItemDTO.getId().toString())
-        );
     }
 
     /**
@@ -208,22 +109,6 @@ public class AccountBalanceReportItemResource {
         log.debug("REST request to get AccountBalanceReportItem : {}", id);
         Optional<AccountBalanceReportItemDTO> accountBalanceReportItemDTO = accountBalanceReportItemService.findOne(id);
         return ResponseUtil.wrapOrNotFound(accountBalanceReportItemDTO);
-    }
-
-    /**
-     * {@code DELETE  /account-balance-report-items/:id} : delete the "id" accountBalanceReportItem.
-     *
-     * @param id the id of the accountBalanceReportItemDTO to delete.
-     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
-     */
-    @DeleteMapping("/account-balance-report-items/{id}")
-    public ResponseEntity<Void> deleteAccountBalanceReportItem(@PathVariable Long id) {
-        log.debug("REST request to delete AccountBalanceReportItem : {}", id);
-        accountBalanceReportItemService.delete(id);
-        return ResponseEntity
-            .noContent()
-            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
-            .build();
     }
 
     /**
