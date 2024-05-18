@@ -1,0 +1,24 @@
+{
+  "changelogDate": "20240510151519",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "accountNumber",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "accountName",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "accountBalance",
+      "fieldType": "BigDecimal"
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "AccountBalanceReportItem",
+  "pagination": "infinite-scroll",
+  "readOnly": false,
+  "relationships": [],
+  "service": "serviceImpl"
+}
