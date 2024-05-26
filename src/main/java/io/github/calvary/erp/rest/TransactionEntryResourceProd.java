@@ -16,6 +16,8 @@ package io.github.calvary.erp.rest;
  * limitations under the License.
  */
 
+import io.github.calvary.erp.internal.InternalTransactionEntryService;
+import io.github.calvary.erp.repository.InternalTransactionEntryRepository;
 import io.github.calvary.repository.TransactionEntryRepository;
 import io.github.calvary.service.TransactionEntryQueryService;
 import io.github.calvary.service.TransactionEntryService;
@@ -56,15 +58,15 @@ public class TransactionEntryResourceProd {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
-    private final TransactionEntryService transactionEntryService;
+    private final InternalTransactionEntryService transactionEntryService;
 
-    private final TransactionEntryRepository transactionEntryRepository;
+    private final InternalTransactionEntryRepository transactionEntryRepository;
 
     private final TransactionEntryQueryService transactionEntryQueryService;
 
     public TransactionEntryResourceProd(
-        TransactionEntryService transactionEntryService,
-        TransactionEntryRepository transactionEntryRepository,
+        InternalTransactionEntryService transactionEntryService,
+        InternalTransactionEntryRepository transactionEntryRepository,
         TransactionEntryQueryService transactionEntryQueryService
     ) {
         this.transactionEntryService = transactionEntryService;

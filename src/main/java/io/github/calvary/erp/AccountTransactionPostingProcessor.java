@@ -145,13 +145,7 @@ public class AccountTransactionPostingProcessor implements PostingProcessorServi
         transactionEntryQueryService
             .findByCriteria(getTransactionEntryCriteria(accountTransaction))
             .stream()
-            .map(entry -> {
-                if (entry.getTransactionEntryType() == TransactionEntryTypes.DEBIT) {
-                    return entry.getEntryAmount();
-                } else {
-                    return entry.getEntryAmount().negate();
-                }
-            })
+            .map(TransactionEntryDTO::getEntryAmount)
             .reduce(BigDecimal::add)
             .ifPresent(amount -> state.set(BigDecimal.ZERO.compareTo(amount) == 0));
 
